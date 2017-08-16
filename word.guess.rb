@@ -1,2 +1,2 @@
 #  word-guess
-# second comit (practice)
+# second commit (practice)
