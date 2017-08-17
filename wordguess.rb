@@ -87,6 +87,13 @@ class RandomWord
     end
     puts ""
   end
+
+  def secret_word
+    puts "Sorry you have failed at this game..."
+    puts "Cat is very disappointed :("
+    puts @word
+  end
+
 end # end random_word class
 
 def check_input(input,letter_array)
@@ -145,5 +152,4 @@ until random_word.guess == 5
   end
 end
 
-puts "Sorry you have failed at this game..."
-puts "Cat is very disappointed :("
+print random_word.secret_word
