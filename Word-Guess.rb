@@ -1,7 +1,7 @@
 require 'faker'
 class Party
 
-  attr_accessor :word, :word_array, :dash_word, :score, :wrong_guess, :max_wrong_guess
+  attr_accessor :word, :word_array, :dash_word, :score, :wrong_guess, :max_wrong_guess, :guessed_letters
 
   def initialize
     @word = Faker::Color.color_name
@@ -9,11 +9,13 @@ class Party
     @dash_word = "_ " * @word.length
     @score = 0
     @wrong_guess = 0
-    @max_wrong_guess = 5 #easy = 5, medium, hard = 3
-    #@right_letters = []
+    @max_wrong_guess = 50 #easy = 5, medium, hard = 3
+    @guessed_letters = []
   end
 
   def check_letter(guess_letter)
+    @guessed_letters << guess_letter
+    @guessed_letters.uniq!
     if @word_array.include? guess_letter
       @word_array.length.times do |index|
         if word_array[index] == guess_letter
@@ -22,31 +24,43 @@ class Party
       end
       @score += 1
     else
-      if game_over
-        puts "game over!!!"
-      else
-        @wrong_guess += 1
-      end
+      @wrong_guess += 1
     end
+
+    if winner
+      puts "You win!!!!"
+    elsif game_over
+      puts "game over!!! the word was #{@word}"
+    end
+
     return @word.include? guess_letter
+
   end
 
   def game_over
     return @wrong_guess == @max_wrong_guess
   end
 
+  def winner
+    #if no more dashes, win!
+    return !(@dash_word.include? "_")
+  end
+
 end
 
-# party1 = Party.new
-# puts party1.word
-# puts party1.dash_word
-#
-# party1.check_letter("a")
-# party1.check_letter("e")
-# party1.check_letter("i")
-# party1.check_letter("o")
-# party1.check_letter("u")
-#
-# puts party1.wrong_guess
-# puts party1.score
-# puts party1.dash_word
+party1 = Party.new
+puts "Welcome to Word Guess!!!!!!"
+print "Guess a letter: "
+puts party1.dash_word
+guess = gets.chomp
+party1.check_letter(guess)
+
+until party1.game_over || party1.winner
+  puts "Letters Guessed:"
+  puts party1.guessed_letters
+  puts party1.dash_word
+  print "Guess a letter: "
+  guess = gets.chomp
+  party1.check_letter(guess)
+
+end
