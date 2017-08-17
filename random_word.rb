@@ -1,7 +1,7 @@
 class RandomWord
   attr_reader :word
   def initialize()
-    word_arr = ["envelope", "cat", "dragon", "coffee", "water", "pencil"]
+    word_arr = ["envelopea", "cat", "dragon", "coffeea", "water", "pencila"]
     @word = word_arr[rand(word_arr.length)].split('')
     @length = @word.length
   end
