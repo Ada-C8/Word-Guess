@@ -5,16 +5,26 @@ class RandomWord
   attr_accessor :guess, :guessed_letters
   attr_reader  :word_display
 
-  def initialize
-    @word = Faker::Overwatch.unique.hero.upcase
+  def initialize(level)
+    case level
+    when "heroes"
+      @word = Faker::Overwatch.unique.hero.upcase
+    when "locations"
+      @word = Faker::Overwatch.unique.location.upcase
+    when "quotes"
+      @word = Faker::Overwatch.unique.quote.upcase
+    end
     @letters = @word.split('')
     @guess = 0
     @word_display = []
-    @letters.length.times do
+    @letters.each do |letter|
+      if [" ","!",",",".","?","\"","'"].include?(letter)
+        @word_display << letter
+      else
       @word_display << "_"
+      end
     end
     cat_position
-    welcome_screen
     @guessed_letters = []
   end
 
@@ -99,8 +109,15 @@ def welcome_screen
   puts "Welcome to Word Guess!  Let me think of a word first..... ok got it"
   puts "You can guess wrong 5 times until the cat eats you"
 end
+puts "Hey......do you know Overwatch heroes, locations or quotes best?"
+user_level = gets.chomp
+until ["heroes", "locations", "quotes"].include? user_level
+  puts "Valid inputs: heroes, locations, quotes"
+  user_level = gets.chomp
+end
 
-random_word = RandomWord.new
+welcome_screen
+random_word = RandomWord.new(user_level)
 
 random_word.pretty_print #write pretty print method
 
