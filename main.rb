@@ -35,7 +35,7 @@
 ###################################
 #  Word Game
 ###################################
-require "Faker"
+# require "Faker"
 
 class Board
 
@@ -50,9 +50,12 @@ class Board
   end
 
   def display
-    puts "@ " * @tries_remaining
-    puts @blank
-    puts "Letters Guessed: #{@letters_guessed.join(' ')}"
+    output = ""
+    output += "@ " * @tries_remaining + "\n"
+    output += @blank
+    output += "Letters Guessed: #{@letters_guessed.join(' ')}"
+    puts guessed_letters
+    return output
   end
 
   def add_letter(guess)
@@ -62,7 +65,7 @@ class Board
 end
 
 # Intro to user
-puts "Welcome to The Star Wars Character Word Game!"
+puts "Welcome to Kate and Angela's Word Game!"
 
 # selects difficulty ?
 # word bank -
@@ -79,27 +82,36 @@ game_board = Board.new(word_bank.sample.upcase)
     #  "/////////*"
   # Blank letter spaces
   # Letters already guessed?
+#
 
-  while ((game_board.blank.include?"_") && (game_board.tries_remaining >= 0))
-    game_board.display
 
-    # Ask user to guess a letter
+user_has_won = !(game_board.blank.include?"_")
+user_has_lost = game_board.tries_remaining == 0
 
-    puts "Please guess a letter: "
-    guess = gets.chomp.upcase
-    if game_board.letters_guessed.include?guess
-      puts "You've already guessed that!"
+until (user_has_won || user_has_lost)
+
+  puts game_board.display
+
+  # Ask user to guess a letter
+
+  puts "Please guess a letter: "
+  guess = gets.chomp.upcase
+  if game_board.letters_guessed.include?guess
+    puts "You've already guessed that!"
+  else
+    game_board.letters_guessed << guess
+    game_board.letters_guessed.sort!
+    if game_board.word.include?guess
+      game_board.add_letter(guess)
     else
-      game_board.letters_guessed << guess
-      if game_board.word.include?guess
-        game_board.add_letter(guess)
-      else
-        puts "Wrong!"
-        game_board.tries_remaining -= 1
-      end
+      puts "Wrong!"
+      game_board.tries_remaining -= 1
     end
-
   end
+
+  user_has_won = !(game_board.blank.include?"_")
+  user_has_lost = game_board.tries_remaining == 0
+end
 
   # Check if this is a letter????
 
@@ -117,6 +129,14 @@ game_board = Board.new(word_bank.sample.upcase)
   #   Show a losing screed
   # Or if whole word is guessed.
   #   Show a winning screen.
+
+if user_has_won
+  puts "You win!!!!"
+end
+
+if user_has_lost
+  puts "Sorry! You lost :("
+end
 
 # Ask user if they want to play again.
 #   if yes then loop to begining of Game
