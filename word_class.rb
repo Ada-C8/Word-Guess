@@ -8,7 +8,7 @@ class WordClass
   # gameboard
   # number of guesses
 
-  # public method
+
 
   #guess
 
@@ -27,6 +27,7 @@ class WordClass
     @used_guesses = []
     @guess_ind = []
   end
+
 
   def add_guess(new_guess)
     @used_guesses << new_guess
