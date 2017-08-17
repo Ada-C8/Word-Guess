@@ -9,13 +9,12 @@ class RandomWord
     @word = "ana".upcase # Faker::Overwatch.unique.hero.upcase
     @letters = @word.split('')
     @guess = 0
-    puts "Welcome to Word Guess!  Let me think of a word first..... ok got it"
-    puts "You can guess wrong 5 times until the cat eats you"
     @word_display = []
     @letters.length.times do
       @word_display << "_"
     end
     cat_position
+    welcome_screen
   end
 
   def letter_index(user_letter)
@@ -87,12 +86,17 @@ def check_input(input)
   return input
 end
 
+def welcome_screen
+  puts "Welcome to Word Guess!  Let me think of a word first..... ok got it"
+  puts "You can guess wrong 5 times until the cat eats you"
+end
+
 random_word = RandomWord.new
 
 random_word.pretty_print #write pretty print method
 
 until random_word.guess == 5
-  puts "guess one letter"
+  print "Guess one letter: "
   user_input = check_input(gets.chomp.upcase)
 
   indeces = random_word.letter_index(user_input)
@@ -105,7 +109,10 @@ until random_word.guess == 5
     random_word.guess += 1
   random_word.cat_position
   end
-
+  system "clear"
+  welcome_screen
+  random_word.cat_position
+  random_word.pretty_print
   if random_word.did_you_win?
     puts "Congrats! You survived"
     exit
