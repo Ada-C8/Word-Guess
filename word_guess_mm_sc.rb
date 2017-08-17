@@ -1,7 +1,7 @@
 class Game
 attr_reader :hang_art
-  def initialize(game_word)
-  @game_word = game_word
+  def initialize(letter_array)
+  @letter_array = letter_array
 
   end
   puts "Welcome to Word-Guess!\nWe've selected a word, Please guess your first letter: "
@@ -17,6 +17,9 @@ attr_reader :hang_art
   =========
       HEREDOC
   end
+
+  # def
+  # end
 end
 
 
@@ -25,12 +28,14 @@ class Word
   attr_reader :get_word
   def initialize(word_bank)
     @word_bank = word_bank
-    @game_word = @game_word
+
   end
 
   def get_word
     @game_word = @word_bank.delete(@word_bank.sample)
-    return @game_word
+    @letter_array = @game_word.split(//)
+    #return @game_word
+    return @letter_array
   end
 
 end
