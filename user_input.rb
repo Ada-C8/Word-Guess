@@ -1,14 +1,17 @@
 class UserInput
   attr_reader :current_letter
   def initialize
-    @current_letter = gets.chomp.downcase
+    @current_letter = ""
     @wrong_letters = []
     @right_letters = []
   end
 
   def check_letter(class_rw, user_input)
+    @current_letter = gets.chomp.downcase
+    # if random word array includes @current_letter
     if class_rw.word.include?(@current_letter)
       @right_letters << @current_letter
+      # replace underscore at that index with user_input(@current_letter)
       class_rw.rewrite_underscore(user_input)
       print @right_letters
       return
