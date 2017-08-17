@@ -1,2 +1,14 @@
-class WordGuess
-end 
+class Game
+
+
+
+end
+
+puts "
+ {o}{o}{o}
+  |  |  |
+  \|  \|  \|
+[~~~~~~~~~]
+ |~~~~~~~|
+ |_______|
+"
