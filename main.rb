@@ -46,15 +46,44 @@ class Board
     @word = word
     @blank = "_" * @word.length
     @letters_guessed = []
-    @tries_remaining = 2
+    @tries_remaining = 4
+    @tries_pictures = [
+    "
+         _,
+      .-'_|
+     _| (_|
+    (_|
+    ",
+    "
+         _,
+      .-'_|      ,
+     _| (_|     _|\\
+    (_|        (_|
+    ",
+    "
+         _,                _,
+      .-'_|      ,      .-'_|
+     _| (_|     _|\\    _| (_|
+    (_|        (_|    (_|
+    ",
+    "
+         _,                _,
+      .-'_|      ,      .-'_|      ,
+     _| (_|     _|\\    _| (_|     _|\\
+    (_|        (_|    (_|        (_|
+    "
+    ]
+  end
+
+  def puts_pictures
+    puts @tries_pictures
   end
 
   def display
     output = ""
-    output += "@ " * @tries_remaining + "\n"
-    output += @blank
+    output += @tries_pictures[@tries_remaining-1] + "\n"
+    output += @blank + "\n"
     output += "Letters Guessed: #{@letters_guessed.join(' ')}"
-    puts guessed_letters
     return output
   end
 
@@ -70,6 +99,7 @@ puts "Welcome to Kate and Angela's Word Game!"
 # selects difficulty ?
 # word bank -
 word_bank = ["ear", "heart"]
+
   # maybe in its own class maynot,
   # maybe one word bank depending difficulty?
 # Find word in word bank.
