@@ -1,5 +1,5 @@
 class WordClass
-  attr_reader :word, :gameboard
+  attr_reader :word, :gameboard, :used_guesses, :guess_count
 
 
   #instance_variables
@@ -30,6 +30,12 @@ class WordClass
 
   def add_guess(new_guess)
     @used_guesses << new_guess
+    puts "guess count #{update_guess_count}"
+    puts "You have made these guesses #{show_guesses}"
+  end
+
+  def show_guesses
+    return @used_guesses.join
   end
 
   def output_gameboard
@@ -37,11 +43,13 @@ class WordClass
   end
 
   def update_gameboard
+    include_letter?
     if @guess_ind.length != 0
       @guess_ind.each do |i|
         @gameboard[i] = @used_guesses[-1]
       end
     end
+    output_gameboard
   end
 
   def include_letter?
@@ -54,7 +62,7 @@ class WordClass
   end
 
   def update_guess_count
-    @guess_count =+ 1
+    @guess_count += 1
   end
 
   def game_status
@@ -64,22 +72,46 @@ class WordClass
       puts "Please enter another guess"
     elsif @guess_count >= 5
       puts "You lost"
+      exit
     end
-
-
   end
+
+  def turn(input)
+    puts add_guess(input)
+    puts update_gameboard
+    puts game_status
+  end
+
+
 end
 
 
 
-  d= WordClass.new("cactus")
+d= WordClass.new("cactus")
 
-  puts d.word
-  puts d.gameboard
-  puts d.add_guess("c")
-  puts d.include_letter?
-  puts d.output_gameboard
-  puts d.update_gameboard
-  puts d.output_gameboard
-  puts d.gameboard_complete
-  puts d.game_status
+puts d.output_gameboard
+# puts d.add_guess("c")
+# puts d.update_gameboard
+# puts d.game_status
+
+puts d.turn("c")
+
+# puts d.add_guess("a")
+# puts d.update_gameboard
+# puts d.game_status
+#
+# puts d.add_guess("b")
+# puts d.update_gameboard
+# puts d.game_status
+#
+# puts d.add_guess("j")
+# puts d.update_gameboard
+# puts d.game_status
+#
+# puts d.add_guess("w")
+# puts d.update_gameboard
+# puts d.game_status
+#
+# puts d.add_guess("o")
+# puts d.update_gameboard
+# puts d.game_status
