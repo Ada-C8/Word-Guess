@@ -23,10 +23,35 @@ class Word
 
   def guess
     @guess = gets.chomp.to_s.downcase
-    until ('a'..'z').to_a.include?(@guess)
-      puts "Please enter a single letter."
-      @guess = gets.chomp.to_s.downcase
+    valid = 0
+    until valid == 1
+      if is_letter?(@guess) && !already_guessed?(@guess)
+        valid = 1
+        @guesses.push(@guess)
+      else
+        if already_guessed?(@guess)
+          puts "You already chose that letter! Please choose another."
+        else
+          puts "Please enter a single letter."
+
+        end
+        @guess = gets.chomp.to_s.downcase
+      end
     end
+
+
+
+
+  end
+
+  private
+
+  def is_letter?(guess)
+    return ('a'..'z').to_a.include?(@guess)
+  end
+
+  def already_guessed?(guess)
+    return @guesses.include?(guess)
   end
 end #end Word class
 
@@ -36,4 +61,7 @@ puts attempt.word
 attempt.display
 print attempt.letters
 puts attempt.num
+attempt.guess
+attempt.guess
+attempt.guess
 attempt.guess
