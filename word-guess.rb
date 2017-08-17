@@ -36,6 +36,7 @@ class Word
   end
 
   def prompt
+    art
     if @lives == 0
       puts "You have zero lives left! You lost!"
       exit
@@ -84,6 +85,94 @@ class Word
   def already_guessed?(guess)
     return @guesses.include?(guess)
   end
+
+  def art
+    case @lives
+      when 0
+        puts <<~ZERO
+
+           0000
+          00  00
+          00  00
+          00  00
+           0000
+
+        ZERO
+      when 1
+        puts <<~ONE
+
+          1111
+            11
+            11
+            11
+          111111
+
+        ONE
+      when 2
+        puts <<~TWO
+
+           2222
+          22  22
+             22
+            22
+          222222
+
+        TWO
+      when 3
+        puts <<~THREE
+
+           3333
+          33  33
+             333
+          33  33
+           3333
+
+        THREE
+      when 4
+        puts <<~FOUR
+
+          44  44
+          44  44
+          444444
+              44
+              44
+
+        FOUR
+      when 5
+        puts <<~FIVE
+
+          555555
+          55
+          55555
+              55
+          55555
+
+        FIVE
+      when 6
+        puts <<~SIX
+
+           6666
+          66
+          66666
+          66  66
+           6666
+
+        SIX
+      when 7
+        puts <<~SEVEN
+
+          777777
+             77
+            77
+           77
+          77
+
+        SEVEN
+      else
+    end
+  end
+
+
 end #end Word class
 
 
