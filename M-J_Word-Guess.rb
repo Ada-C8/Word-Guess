@@ -19,11 +19,11 @@ class Game
     @guesses_left = 5 #number of flowers
     @wrong_letters = []
     @correct_letters = []
+    @won = false
   end
 
   def receive_user_input
     #prompt the user
-    run
     puts "Please enter a letter"
     letter_guess = gets.chomp
     check_for_letter(letter_guess)
@@ -35,40 +35,54 @@ class Game
     @target_word.each do |letter|
       if @correct_letters.include?(letter)
         character = letter
-        input = true
+        #input = true
       elsif letter == letter_guess
         character = letter_guess
+        @correct_letters << character
         input = true
       else
         character = "-"
         @wrong_letters << letter
-        input = false
       end
       current_word += character
     end #end do
     puts "Your current word: #{current_word}"
+
     if current_word.split(//) == @target_word
-      "You won!"
-      return
+      @won = true
+      #play_again? method
     else
       track_guess_count(input)
     end
   end #end of method
 
+  def won?
+    return @won
+  end
+
   def track_guess_count(input)
-    if input = false
+    if input == false
       puts "wrong!"
       @guesses_left -= 1
     else
       "correct!"
     end
+  end
 
   def run
     if @guesses_left > 0
       receive_user_input
-    elsif @guesses_left = 0
+    elsif @guesses_left == 0
       puts "You ran out of guesses! Game over."
       return
+    end #end of if
+  end #end of run
+
+  def guesses_left?
+    if @guesses_left > 0
+      true
+    else
+      false
     end
   end
 
@@ -78,7 +92,10 @@ puts "Welcome to Maria and Julia's Word Game!"
 word_array = ["hat", "math", "phony" ]
 target_word = word_array.sample.split(//)
 our_word = Game.new(target_word)
-our_word.receive_user_input
+
+while our_word.won? == false && our_word.guesses_left? == true
+  our_word.run
+end
 
 
 
