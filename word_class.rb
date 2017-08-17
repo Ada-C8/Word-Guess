@@ -1,5 +1,5 @@
 class WordClass
-  attr_reader :word
+  attr_reader :word, :gameboard
 
 
   #instance_variables
@@ -20,8 +20,8 @@ class WordClass
   # is gameboard complete?
   # generate word
 
-  def initialize
-    @word = "cactus"
+  def initialize(word)
+    @word = word.downcase
     @gameboard = Array.new(@word.length, "_")
     @number_of_guesses = 0
     @used_guesses = []
@@ -29,11 +29,14 @@ class WordClass
 
   def include_letter?(input)
     gues_ind = (0 ... @word.length).find_all { |i| @word[i,1] == input}
+    return gues_ind
   end
 
 end
 
 
-d= WordClass.new
-@word = "cactus"
-puts include_letter("c")
+d= WordClass.new("cactus")
+
+puts d.word
+puts d.gameboard
+puts d.include_letter?("c")
