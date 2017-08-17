@@ -36,15 +36,32 @@ class Random_Word
   def cat_position
   case @guess
   when 0
-
+    cat = <<CAT0
+    /ᐠ.ꞈ.ᐟ\
+CAT0
   when 1
-    looking cat
+    cat = <<CAT1
+          /ᐠ=ᆽ=ᐟ \
+CAT1
   when 2
-
+    cat = <<CAT2
+                    /ᐠ –ꞈ –ᐟ\
+CAT2
   when 3
+    cat = <<CAT3
+                              /ᐠ・ᆽ・ᐟ \
+CAT3
   when 4
-  when 5
+    cat = <<CAT4
 
+                                          (=✖ᆽ✖=)
+CAT4
+  when 5
+    cat = <<CAT5
+                                                  *:･ﾟ✧(=✪ ᆺ ✪=)*:･ﾟ✧
+CAT5
+  end
+  puts cat
   end
 
 end # end random_word class
