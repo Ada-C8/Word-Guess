@@ -12,12 +12,12 @@ class RandomWord
   #   @underscore = underscore.split('  ')
   # end
 
-  def reprint(user_input)
+  def rewrite_underscore(user_input)
     # find index of letter of random word
     i = @word.index(user_input.current_letter)
     # replace underscore with right letter
     @underscore[i] = user_input.current_letter
-    print @underscore
+    # print @underscore
 
   end
 
