@@ -6,7 +6,7 @@ class RandomWord
   attr_reader  :word_display
 
   def initialize
-    @word = "ana".upcase # Faker::Overwatch.unique.hero.upcase
+    @word = Faker::Overwatch.unique.hero.upcase
     @letters = @word.split('')
     @guess = 0
     @word_display = []
@@ -79,9 +79,11 @@ class RandomWord
 end # end random_word class
 
 def check_input(input)
+  input.gsub!(/[^0-9A-Za-z]/, '')
   until input.length == 1 && input.to_i == 0 && input != "0"
     print "Please enter a letter: "
     input = gets.chomp.upcase
+    input.gsub!(/[^0-9A-Za-z]/, '')
   end
   return input
 end
