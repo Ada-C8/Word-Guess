@@ -6,6 +6,7 @@ class Game
     @incorrect_guess = 0
     @partial_answer = ["_", "_", "_", "_", "_"]
     @game = true
+    @game_live = true
     # @input = input
   end
 
@@ -30,6 +31,7 @@ class Game
 
   def add_incorrect_guess
     @incorrect_guess+=1
+    puts @incorrect_guess
     end_game
   end
 
@@ -39,17 +41,17 @@ class Game
   def display_partial_answer(input)
     @random_word.each_with_index do |letter, index|
       if input == letter
-        puts index
         @partial_answer[index] = input
-
-        print @partial_answer
       end
     end
+    print @partial_answer
   end
 
   def end_game
     if @incorrect_guess==10
-      game_live = false
+      puts "IT SHOUDL BE DONE"
+      exit
+      # game_live = false
       # break
     end
   end
@@ -112,15 +114,20 @@ class Game
           # end # end class
 
           # actual game play
-
           game1 = Game.new
           puts "Welcome to Word Guess!"
 
-          print game1.generate_answer
-          print game1.partial_answer
+          game_live = true
+          while game_live
+          # print game1.generate_answer
+          # print game1.partial_answer
+
           puts "Please choose a letter"
           input = gets.chomp
           puts game1.check_guess(input)
+
+        end
+      end
           # puts game1.display_partial_answer
 
 
@@ -139,4 +146,4 @@ class Game
           #   # puts game2.generate_answer
           #
           # end
-        end
+        # end
