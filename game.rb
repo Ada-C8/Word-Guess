@@ -4,12 +4,15 @@ class Word
 
   attr_accessor :blank_word, :level
 
+
+
+
  def initialize(level)
    @word = RandomWordGenerator.of_length(level)
    @split_word = @word.split("")
    @blank_word = Array.new(level, "_ ")
    @letters = ("a".."z").to_a
-   @balloons = [1, 2, 3, 4, 5, 6]
+   @balloons = ["a", "b", "c", "d"]
    @level = level
  end
 
@@ -43,7 +46,7 @@ class Word
      if @blank_word == @split_word
        break
      end
-     puts "#{@letters}"
+     #puts "#{@letters}"
    end
 
    if @blank_word == @split_word
@@ -53,10 +56,9 @@ class Word
    end
  end
 
-
  def display_word
    puts "Word: #{@blank_word.join}"
-   puts "#{@balloons}"#ASCII art
+   puts "#{@balloons.join('   ')}"#ASCII art
  end
 
  def show_letter(element)
@@ -68,6 +70,10 @@ class Word
    return @blank_word
  end
 
+ def display_balloons
+
+ end
+
 end #end of class
 
 levels = {LOW:4, MEDIUM:6, HIGH:8}
@@ -75,12 +81,10 @@ levels = {LOW:4, MEDIUM:6, HIGH:8}
 puts "What level do you want: #{levels.keys.join(', ')} "
 answer = gets.chomp.upcase.to_sym
 
-
 until levels.keys.include?(answer)
   puts "Please choose from these options: #{  levels.keys.join(', ')}"
   answer = gets.chomp.upcase.to_sym
 end
 
 game = Word.new(levels[answer])
-
 game.guess
