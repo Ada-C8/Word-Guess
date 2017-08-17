@@ -3,11 +3,13 @@ require_relative 'user_input'
 require_relative 'random_word'
 
 penny = RandomWord.new
-charming = UserInput.new
+user = UserInput.new
 # print penny.writes_underscore
 print penny.word
 print penny.underscore
 
-charming.check_letter(penny)
-
-penny.reprint(charming)
+user.check_letter(penny, user)
+print penny.underscore
+user.get_next_letter
+user.check_letter(penny, user)
+# penny.rewrite_underscore(user)
