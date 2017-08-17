@@ -1,5 +1,6 @@
 class RandomWord
   attr_reader :word, :underscore
+
   def initialize()
     word_arr = ["envelopea", "cat", "dragon", "coffeea", "water", "pencila"]
     @word = word_arr[rand(word_arr.length)].split('')
@@ -17,7 +18,7 @@ class RandomWord
     i = @word.index(user_input.current_letter)
     # replace underscore with right letter
     @underscore[i] = user_input.current_letter
-    # print @underscore
+    print @underscore
 
   end
 
