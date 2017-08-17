@@ -2,14 +2,15 @@ require 'random_word_generator'
 
 class Word
 
-  attr_accessor :blank_word
+  attr_accessor :blank_word, :level
 
- def initialize
-   @word = "hello"#RandomWordGenerator.of_length(4)
+ def initialize(level)
+   @word = RandomWordGenerator.of_length(level)
    @split_word = @word.split("")
-   @blank_word = Array.new(5, "_ ")
+   @blank_word = Array.new(level, "_ ")
    @letters = ("a".."z").to_a
    @balloons = [1, 2, 3, 4, 5, 6]
+   @level = level
  end
 
  def guess
@@ -69,8 +70,17 @@ class Word
 
 end #end of class
 
-game = Word.new
+levels = {LOW:4, MEDIUM:6, HIGH:8}
 
-puts game.display_word
+puts "What level do you want: #{levels.keys.join(', ')} "
+answer = gets.chomp.upcase.to_sym
+
+
+until levels.keys.include?(answer)
+  puts "Please choose from these options: #{  levels.keys.join(', ')}"
+  answer = gets.chomp.upcase.to_sym
+end
+
+game = Word.new(levels[answer])
 
 game.guess
