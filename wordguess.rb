@@ -1,6 +1,5 @@
-require "faker"
-
-class Random_Word
+require 'faker'
+class RandomWord
   attr_reader :guess
 
   def initialize
@@ -13,7 +12,7 @@ class Random_Word
     @letters.length.times do
       @word_display << "_"
     end
-    cat_display(@guess)
+    cat_position
   end
 
   def letter_index(user_letter)
@@ -34,45 +33,43 @@ class Random_Word
   end
 
   def cat_position
-  case @guess
-  when 0
-    cat = <<CAT0
-    /ᐠ.ꞈ.ᐟ\
-CAT0
-  when 1
-    cat = <<CAT1
-          /ᐠ=ᆽ=ᐟ \
-CAT1
-  when 2
-    cat = <<CAT2
-                    /ᐠ –ꞈ –ᐟ\
-CAT2
-  when 3
-    cat = <<CAT3
-                              /ᐠ・ᆽ・ᐟ \
-CAT3
-  when 4
-    cat = <<CAT4
-
-                                          (=✖ᆽ✖=)
-CAT4
-  when 5
-    cat = <<CAT5
-                                                  *:･ﾟ✧(=✪ ᆺ ✪=)*:･ﾟ✧
-CAT5
-  end
+    cat = ":3"
+#   case @guess
+#   when 0
+#     cat = # <<CAT0
+#     "/ᐠ.ꞈ.ᐟ\"
+# # CAT0
+#   when 1
+#     cat = <<CAT1
+#           /ᐠ=ᆽ=ᐟ \
+# CAT1
+#   when 2
+#     cat = <<CAT2
+#                     /ᐠ –ꞈ –ᐟ\
+# CAT2
+#   when 3
+#     cat = <<CAT3
+#                               /ᐠ・ᆽ・ᐟ \
+# CAT3
+#   when 4
+#     cat = <<CAT4
+#
+#                                           (=✖ᆽ✖=)
+# CAT4
+#   when 5
+#     cat = <<CAT5
+#                                                   *:･ﾟ✧(=✪ ᆺ ✪=)*:･ﾟ✧
+# CAT5
+#   end
   puts cat
   end
 
 end # end random_word class
 
 
-puts "Welcome to Word Guess!  Let me think of a word first..... ok got it"
-puts "You can guess wrong 5 times until the cat eats you"
-random_word = Random_Word.new
-cat_position0
+random_word = RandomWord.new
 
-random_word.word_display
+pp random_word.word_display #write pretty print method
 
 until random_word.guess == 5
   puts "guess one letter"
@@ -87,6 +84,7 @@ until random_word.guess == 5
   else
     puts "yikes"
     random_word.guess += 1
-    cat_position(random_word.guess)
+  random_word.cat_position
   end
 end
+binding.pry
