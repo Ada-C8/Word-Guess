@@ -18,8 +18,9 @@ class Word
     indices = find_indices(letter_guess)
 
     indices.each do |index|
-      @blanks[index].replace letter_guess
+      @blanks[index] = letter_guess
     end
+    puts @blanks
   end
 
   private
@@ -44,8 +45,13 @@ end #end of class
 
 class Game
 
+  attr_reader :game_word, :guesses, :turns
+
+  # just for testing
+  attr_writer :game_word
+
   def initialize
-    @art = newart
+    #@art = newart
     @game_word = Word.new
     @guesses = []
     @turns = 0
@@ -61,17 +67,17 @@ class Game
       return
     end
     if @game_word.contains?(user_guess)
-      Game.reveal
+      reveal(user_guess)
     else
       @turns += 1
-      Art.decompose
+      #Art.decompose
     end
     @guesses << user_guess
   end
 
 
   def reveal(user_guess)
-    @blanks.replace_blanks(user_guess)
+    @game_word.replace_blanks(user_guess)
     puts @game_word.blanks
   end
 
@@ -90,3 +96,12 @@ class Game
   end
 
 end # end of class
+
+game = Game.new
+
+game.game_word = Word.new(word: "bananas")
+puts "What's your guess?"
+
+guess = gets.chomp.downcase
+
+game.reveal(guess)
