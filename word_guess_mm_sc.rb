@@ -2,9 +2,34 @@ class Game
 attr_reader :hang_art
   def initialize(letter_array)
   @letter_array = letter_array
-
+  @under_score  = under_score
+  # @guess_index = guess_index
+  @guess = guess
   end
   puts "Welcome to Word-Guess!\nWe've selected a word, Please guess your first letter: "
+  guess = gets.chomp
+# --------------------------------
+  def guess_check
+    @letter_array.each do |letter|
+      if guess == letter_array.include?
+        @guess_index = @letter_array.index(guess)
+        return @guess_index
+      end
+    end
+  end
+
+
+
+  def replace_index
+    @under_score = ["-","-","-","-","-"]
+    @under_score = @under_score.map do |x|
+      if x == @guess_index
+        x = @guess
+      else
+        x
+      end
+  end
+# -------------------------
 
   def hang_art
       <<-HEREDOC
@@ -18,8 +43,9 @@ attr_reader :hang_art
       HEREDOC
   end
 
-  # def
-  # end
+  def
+  end
+
 end
 
 
@@ -34,7 +60,6 @@ class Word
   def get_word
     @game_word = @word_bank.delete(@word_bank.sample)
     @letter_array = @game_word.split(//)
-    #return @game_word
     return @letter_array
   end
 
@@ -44,5 +69,7 @@ end
 word_bank = Word.new(["acorn", "acute", "bitty", "cooky", "doozy"])
 word_bank.get_word
 # new_game = Game.new(game_word)
+
+
 
 puts word_bank.get_word
