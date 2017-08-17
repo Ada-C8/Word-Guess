@@ -1,11 +1,12 @@
 require 'faker'
 require 'pp'
+require 'pry'
 class RandomWord
   attr_accessor :guess
   attr_reader  :word_display
 
   def initialize
-    @word = "#{Faker::Overwatch.unique.hero}"
+    @word = "ana".upcase # Faker::Overwatch.unique.hero.upcase
     @letters = @word.split('')
     @guess = 0
     puts "Welcome to Word Guess!  Let me think of a word first..... ok got it"
@@ -65,6 +66,9 @@ class RandomWord
 #   end
   puts cat * (@guess)
   end
+  def did_you_win?
+    return !@word_display.include?("_")
+  end
 
 end # end random_word class
 
@@ -75,12 +79,13 @@ pp random_word.word_display #write pretty print method
 
 until random_word.guess == 5
   puts "guess one letter"
-  user_input = gets.chomp
+  user_input = gets.chomp.upcase
   # refactor into a method
   until user_input.length == 1 && user_input.to_i == 0
-    user_input = gets.chomp
+    user_input = gets.chomp.upcase
   end
   indeces = random_word.letter_index(user_input)
+  #binding.pry
   if indeces.length > 0
     puts "nice"
     random_word.update_display(indeces)
@@ -88,5 +93,10 @@ until random_word.guess == 5
     puts "yikes"
     random_word.guess += 1
   random_word.cat_position
+  end
+
+  if random_word.did_you_win?
+    puts "Congrats! You survived"
+    exit
   end
 end
