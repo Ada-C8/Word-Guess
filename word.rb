@@ -14,8 +14,8 @@ class Word
       end
   end
 
-  def list(word)
-    word = "blue"
+  def list(random_words)
+    @word << random_words
   end
 
   def check
@@ -36,5 +36,6 @@ class Word
 
 end # end of word class
 
-barb = Word.new("cat")
+random = ["cat", "dog", "frog", "horse", "bird", "monkey", "pidgeon", "mouse", "rabbit", "lama"].sample
+barb = Word.new(random)
 puts barb.display_dash("cat")
