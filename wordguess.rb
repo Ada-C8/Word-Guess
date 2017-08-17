@@ -1,11 +1,19 @@
 require "faker"
 
 class Random_Word
-  attr_reader #:word
+  attr_reader :guess
 
   def initialize
     @word = "#{Faker::Overwatch.unique.hero}"
     @letters = @word.split('')
+    @guess = 0
+    puts "Welcome to Word Guess!  Let me think of a word first..... ok got it"
+    puts "You can guess wrong 5 times until the cat eats you"
+    @word_display = []
+    @letters.length.times do
+      @word_display << "_"
+    end
+    cat_display(@guess)
   end
 
   def letter_index(user_letter)
@@ -18,59 +26,38 @@ class Random_Word
     return letter_indeces
   end
 
-  def default_display
-    puts "_ " * @word.length
-  end
-  def update_display
-    puts
-
-
+  def update_display(letter_indeces)
+    letter_indeces.each do |index|
+      @word_display[index] = @letters[index]
+    end
+    puts @word_display
   end
 
+  def cat_position
+  case @guess
+  when 0
 
-  class user_inputs
-    attr_reader
-    attr_writer
+  when 1
+    looking cat
+  when 2
 
-  end
-
-
-  def initialize
-  end
-
-end
-
-class game
-  attr_reader
-  attr_writer
-
-  def initialize
-  end
-
-  def flower
-  end
-
-  def remove_flower
-  end
-
-  def cat
-  end
-
-  def cat_move
+  when 3
+  when 4
+  when 5
 
   end
-  POT
-end
+
+end # end random_word class
 
 
 puts "Welcome to Word Guess!  Let me think of a word first..... ok got it"
 puts "You can guess wrong 5 times until the cat eats you"
 random_word = Random_Word.new
 cat_position0
-guess = 0
+
 random_word.word_display
 
-until guess == 5
+until random_word.guess == 5
   puts "guess one letter"
   # refactor into a method
   until user_input.length == 1 && user_input.to_i == 0
@@ -79,10 +66,10 @@ until guess == 5
 
   if random_word.letter_index(user_input).length > 0
     puts "nice"
-    random_word.word_display(indeces)
+    random_word.update_display(indeces)
   else
     puts "yikes"
-    c += 1
-    cat_position(guess)
+    random_word.guess += 1
+    cat_position(random_word.guess)
   end
 end
