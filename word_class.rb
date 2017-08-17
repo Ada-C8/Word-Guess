@@ -33,14 +33,19 @@ class WordClass
   end
 
   def output_gameboard
-    puts @gameboard.join
+    puts @gameboard.join(" ")
   end
 
   def update_gameboard
-
+    if @guess_ind.length != 0
+      @guess_ind.each do |i|
+        @gameboard[i] = @used_guesses[-1]
+      end
+    end
   end
-  def include_letter?(input)
-    @guess_ind = (0 ... @word.length).find_all { |i| @word[i,1] == input}
+
+  def include_letter?
+    @guess_ind = (0 ... @word.length).find_all { |i| @word[i,1] == @used_guesses[-1]}
 
     return @guess_ind
   end
@@ -52,4 +57,8 @@ d= WordClass.new("cactus")
 
 puts d.word
 puts d.gameboard
-puts d.include_letter?("c")
+puts d.add_guess("c")
+puts d.include_letter?
+puts d.output_gameboard
+puts d.update_gameboard
+puts d.output_gameboard
