@@ -35,32 +35,44 @@ class Word
     num_correct = 0
   end
 
-  def guess
+  def prompt
     if @lives == 0
       puts "You have zero lives left! You lost!"
       exit
     else
       puts "Please guess a letter! You have #{@lives} lives left!"
-      @guess = gets.chomp.to_s.downcase
-      # check if the guess is a valid guess
-      valid = 0
-      until valid == 1
-        if is_letter?(@guess) && !already_guessed?(@guess)
-          valid = 1
-          @guesses.push(@guess)
-        else
-          if already_guessed?(@guess)
-            puts "You already chose that letter! Please choose another."
-          else
-            puts "Please enter a single letter."
-          end
-          @guess = gets.chomp.to_s.downcase
+      if @guesses.length > 0
+        print "You have already guessed the following letters: "
+        @guesses.each do |bad_letter|
+          print bad_letter
+          print ", " if bad_letter != @guesses.last
+          print "\n" if bad_letter == @guesses.last
         end
       end
-      # check if the guess is in the word
-      @lives -= 1 if @letters.include?(@guess) == false
-      return @letters.include?(@guess)
     end
+  end
+
+  def guess
+    prompt
+    @guess = gets.chomp.to_s.downcase
+    # check if the guess is a valid guess
+    valid = 0
+    until valid == 1
+      if is_letter?(@guess) && !already_guessed?(@guess)
+        valid = 1
+        @guesses.push(@guess)
+      else
+        if already_guessed?(@guess)
+          puts "You already chose that letter! Please choose another."
+        else
+          puts "Please enter a single letter."
+        end
+        @guess = gets.chomp.to_s.downcase
+      end
+    end
+    # check if the guess is in the word
+    @lives -= 1 if @letters.include?(@guess) == false
+    return @letters.include?(@guess)
   end
 
   private
@@ -76,32 +88,32 @@ end #end Word class
 
 
 attempt = Word.new
-puts attempt.word
+attempt.word
 attempt.display
-puts attempt.guess
+ attempt.guess
 attempt.display
-puts attempt.guess
+attempt.guess
 attempt.display
-puts attempt.guess
+attempt.guess
 attempt.display
-puts attempt.guess
+attempt.guess
 attempt.display
-puts attempt.guess
+attempt.guess
 attempt.display
-puts attempt.guess
+attempt.guess
 attempt.display
-puts attempt.guess
+attempt.guess
 attempt.display
-puts attempt.guess
+attempt.guess
 attempt.display
-puts attempt.guess
+attempt.guess
 attempt.display
-puts attempt.guess
+attempt.guess
 attempt.display
-puts attempt.guess
+attempt.guess
 attempt.display
-puts attempt.guess
+attempt.guess
 attempt.display
-puts attempt.guess
+attempt.guess
 attempt.display
-puts attempt.guess
+attempt.guess
