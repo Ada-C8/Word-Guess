@@ -1,3 +1,5 @@
+
+
 class UserInput
   attr_reader :current_letter
   def initialize
@@ -6,7 +8,7 @@ class UserInput
     @right_letters = []
   end
 
-  def check_letter(class_rw, user_input)
+  def check_letter(class_rw, user_input, cake)
     @current_letter = gets.chomp.downcase
     # if random word array includes @current_letter
     if class_rw.word.include?(@current_letter)
@@ -17,6 +19,8 @@ class UserInput
       return
     else
       @wrong_letters << @current_letter
+
+      cake.take_away_candle
       print @wrong_letters
       return
     end
