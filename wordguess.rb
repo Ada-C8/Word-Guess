@@ -2,7 +2,7 @@ require 'faker'
 require 'pp'
 require 'pry'
 class RandomWord
-  attr_accessor :guess
+  attr_accessor :guess, :guessed_letters
   attr_reader  :word_display
 
   def initialize
@@ -15,6 +15,7 @@ class RandomWord
     end
     cat_position
     welcome_screen
+    @guessed_letters = []
   end
 
   def letter_index(user_letter)
@@ -78,12 +79,18 @@ class RandomWord
   end
 end # end random_word class
 
-def check_input(input)
+def check_input(input,letter_array)
   input.gsub!(/[^0-9A-Za-z]/, '')
   until input.length == 1 && input.to_i == 0 && input != "0"
-    print "Please enter a letter: "
-    input = gets.chomp.upcase
-    input.gsub!(/[^0-9A-Za-z]/, '')
+      print "Please enter a letter: "
+      input = gets.chomp.upcase
+      input.gsub!(/[^0-9A-Za-z]/, '')
+  end
+  if letter_array.include?(input)
+    puts "You have already guessed this letter"
+    print "Please try again: "
+    input = check_input(gets.chomp.upcase, letter_array)
+    # input.gsub!(/[^0-9A-Za-z]/, '')
   end
   return input
 end
@@ -99,8 +106,8 @@ random_word.pretty_print #write pretty print method
 
 until random_word.guess == 5
   print "Guess one letter: "
-  user_input = check_input(gets.chomp.upcase)
-
+  user_input = check_input(gets.chomp.upcase,random_word.guessed_letters)
+  random_word.guessed_letters << user_input
   indeces = random_word.letter_index(user_input)
   #binding.pry
   if indeces.length > 0
