@@ -32,7 +32,8 @@ class RandomWord
     letter_indeces.each do |index|
       @word_display[index] = @letters[index]
     end
-    puts @word_display
+    #puts @word_display
+    pretty_print
   end
 
   def cat_position
@@ -70,20 +71,30 @@ class RandomWord
     return !@word_display.include?("_")
   end
 
+  def pretty_print
+    @word_display.each do |letter|
+      print "#{letter} "
+    end
+    puts ""
+  end
 end # end random_word class
 
+def check_input(input)
+  until input.length == 1 && input.to_i == 0 && input != "0"
+    print "Please enter a letter: "
+    input = gets.chomp.upcase
+  end
+  return input
+end
 
 random_word = RandomWord.new
 
-pp random_word.word_display #write pretty print method
+random_word.pretty_print #write pretty print method
 
 until random_word.guess == 5
   puts "guess one letter"
-  user_input = gets.chomp.upcase
-  # refactor into a method
-  until user_input.length == 1 && user_input.to_i == 0
-    user_input = gets.chomp.upcase
-  end
+  user_input = check_input(gets.chomp.upcase)
+
   indeces = random_word.letter_index(user_input)
   #binding.pry
   if indeces.length > 0
@@ -100,3 +111,6 @@ until random_word.guess == 5
     exit
   end
 end
+
+puts "Sorry you have failed at this game..."
+puts "Cat is very disappointed :("
