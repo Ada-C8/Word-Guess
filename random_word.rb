@@ -7,11 +7,7 @@ class RandomWord
     @length = @word.length
     @underscore = ("_  " * @length).split('  ')
   end
-  #
-  # def writes_underscore
-  #   underscore = "_  " * @length
-  #   @underscore = underscore.split('  ')
-  # end
+
 
   def rewrite_underscore(user_input)
     # find index of letter of random word
