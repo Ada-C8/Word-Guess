@@ -13,6 +13,7 @@ class WordGuess
     our_word = 'DOBBY'
     #our_word = word_list.sample.upcase
     our_word_split = our_word.scan(/\w/).uniq.flatten.sort
+    p our_word_split
     #puts our_word.chars.each_slice(1).to_a
 
     puts "Welcome to our wonderful word guessing game! You have 10 tries to guess the word, one letter at a time!"
@@ -25,7 +26,15 @@ class WordGuess
 
       if our_word.include? letter
         right_guess << letter
+        right_guess = right_guess.uniq.flatten.sort
         puts "You guessed right!"
+        p right_guess
+
+        if right_guess == our_word_split
+          puts "You WIN!"
+          exit
+        end
+
       else
         wrong_guess << letter
         puts "Try again!"
@@ -41,12 +50,7 @@ class WordGuess
 
   end
 
-
 end
-
-
-
-
 
 game = WordGuess.new
 game.word_bank
