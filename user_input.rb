@@ -1,18 +1,18 @@
 class UserInput
   def initialize
-    @current_letter = gets.chomp.upcase
+    @current_letter = gets.chomp.downcase
     @wrong_letters = []
     @right_letters = []
   end
 
   def check_letter(class_rw)
     if class_rw.word.include?(@current_letter)
-
-      # puts ":)"
+      @right_letters << @current_letter
+      print @right_letters
       return
     else
-      # puts ":("
-      # puts class_rw.word
+      @wrong_letters << @current_letter
+      print @wrong_letters
       return
     end
 
