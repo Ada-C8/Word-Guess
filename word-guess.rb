@@ -3,8 +3,7 @@ RandomWord.exclude_list.push(/_/, /\'/, /-/)
 
 #word class for unique words
 class Word
-  attr_accessor :guesses
-  attr_reader :word, :letters, :num
+  attr_reader :word, :letters, :num, :lives, :guesses
 
   def initialize
     if [1, 2, 3].sample == 3
@@ -15,6 +14,7 @@ class Word
     @letters = word.split("")
     @num = @letters.length
     @guesses = []
+    @lives = 7
   end
 
   def display
@@ -36,25 +36,31 @@ class Word
   end
 
   def guess
-    puts "Please guess a letter!"
-    @guess = gets.chomp.to_s.downcase
-    # check if the guess is a valid guess
-    valid = 0
-    until valid == 1
-      if is_letter?(@guess) && !already_guessed?(@guess)
-        valid = 1
-        @guesses.push(@guess)
-      else
-        if already_guessed?(@guess)
-          puts "You already chose that letter! Please choose another."
+    if @lives == 0
+      puts "You have zero lives left! You lost!"
+      exit
+    else
+      puts "Please guess a letter! You have #{@lives} lives left!"
+      @guess = gets.chomp.to_s.downcase
+      # check if the guess is a valid guess
+      valid = 0
+      until valid == 1
+        if is_letter?(@guess) && !already_guessed?(@guess)
+          valid = 1
+          @guesses.push(@guess)
         else
-          puts "Please enter a single letter."
+          if already_guessed?(@guess)
+            puts "You already chose that letter! Please choose another."
+          else
+            puts "Please enter a single letter."
+          end
+          @guess = gets.chomp.to_s.downcase
         end
-        @guess = gets.chomp.to_s.downcase
       end
+      # check if the guess is in the word
+      @lives -= 1 if @letters.include?(@guess) == false
+      return @letters.include?(@guess)
     end
-    # check if the guess is in the word
-    return @letters.include?(@guess)
   end
 
   private
