@@ -1,0 +1,2 @@
+require 'letter'
+require 'word'
