@@ -39,8 +39,8 @@ require "Faker"
 
 class Board
 
-  attr_accessor :letters_guessed
-  attr_reader :word
+  attr_accessor :letters_guessed, :tries_remaining
+  attr_reader :word, :blank
 
   def initialize(word)
     @word = word
@@ -80,25 +80,26 @@ game_board = Board.new(word_bank.sample.upcase)
   # Blank letter spaces
   # Letters already guessed?
 
-game_board.display
+  while ((game_board.blank.include?"_") && (game_board.tries_remaining >= 0))
+    game_board.display
 
-# Ask user to guess a letter
+    # Ask user to guess a letter
 
-puts "Please guess a letter: "
-guess = gets.chomp.upcase
-if game_board.letters_guessed.include?guess
-  puts "You've already guessed that!"
-else
-  game_board.letters_guessed << guess
-  if game_board.word.include?guess
-    game_board.add_letter(guess)
-  else
-    puts "NO"
+    puts "Please guess a letter: "
+    guess = gets.chomp.upcase
+    if game_board.letters_guessed.include?guess
+      puts "You've already guessed that!"
+    else
+      game_board.letters_guessed << guess
+      if game_board.word.include?guess
+        game_board.add_letter(guess)
+      else
+        puts "Wrong!"
+        game_board.tries_remaining -= 1
+      end
+    end
+
   end
-end
-
-game_board.display
-
 
   # Check if this is a letter????
 
