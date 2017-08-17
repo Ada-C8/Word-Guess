@@ -1,4 +1,5 @@
 class UserInput
+  attr_reader :current_letter
   def initialize
     @current_letter = gets.chomp.downcase
     @wrong_letters = []
