@@ -5,46 +5,61 @@ class Word
   attr_accessor :blank_word
 
  def initialize
-   @word = RandomWordGenerator.of_length(7)
+   @word = "hello"#RandomWordGenerator.of_length(4)
    @split_word = @word.split("")
-   @blank_word = Array.new(7, "_")
+   @blank_word = Array.new(5, "_ ")
    @letters = ("a".."z").to_a
+   @balloons = [1, 2, 3, 4, 5, 6]
  end
 
  def guess
-   puts "Please guess a letter: "
-   puts "Choose from #{@letters}"
-   input = gets.chomp #check input
 
-   if @split_word.include?(input)
-     #new method find letter index in split_word and replace same space in @blanks
-     puts "YAY" #ASCII Art
-    show_letter(input)
-    puts display_word
-   else
-     puts "Balloon Pop" #ASCII Art
+   i = 0
 
+   while i < 6
+     puts "Please guess a letter: "
+     puts "Choose from #{@letters}"
+     input = gets.chomp.downcase #check input
+
+     until @letters.include?(input)
+       puts "Please only guess from these letters: #{@letters}"
+       input = gets.chomp.downcase
+     end
+
+     if @split_word.include?(input)
+       puts "YAY" #ASCII Art
+       show_letter(input)
+       puts display_word
+
+     else
+       puts "Balloon Pop" #ASCII Art
+       i += 1
+       @balloons.pop
+       puts display_word
+     end
+
+     @letters.delete(input)
+     if @blank_word == @split_word
+       break
+     end
+     puts "#{@letters}"
    end
 
-   @letters.delete(input)
-   puts "#{@letters}"
-
+   if @blank_word == @split_word
+     puts "You WON!"
+   else
+     puts "YOU LOSE. The word was #{@word}"
+   end
  end
 
- def erase_letter
-
- end
 
  def display_word
-   puts "Word: #{@blank_word}" #ASCII art
+   puts "Word: #{@blank_word.join}"
+   puts "#{@balloons}"#ASCII art
  end
 
  def show_letter(element)
-   #i = 0
    @split_word.each_with_index do |letter, index|
-
-     #i += 1
-
      if letter == element
        @blank_word[index] = element
      end
@@ -55,8 +70,6 @@ class Word
 end #end of class
 
 game = Word.new
-
-puts game.inspect
 
 puts game.display_word
 
