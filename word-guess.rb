@@ -11,41 +11,55 @@ class Word
 
 end # end of Word class definition
 
-# class Letter
-#   attr_accessor :visible, :positions
-#   attr_reader :character
-#
-#   def initialize(letter, positions)
-#     @character = letter
-#     @visible = false
-#     @positions = positions
-#   end
-#
-#   def self.list
-#     ObjectSpace.each_object(self) { |star| puts star.name }
-#   end
-#
-# end # End of Letter class definition
-
 class Display
+  attr_accessor :display_word, :user_guess
+
+  def initialize(game_instance)
+    @string_word = game_instance.string_word
+    @user_guess = game_instance.user_guess
+    @display_word = ""
+    # set initial word display
+    @string_word.each_char do |char|
+      if char == " "
+        @display_word += "  "
+      else
+        @display_word += "_ "
+      end
+    end
+  end
 
   #TODO ASCII / Tally
 
+  def update_display
+    char_positions =[]
+    i = -1
+    # push guessed character index to an array
+    @string_word.each_char do |char|
+      i += 1
+      if char == @user_guess
+        # times 2 to adjust for blanks in display_word
+        char_positions.push(i * 2)
+      end
+    end
+    # replace _ at those indices with the guessed character
+    char_positions.each do |pos|
+      @display_word[pos] = @user_guess
+    end
+  end
 
-  #TODO Word Display
+  def counter_update #race progession
 
-
-
+  end
 
 end # End of Display definition
 
 class Game
-  attr_reader :level, :word_to_guess
+  attr_reader :level, :word_to_guess, :string_word
 
-  attr_accessor :user_guess
-  #Select a Level
+  attr_accessor :user_guess, :interface
+
   def initialize
-
+    # gets difficulty level from the user
     puts "Welcome.."
     print "Choose a level (easy, medium, hard)"
     @level = gets.chomp.strip.downcase
@@ -60,68 +74,61 @@ class Game
     med_words = ["esoteric", "consciousness", "illuminate", "discrepancy", "galactic"]
     hard_words = ["the meaning of life", "vibrational entity", "we are made of star stuff"]
 
+    # choose a random sample from the selected level array
     case @level
     when "easy"
-      @word_to_guess = easy_words.sample
       @string_word = easy_words.sample
     when "medium"
-      @word_to_guess = med_words.sample
       @string_word = med_words.sample
     when "hard"
-      @word_to_guess = hard_words.sample
       @string_word = hard_words.sample
     end
-
-    @word_to_guess =  Word.new(@word_to_guess)
-
+    # create a new Display for this game, pass the Game instance to it
+    @interface = Display.new(self)
   end #End of Game initialization method
 
+  #Validate User input
   def accept_guess
+    puts "Phrase: " + @interface.display_word
     puts "Please enter a letter to guess:"
-    guess = gets.chomp.strip.downcase
-    until /[a-z]+[[:blank]]*\b/.match(guess) #&& guess != nil
+    @user_guess = gets.chomp.strip.downcase
+    until /[a-z]+[[:blank]]*\b/.match(@user_guess) #&& guess != nil
       puts "Please enter alpha characters only:"
-      guess = gets.chomp.strip.downcase
+      @user_guess = gets.chomp.strip.downcase
     end
-    @user_guess = guess
+    @interface.user_guess = @user_guess
     check_guess
   end
 
   def check_guess
+    #Accept Letter Guesses
     if @user_guess.length == 1
       if @string_word.include? (@user_guess)
-        puts true
+        @interface.update_display
         accept_guess
       else
         puts "Nope!"
+        #@interface.counter_update
         accept_guess
       end
+    #Accept Word Guesses
     else
-       if @user_guess == @string_word
-         win_game
-       else
-         accept_guess
+      if @user_guess == @string_word
+        win_game
+      else
+        accept_guess
+      end
     end
+
+
   end
 
-  #Validate User input
 
-  #Accept Letter Guesses
-  # guess = gets.chomp
-  # if guess.length = 1 #run Letter
-  #
-  # else # run Word
-  #
-  # end
-
-  #Accept Word Guesses
-
-  #Update Display
 
   #Decide win or Lose
-
 end # End of Game class definition
 
+## EXECUTIES
+
 game_1 = Game.new
-puts game_1.word_to_guess
 game_1.accept_guess
