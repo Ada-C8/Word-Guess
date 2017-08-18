@@ -155,42 +155,19 @@ class Game
                  1 guess left!
                 "
       else  puts "UH OH!"
-        end
-      end
+    end
+  end
 
-          # end # end class
+# actual game play
+game1 = Game.new
+puts "Welcome to Word Guess!"
 
-          # actual game play
-          game1 = Game.new
-          puts "Welcome to Word Guess!"
-
-          game_live = true
-          while game_live
-          # print game1.generate_answer
-          # print game1.partial_answer
-
-          puts "Please choose a letter"
-          input = gets.chomp
-          puts game1.check_guess(input)
-
-        end
-      end
-          # puts game1.display_partial_answer
+ game_live = true
+ while game_live
 
 
-          #
-          # puts game1.generate_answer
-          # game_live = true
-          # guess = ""
-          #
-          # # guess.include? @random_word
-          #
-          # while game_live
-          #   puts "Guess a letter"
-          #   guess = gets.chomp
-          #
-          #   # game2 = Game.new
-          #   # puts game2.generate_answer
-          #
-          # end
-        # end
+  puts "Please choose a letter"
+  input = gets.chomp
+  puts game1.check_guess(input)
+ end
+end
