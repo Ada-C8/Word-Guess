@@ -55,7 +55,10 @@ class Game
   def end_game
     if @incorrect_guess==10
       puts "
-      ( ^_^ ) \n YOU LOSE"
+                                ( ^_^ )
+                            \n
+                                YOU LOSE"
+      puts "                          Your word was: #{@random_word.join("")}"
       exit
     end
   end
