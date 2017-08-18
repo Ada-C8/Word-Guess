@@ -1,5 +1,6 @@
 require "random_word"
-
+require "colorize"
+require_relative 'Centipede'
 class Game
   attr_reader :random_word, :partial_answer, :string_word, :incorrect_guess, :list_guesses
   def initialize
@@ -26,12 +27,7 @@ class Game
     return @partial_answer
   end
 
-  # def partial_answer
-  #   return @partial_answer
-  # end
-
   def check_guess(input)
-    # if /[[:lower:]]/.match(input)
     if @random_word.include? input
       display_partial_answer(input)
       display_art
@@ -62,7 +58,7 @@ class Game
   end
 
   def add_incorrect_guess(input)
-    unless list_guesses.include?(input)
+    unless list_guesses.include?(input) || input.to_i.to_s == input
       @incorrect_guess+=1
       @list_guesses << input
       end_game
@@ -82,10 +78,10 @@ class Game
   def end_game
     if @incorrect_guess==10
       puts "
-                                ( ^_^ )
+                                 ^_^
                             \n
                                 YOU LOSE"
-      puts "                          Your word was: #{@random_word.join("")}"
+      puts "                          Your word was: #{@random_word.join("")}".colorize(:red)
       exit
     end
   end
@@ -98,8 +94,8 @@ class Game
       _ _ _ _ _ _ _ _ _ _ _   (.--.)
       {{ { { { { { { { { { { ( ^_^ )
       >>>>>>>>>>>>>>>>>>>>>>>>>>>-->
-        WOW! You guessed correctly!
-        "
+        10 guesses left
+        ".colorize(:green)
       elsif @incorrect_guess == 1
         puts "
                              .    .
@@ -108,7 +104,7 @@ class Game
         { { { { { { { { { { ( ^_^ )
         >>>>>>>>>>>>>>>>>>>>>>>>-->
           9 guesses left
-          "
+          ".colorize(:green)
       elsif @incorrect_guess == 2
           puts "
                              .    .
@@ -117,7 +113,7 @@ class Game
           { { { { { { { { { ( ^_^ )
             >>>>>>>>>>>>>>>>>>>>>-->
             8 guesses left.
-            "
+            ".colorize(:green)
       elsif @incorrect_guess == 3
             puts "
                              .    .
@@ -126,7 +122,7 @@ class Game
             { { { { { { { { ( ^_^ )
               >>>>>>>>>>>>>>>>>>>-->
               7 guesses left.
-              "
+              ".colorize(:yellow)
       elsif @incorrect_guess == 4
               puts "
                                .    .
@@ -135,7 +131,7 @@ class Game
                   { { { { { { ( ^_^ )
                   >>>>>>>>>>>>>>>>>-->
                 6 guesses left.
-                "
+                ".colorize(:yellow)
       elsif @incorrect_guess == 5
               puts "
                                .    .
@@ -144,7 +140,7 @@ class Game
                       { { { { ( ^_^ )
                     >>>>>>>>>>>>>>>-->
                 5 guesses left.
-                "
+                ".colorize(:yellow)
       elsif @incorrect_guess == 6
               puts "
                                .    .
@@ -153,7 +149,7 @@ class Game
                         { { { ( ^_^ )
                         >>>>>>>>>>>-->
                 4 guesses left.
-                "
+                ".colorize(:yellow)
       elsif @incorrect_guess == 7
               puts "
                                .    .
@@ -162,7 +158,7 @@ class Game
                              { ( ^_^ )
                             >>>>>>>>-->
                 3 guesses left.
-                "
+                ".colorize(:red)
       elsif @incorrect_guess == 8
               puts "
 
@@ -171,7 +167,7 @@ class Game
                                 ( ^_^ )
                                 >>>>-->
                 2 guesses left.
-                "
+                ".colorize(:red)
       elsif @incorrect_guess == 9
               puts "
 
@@ -180,7 +176,7 @@ class Game
                                 ( ^_^ )
 
                  1 guess left!
-                "
+                ".colorize(:red)
       else  puts "UH OH!"
     end
   end
@@ -188,8 +184,6 @@ class Game
 # actual game play
 game1 = Game.new
 puts "Welcome to Word Guess!"
-
- # game_live = true
 
  loop do
    puts "Please choose a letter"
@@ -199,8 +193,9 @@ puts "Welcome to Word Guess!"
    elsif input.length == 1 && /[[:lower:]]/.match(input)
      puts game1.check_guess(input)
    else
-     puts "Please enter ONE LETTER unless you have the full word:"
      puts game1.check_guess(input)
+
+     puts "Please enter ONE LETTER unless you have the full word:"
    end
  end
 end
