@@ -1,5 +1,5 @@
 class Word
-  attr_accessor :random_word, :word_display, :num_bad_guess
+  attr_accessor :random_word, :word_display, :num_bad_guess, :bad_letters, :letter
   def initialize (random_word)
     @random_word = random_word.split("")
     @word_display = Array.new(random_word.length, "_ ") #make array of underscores
@@ -8,14 +8,13 @@ class Word
   end
 
  def reveal(letter)
+   @letter = letter
     counter = 0 # keeps track of random word index number
     @changed = nil
     @random_word.each do |alpha|
-      if alpha == letter
-        @word_display[counter] = letter
+      if alpha == @letter
+        @word_display[counter] = @letter
         @changed = true # indicates that guess was right
-      else
-         @bad_letter << letter
       end
       counter += 1
     end
@@ -25,7 +24,8 @@ class Word
   def count_bad_guess
     if @changed == nil #checks to see if guess was wrong
       @num_bad_guess += 1 # if guess is wrong increments bad guess otherwise  gives "free" guess
-      print "You have made #{@num_bad_guess} bad guesses which include #{@bad_letter.join("")}." #prints to user how many bad guesses they took
+      @bad_letters << @letter
+      print "You have made #{@num_bad_guess} bad guesses which include #{@bad_letters.join(",")}." #prints to user how many bad guesses they took
     end
     return @num_bad_guess #otherwise method returns nil
   end
@@ -33,7 +33,7 @@ class Word
 end
 
 class Game
-  attr_accessor :random_word, :word_display, :num_bad_guess
+  attr_accessor :random_word, :word_display, :num_bad_guess, :bad_letters, :letter
   def initialize
 
 
