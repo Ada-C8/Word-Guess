@@ -68,7 +68,7 @@ class WordClass
     loop do
       @current_guess = gets.chomp
       break if single_character? && is_a_letter? && already_guessed?
-      puts "Invalid input."
+      puts "Woah woah woah. I only accept single letters that have not already been guessed. Try again.".colorize(:red)
     end
   end
 
@@ -143,7 +143,7 @@ class WordClass
       new_image = Cactus.new
       puts new_image.show_ascii(6)
       puts "You lost... the correct answer was\n".colorize(:white)
-      puts puts "            #{@word.upcase.colorize(:white)} \n\n"
+      puts " " * 16 + "#{@word.upcase.colorize(:white)} \n\n"
       exit
     end
   end
