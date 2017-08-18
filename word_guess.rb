@@ -26,16 +26,11 @@ class Game
   end
 
   def check_guess(input)
+    unless @random_word.include? input
+      add_incorrect_guess(input)
+    end
     display_partial_answer(input)
     display_art
-    if @random_word.include? input
-      # display_partial_answer(input)
-      # display_art
-    else
-      add_incorrect_guess(input)
-      # display_partial_answer(input)
-      # display_art
-    end
     return "Incorrect guesses: #{@list_guesses}\n"
   end
 
@@ -88,7 +83,7 @@ puts "Welcome to Word Guess!"
 puts intro.art[10]
 
  loop do
-    # print game1.random_word
+     print game1.random_word
    puts "Word: #{game1.partial_answer.join(" ")}"
    puts
    puts "Please choose a letter:"
