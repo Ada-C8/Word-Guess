@@ -37,6 +37,9 @@ end
 
 
 
-gale = Word.new("Gale")
-print gale.reveal("y")
-print gale.reveal("y").join
+gale = Word.new("foobarfoo")
+print gale.reveal("o")
+print gale.reveal("f")
+
+
+print gale.word_display
