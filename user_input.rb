@@ -1,7 +1,7 @@
 
 
 class UserInput
-  attr_reader :current_letter
+  attr_reader :current_letter, :wrong_letters
   def initialize
     @current_letter = ""
     @wrong_letters = []
