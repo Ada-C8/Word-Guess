@@ -2,13 +2,7 @@ require_relative "word.rb"
 require_relative "explosive.rb"
 
 class User
-
-#
   attr_reader :letter, :correct_guesses, :dashes, :guesses
-
-  # ask user for a letter guess
-  #store letter guess in a variable
-  #check variable against the array of string letters
 
   # initialize instances with word and image
   # calling word and image class
