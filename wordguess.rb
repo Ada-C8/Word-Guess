@@ -119,6 +119,8 @@ def welcome_screen
   puts "Welcome to Word Guess!  Let me think of a word first..... ok got it"
   puts "You can guess wrong 5 times until the cat eats you"
 end
+play_again = true
+while play_again
 puts "Hey......do you know Overwatch heroes, locations or quotes best?"
 user_level = gets.chomp
 until ["heroes", "locations", "quotes"].include? user_level
@@ -155,3 +157,11 @@ until random_word.guess == 5
 end
 
 random_word.secret_word
+puts "Want to play again? Eh? Eh?"
+user_answer = gets.chomp
+if user_answer == "yes"
+  play_again == true
+else
+  play_again == false
+end
+end
