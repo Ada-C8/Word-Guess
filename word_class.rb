@@ -5,29 +5,9 @@ require_relative 'cactus.rb'
 class WordClass
   attr_reader :word, :gameboard, :used_guesses, :guess_count
 
-
-  #instance_variables
-  # word
-  # letters that have been guessed
-  # gameboard
-  # number of guesses
-
-
-
-  #guess
-
-  #private methods
-
-  # update record of what has been guessed
-  # update gameboard
-  # display what has been guessed
-  # is gameboard complete?
-  # generate word
-
   def initialize
     @word = ""
     @gameboard = ""
-    #@gameboard = Array.new(@word.length, "_")
     @guess_count = 0
     @used_guesses = []
     @guess_ind = []
@@ -67,25 +47,64 @@ class WordClass
 
     loop do
       @current_guess = gets.chomp
-      break if single_character? && is_a_letter? && already_guessed?
+      break if single_character? && is_a_letter?(@current_guess) && already_guessed?
       puts "Woah woah woah. I only accept single letters that have not already been guessed. Try again.".colorize(:red)
     end
   end
 
-
+  #single_character makes sure the user input is a single character between a-z
+  #and not already guessed.
   def single_character?
     return @current_guess.length == 1
   end
 
-  def is_a_letter?
-    return /[a-z]/.match(@current_guess)
+#checks that input contains only letters
+  def is_a_letter?(input)
+    return /^[a-z]+$/.match(input)
   end
 
   def already_guessed?
     return !@used_guesses.include?(@current_guess)
   end
-  #maybe the method to check the input is acceptable should go around here?
 
+#gives the user the option to guess the whole word.
+  def know_the_word
+    puts "Do you think you can guess the whole word? \n If you are wrong, Cowboy Cactus is toast! (Y/N)".colorize(:white)
+    input = gets.chomp
+    y_or_n(input)
+    if input == "Y" || input == "y"
+      puts "Ok, what word am I thinking of?".colorize(:white)
+      whole_word_guess = gets.chomp.downcase
+      acceptable_whole_word(whole_word_guess)
+      if whole_word_guess == @word
+        puts "YOU WON!".colorize(:white)
+        exit
+      else
+        new_image = Cactus.new
+        puts new_image.show_ascii(6)
+        puts "You lost... the correct answer was\n".colorize(:white)
+        puts " " * 16 + "#{@word.upcase.colorize(:white)} \n\n"
+        exit
+      end
+    end
+  end
+
+#makes sure the whole word guessed does not have numbers in it
+  def acceptable_whole_word(whole_word_guess)
+    while is_a_letter?(whole_word_guess) == nil
+      puts "Say what? Please enter a word.".colorize(:red)
+      whole_word_guess = gets.chomp.downcase
+    end
+  end
+
+#makes sure the user input is a y or n
+  def y_or_n(input)
+    acceptable_answers = ["Y","N","y","n"]
+    while !acceptable_answers.include?(input)
+      puts "Woah woah woah. I only accept Y or N. Try again.".colorize(:red)
+      input = gets.chomp
+    end
+  end
 
   #add_guesses takes the user's guess as input, then adds it to an array
   #containing all the letters that have been guessed.  It displays that array.
@@ -151,6 +170,7 @@ class WordClass
   #turn combines many of the methods in this class to encaspulate a single round
   #of the game
   def turn
+    know_the_word
     obtain_guess
     add_guess
     update_gameboard
