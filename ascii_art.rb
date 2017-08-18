@@ -26,12 +26,12 @@ class AsciiArt
 
   def take_away_candle
     change_candles
-    puts @candle_light.blue
+    puts @candle_light.yellow
     puts @body
   end
 
   def show_cake
-    puts @candle_light.blue
+    puts @candle_light.yellow
     puts @body
   end
 end
