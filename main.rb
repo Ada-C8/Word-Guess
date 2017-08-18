@@ -15,7 +15,7 @@ end
 
 class User
 
-  attr_reader :letter, :correct_guesses, :dashes
+  attr_reader :letter, :correct_guesses, :dashes, :guesses
 
   # ask user for a letter guess
   #store letter guess in a variable
@@ -25,16 +25,34 @@ class User
     @word = word
     @correct_guesses = Array.new(word.game_word.length, "").join
     @dashes = Array.new(word.game_word.length, "-").join
+    @guesses = []
   end
 
   def user_input
-    puts "Guess a letter."
-    @letter = gets.chomp
+    loop do
+      puts "Guess a letter."
+      @letter = gets.chomp.downcase
+      if @guesses.include?(@letter)
+        puts "please provide a new letter "
+      else
+        @guesses << @letter
+        break
+      end
+    end
+
+
     if @word.game_word.include?(@letter)
       puts right_guess
+      index_array = @word.game_word.each_index.select{|i| @word.game_word[i] == @letter}
+      index_array.each do |i|
+        @correct_guesses[i] = @letter
+        puts "#{@correct_guesses}"
+      end
+
     else
       puts wrong_guess
     end
+    print @guesses
   end
 
   def right_guess
@@ -54,7 +72,7 @@ end
 
 
 
-new_game = word.new
+new_game = Word.new
 rebecca = User.new(new_game)
 
 # display progres
@@ -69,4 +87,5 @@ puts "This is the game word: #{new_game.game_word}"
 
 
 # rebecca = User.new(new_game)
+rebecca.user_input
 rebecca.user_input
