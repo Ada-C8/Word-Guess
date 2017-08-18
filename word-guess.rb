@@ -1,15 +1,16 @@
 
 ## CLASS DEFINITIONS
 
-class Word
-  attr_reader :word_characters
-
-  def initialize(given_word)
-    @word_characters = []
-    given_word.each_char {|c| @word_characters << c }
-  end
-
-end # end of Word class definition
+# class Word
+#   attr_reader :word_characters
+#
+#   def initialize(given_word)
+#     @word_characters = []
+#     given_word.each_char {|c| @word_characters << c }
+#   end
+#
+# end # end of Word class definition
+# require colorize
 
 class Display
   attr_accessor :display_word, :user_guess
@@ -99,31 +100,41 @@ class Game
     @interface.user_guess = @user_guess
     check_guess
   end
-
+  # we can eliminate this distinction and just run a longer accept_guess method
   def check_guess
     #Accept Letter Guesses
     if @user_guess.length == 1
       if @string_word.include? (@user_guess)
         @interface.update_display
-        accept_guess
+        end_game
+        # accept_guess
       else
         puts "Nope!"
         #@interface.counter_update
-        accept_guess
+        end_game
+        # accept_guess
       end
     #Accept Word Guesses
     else
       if @user_guess == @string_word
-        win_game
+        @interface.display_word.gsub!("_", "-")
+        end_game
       else
         accept_guess
       end
     end
-
-
   end
 
-
+  def end_game
+    # declares a win when all blanks have been replaced in display_word
+    if !(@interface.display_word.include?("_"))
+      puts "You got it!"
+    elsif  #counter has reached max
+      puts "Womp womp! Out of guesses :'("
+    else
+      accept_guess
+    end
+  end
 
   #Decide win or Lose
 end # End of Game class definition
