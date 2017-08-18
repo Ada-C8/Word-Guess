@@ -99,9 +99,9 @@ class WordClass
     if  gameboard_complete
       puts "You won!"
       exit
-    elsif @guess_count < 5 && !gameboard_complete
+    elsif @guess_count < 6 && !gameboard_complete
       puts "Please enter another guess"
-    elsif @guess_count >= 5
+    elsif @guess_count >= 6
       puts "You lost... the correct answer was"
       puts @word.upcase
       exit
