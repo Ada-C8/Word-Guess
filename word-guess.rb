@@ -13,12 +13,13 @@
 # require colorize
 
 class Display
-  attr_accessor :display_word, :user_guess
+  attr_accessor :display_word, :user_guess, :counter_finish, :counter_orb, :counter_base
 
   def initialize(game_instance)
     @string_word = game_instance.string_word
     @user_guess = game_instance.user_guess
     @display_word = ""
+    @selected_level = game_instance.selected_level
     # set initial word display
     @string_word.each_char do |char|
       if char == " "
@@ -27,6 +28,10 @@ class Display
         @display_word += "_ "
       end
     end
+
+    @counter_finish = " " * (@selected_level - 1) + "|"
+    @counter_orb = "o"
+    @counter_base = "=" * @selected_level
   end
 
   #TODO ASCII / Tally
@@ -48,14 +53,20 @@ class Display
     end
   end
 
-  def counter_update #race progession
+  def display_counter #race progession
+    puts @counter_finish
+    puts @counter_orb
+    puts @counter_base
+  end
 
+  def update_counter
+    @counter_orb.prepend(" ")
   end
 
 end # End of Display definition
 
 class Game
-  attr_reader :level, :word_to_guess, :string_word
+  attr_reader :level, :word_to_guess, :string_word, :selected_level
 
   attr_accessor :user_guess, :interface
 
@@ -79,10 +90,13 @@ class Game
     case @level
     when "easy"
       @string_word = easy_words.sample
+      @selected_level = 12
     when "medium"
       @string_word = med_words.sample
+      @selected_level = 10
     when "hard"
       @string_word = hard_words.sample
+      @selected_level = 10
     end
     # create a new Display for this game, pass the Game instance to it
     @interface = Display.new(self)
@@ -98,21 +112,17 @@ class Game
       @user_guess = gets.chomp.strip.downcase
     end
     @interface.user_guess = @user_guess
-    check_guess
-  end
-  # we can eliminate this distinction and just run a longer accept_guess method
-  def check_guess
+
     #Accept Letter Guesses
     if @user_guess.length == 1
       if @string_word.include? (@user_guess)
         @interface.update_display
         end_game
-        # accept_guess
       else
         puts "Nope!"
+        @interface.update_counter
         #@interface.counter_update
         end_game
-        # accept_guess
       end
     #Accept Word Guesses
     else
@@ -129,9 +139,17 @@ class Game
     # declares a win when all blanks have been replaced in display_word
     if !(@interface.display_word.include?("_"))
       puts "You got it!"
-    elsif  #counter has reached max
-      puts "Womp womp! Out of guesses :'("
+    elsif
+      if @interface.counter_orb.length >= @interface.counter_finish.length
+        puts "You are trapped on this plane of entanglement."
+        #display something dramatic
+        exit #TODO TBD
+      elsif @interface.counter_orb.length == @interface.counter_finish.length
+        puts "EEKS! Last guess!"
+        #display maybe some flashing...
+      end
     else
+      @interface.display_counter
       accept_guess
     end
   end
