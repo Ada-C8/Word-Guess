@@ -15,13 +15,13 @@ class UserInput
       @right_letters << @current_letter
       # replace underscore at that index with user_input(@current_letter)
       class_rw.rewrite_underscore(user_input)
-      print @right_letters
+      # print @right_letters
       return
     else
       @wrong_letters << @current_letter
 
       cake.take_away_candle
-      print @wrong_letters
+      # print @wrong_letters
       return
     end
   end
