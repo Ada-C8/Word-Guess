@@ -1,5 +1,3 @@
-
-
 class UserInput
   attr_reader :current_letter, :wrong_letters
   def initialize
@@ -20,7 +18,7 @@ class UserInput
       return
     else
       @wrong_letters << @current_letter
-      puts "WRONG!, you loss a candle. Try Again"
+      puts "WRONG, you loss a candle. Try Again".red
 
       cake.take_away_candle
       # print @wrong_letters
