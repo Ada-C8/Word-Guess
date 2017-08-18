@@ -84,7 +84,7 @@ class Party
         colored_skull = skull1 + skull2 + skull3 + skull4 + skull5
     end
 
-    puts colored_skull.colorize(:red)
+    puts "\n\n" + colored_skull.colorize(:red)
 
   end
 
