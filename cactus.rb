@@ -2,7 +2,7 @@ class Cactus
   attr_reader :ascii
 
   def initialize
-    @ascii = ascii = ["
+    @ascii = ["
                   _   _
                  / \'_\' \\
                 ;       ;
