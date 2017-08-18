@@ -4,15 +4,63 @@ class Word
 
   attr_accessor :blank_word, :level
 
-
-
-
  def initialize(level)
    @word = RandomWordGenerator.of_length(level)
    @split_word = @word.split("")
    @blank_word = Array.new(level, "_ ")
    @letters = ("a".."z").to_a
-   @balloons = ["a", "b", "c", "d"]
+   @balloons = ["
+        ,-\"\"\"\"-.
+      ,'      _ `.
+     /       )_)  \\
+    :              :
+    \\              /
+     \\            /
+      `.        ,'
+        `.    ,'
+          `.,'
+           /\\
+               ", "
+               ,-\"\"\"\"-.
+             ,'      _ `.
+            /       )_)  \\
+           :              :
+           \\              /
+            \\            /
+             `.        ,'
+               `.    ,'
+                 `.,'
+                  /\\", "
+                  ,-\"\"\"\"-.
+                ,'      _ `.
+               /       )_)  \\
+              :              :
+              \\              /
+               \\            /
+                `.        ,'
+                  `.    ,'
+                    `.,'
+                     /\\", "
+                     ,-\"\"\"\"-.
+                   ,'      _ `.
+                  /       )_)  \\
+                 :              :
+                 \\              /
+                  \\            /
+                   `.        ,'
+                     `.    ,'
+                       `.,'
+                        /\\", "
+                        ,-\"\"\"\"-.
+                      ,'      _ `.
+                     /       )_)  \\
+                    :              :
+                    \\              /
+                     \\            /
+                      `.        ,'
+                        `.    ,'
+                          `.,'
+                           /\\"]
    @level = level
  end
 
@@ -20,8 +68,8 @@ class Word
 
    i = 0
 
-   while i < 6
-     puts "Please guess a letter: "
+   while i < 5
+     puts "Please guess a letter, you have #{@balloons.length} guesses remaining: "
      puts "Choose from #{@letters}"
      input = gets.chomp.downcase #check input
 
@@ -36,9 +84,9 @@ class Word
        puts display_word
 
      else
-       puts "Balloon Pop" #ASCII Art
        i += 1
        @balloons.pop
+       puts "You have #{@balloons.length} guesses remaining!"
        puts display_word
      end
 
@@ -57,8 +105,8 @@ class Word
  end
 
  def display_word
-   puts "Word: #{@blank_word.join}"
    puts "#{@balloons.join('   ')}"#ASCII art
+   puts "Word: #{@blank_word.join}"
  end
 
  def show_letter(element)
@@ -68,10 +116,6 @@ class Word
      end
    end
    return @blank_word
- end
-
- def display_balloons
-
  end
 
 end #end of class
