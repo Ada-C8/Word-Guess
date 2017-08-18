@@ -9,16 +9,20 @@ class User
   #store letter guess in a variable
   #check variable against the array of string letters
   #
-  def initialize(word)
+  def initialize(word, image)
     @word = word
     @correct_guesses = Array.new(word.game_word.length)
     @dashes = Array.new(word.game_word.length, "-")
     @guesses = []
     @counter = 0
+    @image = image
   end
 
   def user_input
     loop do
+      puts "#{correct_guesses.join(" ")}"
+      puts "#{dashes.join(" ")}"
+      puts "Guesses: #{@guesses.join("  ")}"
       puts "Guess a letter."
       @letter = gets.chomp.downcase
       if @guesses.include?(@letter)
@@ -29,21 +33,30 @@ class User
       end
     end
 
-
     if @word.game_word.include?(@letter)
       puts right_guess
       index_array = @word.game_word.each_index.select{|i| @word.game_word[i] == @letter}
       index_array.each do |i|
         @correct_guesses[i] = @letter
+        if @correct_guesses == @game_word
+          puts "You've won!"
+          exit
+        end
       end
       puts "#{@correct_guesses}"
 
     else
       puts wrong_guess
+      puts @image.bombs[@counter]
       @counter += 1
+        if @counter >= 8
+          puts "what a shame! You lost this time!"
+          puts "The word was #{@game_word}"
+          exit
+        end
     end
-    print @guesses
   end
+
 
   def right_guess
     puts "You guessed right! Wingardium leviosa!"
@@ -63,22 +76,20 @@ end
 
 
 new_game = Word.new
-rebecca = User.new(new_game)
+images = Image.new
+player = User.new(new_game, images)
 
 # display progres
 
+#
+# puts "You have to guess a word that is #{new_game.game_word.length} spaces."
+# print "#{rebecca.correct_guesses.join}\n"
+# print "#{rebecca.dashes.join}\n"
 
-puts "You have to guess a word that is #{new_game.game_word.length} spaces."
-print "#{rebecca.correct_guesses.join}\n"
-print "#{rebecca.dashes.join}\n"
 
 puts "This is the game word: #{new_game.game_word}"
+player.user_input
 
-while rebecca.correct_guesses.include?(nil)
-  rebecca.user_input
+while player.correct_guesses.include?(nil)
+  player.user_input
 end
-test = Image.new
-puts test.guess_six
-# rebecca = User.new(new_game)
-#
-# rebecca.user_input
