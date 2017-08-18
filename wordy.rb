@@ -1,4 +1,5 @@
 require 'colorize'
+require './hangman'
 #one class, methods
 
 
