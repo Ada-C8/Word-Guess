@@ -36,6 +36,7 @@
 #  Word Game
 ###################################
 # require "Faker"
+require_relative "word_bank"
 
 class Board
 
@@ -87,19 +88,37 @@ class Board
     return output
   end
 
+  # def add_letter(guess)
+  #   letter_location = @word.index(guess)
+  #   @blank[letter_location] = guess
+  # end
+
   def add_letter(guess)
-    letter_location = @word.index(guess)
-    @blank[letter_location] = guess
+    letter_location = []
+    # word = "coffee"
+    @word.split('').each_with_index do |letter,index|
+      # puts "checking #{letter}, index is #{index}"
+      # puts "checking if letter: #{letter} is guess: #{guess}"
+      if letter == guess
+        # puts "#{letter} is #{guess} at index #{index}"
+        letter_location << index
+        # puts "letter_location is now #{letter_location}"
+      end
+    end
+    letter_location.each do |index|
+      @blank[index] = guess
+    end
   end
+
 end
+
 
 # Intro to user
 puts "Welcome to Kate and Angela's Word Game!"
 
 # selects difficulty ?
 # word bank -
-word_bank = ["ear", "heart"]
-
+word_bank = initialize_word_bank()
   # maybe in its own class maynot,
   # maybe one word bank depending difficulty?
 # Find word in word bank.
@@ -161,11 +180,13 @@ end
   #   Show a winning screen.
 
 if user_has_won
+  puts game_board.display
   puts "You win!!!!"
 end
 
 if user_has_lost
   puts "Sorry! You lost :("
+  puts "The word was #{game_board.word}!"
 end
 
 # Ask user if they want to play again.
