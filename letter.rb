@@ -1,12 +1,12 @@
-class letter
-  attr accessor :letter
+class Letter
+  attr_accessor :letter
 
   def initialize(letter)
     @letter = letter
   end
 
-  def add_word
-    
+  def add_to_word
+
   #compare to word, add to space if part of word check?
   end
 
@@ -21,3 +21,6 @@ class letter
 
 
 end # end of letter class
+
+letter = Letter.new(guess)
+puts letter
