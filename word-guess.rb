@@ -53,7 +53,11 @@ class WordGuess
       puts "  /MMMMMM     \\    " + "                    " + "         DDD DD "
       puts " /MMMMMMM           " + "                    " + "       DDD  DD  "
       puts "/MMMMMMMM           " + "                    " + "     DDDD  DDD  "
+      puts "\n"
+      puts "Guess this word:".blue
       p empty_array
+      puts "You've already guessed these letters:".red
+      p wrong_guess
       letter = gets.chomp.upcase
 
       if our_word.include? letter
@@ -69,25 +73,57 @@ class WordGuess
 
         if right_guess == our_word_split
           puts our_word
+          puts "\n"
+          puts "
+          ██╗   ██╗ ██████╗ ██╗   ██╗     █████╗ ██████╗ ███████╗     █████╗     ██╗    ██╗██╗███████╗ █████╗ ██████╗ ██████╗
+          ╚██╗ ██╔╝██╔═══██╗██║   ██║    ██╔══██╗██╔══██╗██╔════╝    ██╔══██╗    ██║    ██║██║╚══███╔╝██╔══██╗██╔══██╗██╔══██╗
+          ╚████╔╝ ██║   ██║██║   ██║    ███████║██████╔╝█████╗      ███████║    ██║ █╗ ██║██║  ███╔╝ ███████║██████╔╝██║  ██║
+          ╚██╔╝  ██║   ██║██║   ██║    ██╔══██║██╔══██╗██╔══╝      ██╔══██║    ██║███╗██║██║ ███╔╝  ██╔══██║██╔══██╗██║  ██║
+          ██║   ╚██████╔╝╚██████╔╝    ██║  ██║██║  ██║███████╗    ██║  ██║    ╚███╔███╔╝██║███████╗██║  ██║██║  ██║██████╔╝
+          ╚═╝    ╚═════╝  ╚═════╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝    ╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝
+          ".red
+          puts "\n"
           puts "You WIN!"
           exit
         end
 
       else
         wrong_guess << letter
+        # puts "You've already guessed these letters:".red
+        # p wrong_guess
         puts "Try again!"
         @tries -= 1
       end
     end
 
     if @tries == 0
+      puts "      .--.          " + "                    " + "             "
+      puts "      |  |          " + "                    " + "             "
+      puts "      MMMM          " + "                    " + "     /       ".blink
+      puts "     /MMMMMMMMMO====" + "                    " + "        *    ".blink
+      puts "    /MMMMM\\MMMM    " + "                    " + "           / ".blink
+      puts "   /MMMMM   \\MM    " + "                    " + "    \\        ".blink
+      puts "  /MMMMMM     \\    " + "                    " + "       "+"##".black.on_green+"    "
+      puts " /MMMMMMM           " + "                    " + "   * ".blink+"####".black.on_green+"  * ".blink
+      puts "/MMMMMMMM           " + "                    " + "    "+"#######".black.on_green+"  "
+      puts "\n"
+      puts '                  ______                    '.red.on_black.blink
+      puts '               .-"      "-.                 '.red.on_black.blink
+      puts '              /            \                '.yellow.on_black.blink
+      puts ' _           |              |          _    '.yellow.on_black.blink
+      puts '( \          |,  .-.  .-.  ,|         / )   '.light_green.on_black.blink
+      puts ' > "=._      | )(__/  \__)( |     _.=" <    '.light_green.on_black.blink
+      puts '(_/"=._"=._ |/     /\     \| _.="_.="\_)    '.green.on_black.blink
+      puts '        "=._ (_     ^^     _)"_.="          '.green.on_black.blink
+      puts '            "=\__|IIIIII|__/="              '.cyan.on_black.blink
+      puts '           _.="| \IIIIII/ |"=._             '.cyan.on_black.blink
+      puts ' _     _.="_.="\          /"=._"=._     _   '.blue.on_black.blink
+      puts '( \_.="_.="     `--------`     "=._"=._/ )  '.blue.on_black.blink
+      puts ' > _.="                            "=._ <   '.magenta.on_black.blink
+      puts '(_/                                    \_)  '.magenta.on_black.blink
       puts "Game over!"
       exit
     end
-
-  end
-
-  def art
 
   end
 
