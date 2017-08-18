@@ -1,6 +1,9 @@
 require 'faker'
 require 'pp'
 require 'pry'
+require './cat_ascii.rb'
+require 'colorize'
+
 class RandomWord
   attr_accessor :guess, :guessed_letters
   attr_reader  :word_display, :word
@@ -18,10 +21,10 @@ class RandomWord
     @guess = 0
     @word_display = []
     @letters.each do |letter|
-      if [" ","!",",",".","?","\"","'"].include?(letter)
+      if [" ","!",",",".","?","\"","'",":",";","$"].include?(letter)
         @word_display << letter
       else
-      @word_display << "_"
+        @word_display << "_"
       end
     end
     cat_position
@@ -54,36 +57,22 @@ class RandomWord
   end
 
   def cat_position
-    cat = ":3"
-#   case @guess
-#   when 0
-#     cat = # <<CAT0
-#     "/ᐠ.ꞈ.ᐟ\"
-# # CAT0
-#   when 1
-#     cat = <<CAT1
-#           /ᐠ=ᆽ=ᐟ \
-# CAT1
-#   when 2
-#     cat = <<CAT2
-#                     /ᐠ –ꞈ –ᐟ\
-# CAT2
-#   when 3
-#     cat = <<CAT3
-#                               /ᐠ・ᆽ・ᐟ \
-# CAT3
-#   when 4
-#     cat = <<CAT4
-#
-#                                           (=✖ᆽ✖=)
-# CAT4
-#   when 5
-#     cat = <<CAT5
-#                                                   *:･ﾟ✧(=✪ ᆺ ✪=)*:･ﾟ✧
-# CAT5
-#   end
-  puts cat * (@guess)
+    case @guess
+    when 0
+      puts cat_0.colorize(:green)
+    when 1
+      puts cat_1.colorize(:light_green)
+    when 2
+      puts cat_2.colorize(:yellow)
+    when 3
+      puts cat_3.colorize(:magenta)
+    when 4
+      puts cat_4.colorize(:light_red)
+    when 5
+      puts cat_5.colorize(:red)
+    end
   end
+
   def did_you_win?
     return !@word_display.include?("_")
   end
@@ -113,9 +102,9 @@ end # end random_word class
 def check_input(input,letter_array)
   input.gsub!(/[^0-9A-Za-z]/, '')
   until input.to_i == 0 && input != "0"
-      print "Please enter a letter: "
-      input = gets.chomp.upcase
-      input.gsub!(/[^0-9A-Za-z]/, '')
+    print "Please enter a letter: "
+    input = gets.chomp.upcase
+    input.gsub!(/[^0-9A-Za-z]/, '')
   end
   if letter_array.include?(input)
     puts "You have already guessed this letter"
@@ -136,7 +125,7 @@ until ["heroes", "locations", "quotes"].include? user_level
   puts "Valid inputs: heroes, locations, quotes"
   user_level = gets.chomp
 end
-
+system "clear"
 welcome_screen
 random_word = RandomWord.new(user_level)
 
@@ -154,7 +143,7 @@ until random_word.guess == 5
   else
     puts "yikes"
     random_word.guess += 1
-  random_word.cat_position
+    random_word.cat_position
   end
   system "clear"
   welcome_screen
