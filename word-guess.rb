@@ -1,10 +1,11 @@
 require 'random-word'
+require 'colorize'
 
 RandomWord.exclude_list.push(/_/, /\'/, /-/)
 
 #word class for unique words
 class Word
-  attr_reader :word, :letters, :num, :lives, :guesses, :guess
+  attr_reader :word, :letters, :num, :lives, :guesses, :guess, :color
 
   def initialize
     if [1, 2, 3].sample == 3
@@ -17,6 +18,7 @@ class Word
     @num = @letters.length
     @guesses = []
     @lives = 7
+    @color = :magenta
   end
 
   def display
@@ -38,7 +40,7 @@ class Word
   end
 
   def prompt
-    art
+    puts art.colorize(@color)
     if @lives == 0
       puts "You have zero lives left! You lost!"
       puts "The word was #{@word}."
@@ -102,7 +104,7 @@ class Word
   def art
     case @lives
       when 0
-        puts <<~ZERO
+        return <<~ZERO
 
            0000
           00  00
@@ -112,7 +114,7 @@ class Word
 
         ZERO
       when 1
-        puts <<~ONE
+        return <<~ONE
 
           1111
             11
@@ -122,7 +124,8 @@ class Word
 
         ONE
       when 2
-        puts <<~TWO
+        @color = :red
+        return <<~TWO
 
            2222
           22  22
@@ -132,7 +135,8 @@ class Word
 
         TWO
       when 3
-        puts <<~THREE
+        @color = :cyan
+        return <<~THREE
 
            3333
           33  33
@@ -142,7 +146,8 @@ class Word
 
         THREE
       when 4
-        puts <<~FOUR
+        @color = :yellow
+        return <<~FOUR
 
           44  44
           44  44
@@ -152,7 +157,8 @@ class Word
 
         FOUR
       when 5
-        puts <<~FIVE
+        @color = :green
+        return <<~FIVE
 
           555555
           55
@@ -162,7 +168,8 @@ class Word
 
         FIVE
       when 6
-        puts <<~SIX
+        @color = :blue
+        return <<~SIX
 
            6666
           66
@@ -172,7 +179,7 @@ class Word
 
         SIX
       when 7
-        puts <<~SEVEN
+        return <<~SEVEN
 
           777777
              77
