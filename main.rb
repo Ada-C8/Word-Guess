@@ -1,4 +1,5 @@
-require 'word'
+require_relative 'word'
+require          'Faker'
 
 # User select level of difficulty
 puts "
