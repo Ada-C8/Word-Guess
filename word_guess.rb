@@ -1,32 +1,46 @@
+require "random_word"
+
 class Game
-  attr_reader :random_word, :partial_answer
+  attr_reader :random_word, :partial_answer, :string_word, :incorrect_guess, :list_guesses
   def initialize
-    generate_answer
     @incorrect_guess = 0
-    @partial_answer = ["_", "_", "_", "_", "_"]
-    @game_live = true
+    @partial_answer = []
     @list_guesses = []
+    # @game_live = true
+    generate_answer
+    generate_partial_answer
   end
 
   def generate_answer
-    @random_word = ["issue", "union", "refer", "bowel", "fence", "great", "valid", "urine", "glove", "money", "brick"]
-    @random_word = @random_word.sample.chars
+    @random_word = RandomWord.nouns(not_shorter_than: 3, not_longer_than: 7).next
+    # @random_word = ["issue", "union", "refer", "bowel", "fence", "great", "valid", "urine", "glove", "money", "brick"]
+    @random_word = @random_word.chars
+    @string_word = @random_word.join("")
   end
 
-  def partial_answer
+  def generate_partial_answer
+    length = @random_word.length
+    length.times do
+      @partial_answer.push("_")
+    end
     return @partial_answer
   end
 
+  # def partial_answer
+  #   return @partial_answer
+  # end
+
   def check_guess(input)
-      if @random_word.include? input
-        display_partial_answer(input)
-        display_art
-      else
-        add_incorrect_guess(input)
-        display_partial_answer(input)
-        display_art
-      end
-      print "Incorrect guesses: #{@list_guesses}\n"
+    # if /[[:lower:]]/.match(input)
+    if @random_word.include? input
+      display_partial_answer(input)
+      display_art
+    else
+      add_incorrect_guess(input)
+      display_partial_answer(input)
+      display_art
+    end
+    return "Incorrect guesses: #{@list_guesses}\n"
   end
 
   def win_game
@@ -36,10 +50,23 @@ class Game
     end
   end
 
+  def win_game_2
+    puts "WAHOO! YOU WIN!
+        \n                                   .    .
+                                       )  (
+              _ _ _ _ _ _ _ _ _ _ _   (.--.)
+              {{ { { { { { { { { { { ( ^_^ )
+              >>>>>>>>>>>>>>>>>>>>>>>>>>>--> "
+
+              exit
+  end
+
   def add_incorrect_guess(input)
-    @incorrect_guess+=1
-    @list_guesses << input
-    end_game
+    unless list_guesses.include?(input)
+      @incorrect_guess+=1
+      @list_guesses << input
+      end_game
+    end
   end
 
   def display_partial_answer(input)
@@ -162,12 +189,18 @@ class Game
 game1 = Game.new
 puts "Welcome to Word Guess!"
 
- game_live = true
- while game_live
+ # game_live = true
 
-
-  puts "Please choose a letter"
-  input = gets.chomp
-  puts game1.check_guess(input)
+ loop do
+   puts "Please choose a letter"
+   input = gets.chomp.downcase
+   if input == game1.string_word
+     game1.win_game_2
+   elsif input.length == 1 && /[[:lower:]]/.match(input)
+     puts game1.check_guess(input)
+   else
+     puts "Please enter ONE LETTER unless you have the full word:"
+     puts game1.check_guess(input)
+   end
  end
 end
