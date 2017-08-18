@@ -11,15 +11,67 @@
 # select the target word from a preset array
 # create an array of the word letters
 class Game
-
   #attr_accessor  :target_word
 
-  def initialize (target_word)
+  def initialize(target_word)
     @target_word = target_word
     @guesses_left = 5 #number of flowers
     @wrong_letters = []
     @correct_letters = []
     @won = false
+    @ART = []
+    art = <<ART
+    H   H
+    H   H
+    HHHHH
+    H   H
+    H   H
+ART
+
+  @ART.push(art)
+
+  art = <<ART
+  H   H EEEEE
+  H   H E
+  HHHHH EEEEE
+  H   H E
+  H   H EEEEE
+ART
+
+@ART.push(art)
+
+art = <<ART
+H   H EEEEE L
+H   H E     L
+HHHHH EEEEE L
+H   H E     L
+H   H EEEEE LLLLL
+ART
+
+@ART.push(art)
+
+art = <<ART
+H   H EEEEE L     L
+H   H E     L     L
+HHHHH EEEEE L     L
+H   H E     L     L
+H   H EEEEE LLLLL LLLLL
+ART
+
+@ART.push(art)
+
+art = <<ART
+H   H EEEEE L     L      OOO
+H   H E     L     L     O   O
+HHHHH EEEEE L     L     O   O
+H   H E     L     L     O   O
+H   H EEEEE LLLLL LLLLL  OOO
+ART
+
+@ART.push(art)
+
+
+
   end
 
   def receive_user_input
@@ -67,6 +119,10 @@ class Game
     else
       "correct!"
     end
+    puts "You have #{@guesses_left}"
+
+    puts @ART[ @guesses_left-1]
+
   end
 
   def run
@@ -88,15 +144,24 @@ class Game
 
 end #end of class
 
+
 puts "Welcome to Maria and Julia's Word Game!"
 word_array = ["hat", "math", "phony" ]
 target_word = word_array.sample.split(//)
 our_word = Game.new(target_word)
+#puts our_word.ART
 
 while our_word.won? == false && our_word.guesses_left? == true
   our_word.run
 end
 
+if our_word.won?
+  puts "Congrats you've won!"
+elsif !our_word.guesses_left?
+  puts "Sorry you lose!"
+else
+  puts "ERROR!"
+end
 
 
 
