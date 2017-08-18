@@ -3,6 +3,7 @@ require_relative 'user_input'
 require_relative 'random_word'
 require_relative 'ascii_art'
 require 'colorize'
+require 'random_word_generator'
 
 penny = RandomWord.new
 user = UserInput.new
