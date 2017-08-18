@@ -1,10 +1,27 @@
 require 'faker'
+require 'colorize'
 class Party
 
   attr_accessor :word, :word_array, :dash_word, :score, :wrong_guess, :max_wrong_guess, :guessed_letters
 
-  def initialize
+  def initialize(difficulty = :easy)
+    @difficulty = difficulty
+
     @word = Faker::Color.color_name
+
+    case @difficulty
+    when :easy
+      generate_word(1, 3)
+    when :medium
+      generate_word(4, 5)
+    when :hard
+      generate_word(6, 8)
+    else
+      raise ArgumentError.new("Difficulty must be :easy, :medium or :hard.")
+    end
+
+    @word = Faker::Color.color_name
+
     @word_array = @word.split("")
     @dash_word = "_ " * @word.length
     @score = 0
@@ -51,23 +68,35 @@ class Party
         ................................
     HEREDOC
 
+    colored_skull = ""
+
     case @wrong_guess
+
       when 1
-        puts skull1
+        colored_skull = skull1
       when 2
-        puts skull1, skull2
+        colored_skull = skull1 + skull2
       when 3
-        puts skull1, skull2, skull3
+        colored_skull = skull1 + skull2 + skull3
       when 4
-        puts skull1, skull2, skull3, skull4
+        colored_skull = skull1 + skull2 + skull3 + skull4
       when 5
-        puts skull1, skull2, skull3, skull4, skull5
+        colored_skull = skull1 + skull2 + skull3 + skull4 + skull5
     end
+
+    puts colored_skull.colorize(:red)
+
   end
 
   def check_letter(guess_letter)
 
     if valid_input?(guess_letter)
+      while @guessed_letters.include? guess_letter
+        puts "\nYou already guessed #{guess_letter}!"
+        print "Please enter another letter:"
+        guess_letter = gets.chomp
+        valid_input?(guess_letter)
+      end
       @guessed_letters << guess_letter
       @guessed_letters.uniq!
       if @word_array.include? guess_letter
@@ -82,9 +111,7 @@ class Party
         ascii_skull
       end
     end
-
-
-    #return @word.include? guess_letter
+    check_if_winner
   end
 
   def check_if_winner
@@ -112,6 +139,12 @@ class Party
     else
       puts "\nInvalid input. Enter only letters."
       return false
+    end
+  end
+
+  def generate_word minLimit, maxLimit
+    until @word.length >= minLimit && @word.length <= maxLimit
+      @word = Faker::Color.color_name
     end
   end
 
