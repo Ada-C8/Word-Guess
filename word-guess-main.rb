@@ -2,10 +2,11 @@
 
 class Game
 
-  def initialize(input_word)
+  def initialize(input_word, word_descriptions)
     @word = input_word.chars.to_a
     @hidden_word = @word.join.gsub(/[A-Za-z]/, "_")
     @bad_guesses = 0
+    @word_descriptions = word_descriptions
   end
 
   def guess(letter)
@@ -22,11 +23,15 @@ class Game
     end
   end
 
-  def print_guessed_word() # prints hidden word
+  def word_descriptions
+    return "#{@word_descriptions}"
+  end
+
+  def print_guessed_word # prints hidden word
     puts " Word: #{@hidden_word}"
   end
 
-  def print_picture()
+  def print_picture
     count = 5 - @bad_guesses
     puts "(@)" * count
     puts "  ,\\,\\,|,/,/,"
@@ -36,7 +41,7 @@ class Game
     puts "     |___|"
   end
 
-  def is_game_lost()
+  def is_game_lost
     if @bad_guesses >= 5
       return true
     else
@@ -44,7 +49,7 @@ class Game
     end
   end
 
-  def is_game_won()
+  def is_game_won
     if @hidden_word.include?("_")
       return false
     else
@@ -56,18 +61,21 @@ class Game
 end
 
 # Main program
-word_array = ["towel", "plant", "apples", "spirit", "yoga", "banana", "missisipi"]
+word_array = ["towel", "plant", "apples", "yoga", "banana", "mississippi"]
+word_descriptions = ["A household item", "It's alive!", "You can eat it!", "It's a sport.", "It's a fruit.", "It's a state."]
 rand_num = rand(0..(word_array.length - 1))
-g1 = Game.new(word_array[rand_num])
+g1 = Game.new(word_array[rand_num], word_descriptions[rand_num])
+
+puts g1.word_descriptions
 
 while true
   puts "***********"
-  g1.print_guessed_word()
+  g1.print_guessed_word
   puts "***********"
   puts "Please enter a letter:"
   letter = gets.chomp.downcase
   g1.guess(letter)
-  g1.print_picture()
+  g1.print_picture
   if (g1.is_game_lost)
     puts "I'm sorry, you lost! :("
     break
