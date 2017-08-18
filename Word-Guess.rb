@@ -66,37 +66,53 @@ class Party
   end
 
   def check_letter(guess_letter)
-    @guessed_letters << guess_letter
-    @guessed_letters.uniq!
-    if @word_array.include? guess_letter
-      @word_array.length.times do |index|
-        if word_array[index] == guess_letter
-          @dash_word[index * 2] = guess_letter
+
+    if valid_input?(guess_letter)
+      @guessed_letters << guess_letter
+      @guessed_letters.uniq!
+      if @word_array.include? guess_letter
+        @word_array.length.times do |index|
+          if word_array[index] == guess_letter
+            @dash_word[index * 2] = guess_letter
+          end
         end
+        @score += 1
+      else
+        @wrong_guess += 1
+        ascii_skull
       end
-      @score += 1
-    else
-      @wrong_guess += 1
-      ascii_skull
     end
 
-    if winner
-      puts "You win!!!!"
-    elsif game_over
-      puts "game over!!! the word was #{@word}"
-    end
 
-    return @word.include? guess_letter
-
+    #return @word.include? guess_letter
   end
 
-  def game_over
+  def check_if_winner
+    if winner?
+      return "You win!!!!"
+    elsif game_over?
+      return "game over!!! the word was #{@word}"
+    end
+  end
+
+  def game_over?
     return @wrong_guess == @max_wrong_guess
   end
 
-  def winner
+  def winner?
     #if no more dashes, win!
     return !(@dash_word.include? "_")
+  end
+
+  private
+
+  def valid_input?(guess_letter)
+    if ('a'..'z').include? guess_letter
+      return true
+    else
+      puts "\nInvalid input. Enter only letters."
+      return false
+    end
   end
 
 end
@@ -105,16 +121,17 @@ party1 = Party.new
 puts "\n\nWelcome to Word Guess!!!!!!\n\n"
 puts party1.dash_word
 puts "\n\nGuess a letter: "
-guess = gets.chomp
+guess = gets.chomp.downcase
 party1.check_letter(guess)
 
-until party1.game_over || party1.winner
+
+until party1.game_over? || party1.winner?
   puts "\n\nLetters Guessed:\n"
   print party1.guessed_letters
   puts "\n"
   puts party1.dash_word
   print "\n\nGuess a letter: "
-  guess = gets.chomp
-  party1.check_letter(guess)
+  guess = gets.chomp.downcase
+  puts party1.check_letter(guess)
 
 end
