@@ -41,7 +41,8 @@ class User
         if @correct_guesses == @word.game_word
           puts "#{correct_guesses.join(" ")}"
           puts "#{dashes.join(" ")}"
-          puts "You've won!"
+          puts "You've won! You live another day :)"
+          puts "#{@image.bombs.last}"
           exit
         end
       end
