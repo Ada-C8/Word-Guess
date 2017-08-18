@@ -1,5 +1,6 @@
 require "random-word"
 require "colorize"
+require_relative 'cactus.rb'
 
 class WordClass
   attr_reader :word, :gameboard, :used_guesses, :guess_count
@@ -99,12 +100,12 @@ class WordClass
   def update_gameboard
     include_letter?
     if @guess_ind.length != 0
-      puts "\nCORRECT!".colorize(:green)
+      puts "\n              CORRECT!".colorize(:green)
       @guess_ind.each do |i|
         @gameboard[i] = @used_guesses[-1]
       end
     else
-      puts "\nINCORRECT".colorize(:red)
+      puts "\n              INCORRECT".colorize(:red)
       update_guess_count
     end
     output_gameboard
@@ -112,7 +113,7 @@ class WordClass
 
   #output_gameboard flattens the gameboard array for better viewing
   def output_gameboard
-    puts @gameboard.join(" ").colorize(:white)
+    puts "            " + @gameboard.join(" ").colorize(:white)
   end
 
   #include_letter? returns an array with the index of all instances of the
@@ -139,8 +140,10 @@ class WordClass
       puts "YOU WON!".colorize(:white)
       exit
     elsif @guess_count >= 6
-      puts "You lost... the correct answer was".colorize(:white)
-      puts @word.upcase.colorize(:white)
+      new_image = Cactus.new
+      puts new_image.show_ascii(6)
+      puts "You lost... the correct answer was\n".colorize(:white)
+      puts puts "            #{@word.upcase.colorize(:white)} \n\n"
       exit
     end
   end
