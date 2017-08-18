@@ -93,7 +93,6 @@ class RandomWord
   def you_win
     puts "Congrats! You survived"
     puts "The answer was \"#{@word}\""
-    exit
   end
 
 
@@ -119,6 +118,7 @@ def welcome_screen
   puts "You can guess wrong 5 times until the cat eats you"
 end
 play_again = true
+player_wins = false
 while play_again
 puts "Hey......do you know Overwatch heroes, locations or quotes best?"
 user_level = gets.chomp
@@ -132,7 +132,7 @@ random_word = RandomWord.new(user_level)
 
 random_word.pretty_print #write pretty print method
 
-until random_word.guess == 5
+until random_word.guess == 5 || player_wins == true
   print "Guess one letter: "
   user_input = check_input(gets.chomp.upcase,random_word.guessed_letters)
   random_word.guessed_letters << user_input
@@ -152,6 +152,7 @@ until random_word.guess == 5
   random_word.pretty_print
   if random_word.did_you_win?
     random_word.you_win
+    player_wins = true
   end
 end
 
