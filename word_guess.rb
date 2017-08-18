@@ -7,31 +7,43 @@ class Game
     @partial_answer = ["_", "_", "_", "_", "_"]
     @game = true
     @game_live = true
+    @list_guesses = []
     # @input = input
   end
 
   def generate_answer
     @random_word = ["issue", "union", "refer", "bowel", "fence", "great", "valid", "urine", "glove", "money", "brick"]
     @random_word = @random_word.sample.chars
-
   end
+
   def partial_answer
     return @partial_answer
   end
 
   def check_guess(input)
-    display_partial_answer(input)
-    display_art
-    if @random_word.include? input
-    else
-      add_incorrect_guess
+      if @random_word.include? input
+        display_partial_answer(input)
+        display_art
+      else
+        add_incorrect_guess(input)
+        display_partial_answer(input)
+        display_art
+      end
+      print "Incorrect guesses: #{@list_guesses}\n"
+  end
+
+  def win_game
+    unless @partial_answer.include? "_"
+      puts "WAHOO! YOU WIN!"
+      exit
     end
   end
 
-
-  def add_incorrect_guess
+  def add_incorrect_guess(input)
     @incorrect_guess+=1
-    puts @incorrect_guess
+    @list_guesses << input
+    # puts "You have guessed incorrectly #{@incorrect_guess} times.\n"
+    # print @list_guesses
     end_game
   end
 
@@ -44,12 +56,13 @@ class Game
         @partial_answer[index] = input
       end
     end
-    print @partial_answer
+    print "\nWord: #{@partial_answer.join(" ")}\n"
+    win_game
   end
 
   def end_game
     if @incorrect_guess==10
-      puts "IT SHOUDL BE DONE"
+      puts "BUMMER YOU ARE OUT OF GUESSES!"
       exit
       # game_live = false
       # break
@@ -57,59 +70,57 @@ class Game
   end
 
   def display_art
-    case @incorrect_guess
-    when 0
-      return  "
-      .    .
-      )  (
+    if @incorrect_guess == 0
+      puts  "
+                              .    .
+                               )  (
       _ _ _ _ _ _ _ _ _ _ _   (.--.)
       {{ { { { { { { { { { { ( ^_^ )
-        >>>>>>>>>>>>>>>>>>>>>>>>>>-->
+      >>>>>>>>>>>>>>>>>>>>>>>>>>>-->
         WOW! You guessed correctly!
         "
-      when 1
-        return "
-        .    .
-        )  (
-        _ _ _ _ _ _ _ _ _   (.--.)
+      elsif @incorrect_guess == 1
+        puts "
+                             .    .
+                              )  (
+        _ _ _ _ _ _ _ _ _    (.--.)
         { { { { { { { { { { ( ^_^ )
-          >>>>>>>>>>>>>>>>>>>>>>>-->
+        >>>>>>>>>>>>>>>>>>>>>>>>-->
           9 guesses left
           "
-        when 2
-          return "
-          .    .
-          )  (
+      elsif @incorrect_guess == 2
+          puts "
+                            .    .
+                             )  (
           _ _ _ _ _ _ _ _   (.--.)
           { { { { { { { { { ( ^_^ )
             >>>>>>>>>>>>>>>>>>>>>-->
             8 guesses left.
             "
-          when 3
-            return "
-            .    .
-            )  (
+      elsif @incorrect_guess == 3
+            puts "
+                            .    .
+                             )  (
             _ _ _ _ _ _ _   (.--.)
             { { { { { { { { ( ^_^ )
               >>>>>>>>>>>>>>>>>>>-->
               7 guesses left.
               "
-            when 4
-              return ""
-            when 5
-              return ""
-            when 6
-              return ""
-            when 7
-              return ""
-            when 8
-              return ""
-            when 9
-              return ""
-            else
-              return ""
-            end
-          end
+      elsif @incorrect_guess == 4
+              puts ""
+      elsif @incorrect_guess == 5
+              puts ""
+      elsif @incorrect_guess == 6
+              puts ""
+      elsif @incorrect_guess == 7
+              puts ""
+      elsif @incorrect_guess == 8
+              puts ""
+      elsif @incorrect_guess == 9
+              puts ""
+      else  puts "UH OH!"
+        end
+      end
 
           # end # end class
 
