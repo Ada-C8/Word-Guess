@@ -46,7 +46,7 @@ class UserInput
     already_guessed = @wrong_letters + @right_letters
     already_guessed = already_guessed.join(', ')
 
-    puts "You've already guessed: #{already_guessed}"
+    puts "You've already guessed: #{already_guessed}".yellow
   end
 
 end
