@@ -1,17 +1,5 @@
-class Word
-  # pull word from dictionary.txt
-  attr_reader :game_word
-
-  # def select_word
-  def initialize
-    dictionary_array = []
-    File.open("dictionary.txt", "r").each do |line|
-      dictionary_array.push(line.chomp)
-    end
-    @game_word = dictionary_array.sample.split("")
-  end
-
-end
+require_relative "word.rb"
+require_relative "explosive.rb"
 
 class User
 
@@ -26,6 +14,7 @@ class User
     @correct_guesses = Array.new(word.game_word.length)
     @dashes = Array.new(word.game_word.length, "-")
     @guesses = []
+    @counter = 0
   end
 
   def user_input
@@ -51,6 +40,7 @@ class User
 
     else
       puts wrong_guess
+      @counter += 1
     end
     print @guesses
   end
@@ -87,7 +77,8 @@ puts "This is the game word: #{new_game.game_word}"
 while rebecca.correct_guesses.include?(nil)
   rebecca.user_input
 end
-
+test = Image.new
+puts test.guess_six
 # rebecca = User.new(new_game)
 #
 # rebecca.user_input
