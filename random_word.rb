@@ -14,7 +14,7 @@ class RandomWord
     i = @word.index(user_input.current_letter)
     # replace underscore with right letter
     @underscore[i] = user_input.current_letter
-    print @underscore
+    print "#{@underscore}\n"
 
   end
 
