@@ -9,7 +9,7 @@ class AsciiArt
 @@@@@@@@@@@@@
 {~@ HAPPY @~}
 {  BIRTHDAY }
-@@@@@@@@@@@@@".colorize(:red)
+@@@@@@@@@@@@@".blue
 ]
     # @candle_light = ["    `````"] #don't move
     # @candle_body = ["    |||||"] #don't move
@@ -26,12 +26,12 @@ class AsciiArt
 
   def take_away_candle
     change_candles
-    puts @candle_light.colorize(:blue)
+    puts @candle_light.blue
     puts @body
   end
 
   def show_cake
-    puts @candle_light.colorize(:blue)
+    puts @candle_light.blue
     puts @body
   end
 end
