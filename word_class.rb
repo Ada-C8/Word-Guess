@@ -47,7 +47,7 @@ class WordClass
     @gameboard = Array.new(@word.length, "_")
   end
 
-#start_game generates the word and the empty gameboard
+  #start_game generates the word and the empty gameboard
   def start_game
     generate_word
     generate_gameboard
@@ -57,22 +57,34 @@ class WordClass
   #number of guesses they have already made
   def obtain_guess
 
-    if @used_guesses.length == 0
-      puts "\nPlease enter a guess".colorize(:white)
-    else
-      puts "\nPlease enter another guess".colorize(:white)
-    end
-
     if @used_guesses.length > 1
       puts "You have made these guesses: #{@used_guesses.join(" ")}".colorize(:white)
     elsif @used_guesses.length == 1
       puts "You have already guessed: #{@used_guesses.join(" ")}".colorize(:white)
     end
+    puts "Please guess a letter"
 
-    @current_guess = gets.chomp.downcase
-
-    #maybe the method to check the input is acceptable should go around here? 
+    loop do
+      @current_guess = gets.chomp
+      break if single_character? && is_a_letter? && already_guessed?
+      puts "Invalid input."
+    end
   end
+
+
+  def single_character?
+    return @current_guess.length == 1
+  end
+
+  def is_a_letter?
+    return /[a-z]/.match(@current_guess)
+  end
+
+  def already_guessed?
+    return !@used_guesses.include?(@current_guess)
+  end
+  #maybe the method to check the input is acceptable should go around here?
+
 
   #add_guesses takes the user's guess as input, then adds it to an array
   #containing all the letters that have been guessed.  It displays that array.
