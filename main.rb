@@ -38,12 +38,13 @@ class User
       index_array = @word.game_word.each_index.select{|i| @word.game_word[i] == @letter}
       index_array.each do |i|
         @correct_guesses[i] = @letter
-        if @correct_guesses == @game_word
+        if @correct_guesses == @word.game_word
+          puts "#{correct_guesses.join(" ")}"
+          puts "#{dashes.join(" ")}"
           puts "You've won!"
           exit
         end
       end
-      puts "#{@correct_guesses}"
 
     else
       puts wrong_guess
@@ -51,7 +52,7 @@ class User
       @counter += 1
         if @counter >= 8
           puts "what a shame! You lost this time!"
-          puts "The word was #{@game_word}"
+          puts "The word was #{@word.game_word.join}"
           exit
         end
     end
