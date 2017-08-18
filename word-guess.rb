@@ -8,8 +8,9 @@ class Word
 
   def initialize
     if [1, 2, 3].sample == 3
-      @word = RandomWord.adjs.next
+      @word = RandomWord.adjs(not_shorter_than: 4).next
     else
+      #tried to add not_shorter_than functionality, but didn't work
       @word = RandomWord.nouns.next
     end
     @letters = @word.split("")
@@ -58,6 +59,16 @@ class Word
   def guessing
     prompt
     @guess = gets.chomp.to_s.downcase
+
+    #accepts the whole word and allows the user to win
+    if @guess == @word
+      puts "You guessed the word! You win!"
+      exit
+    elsif @guess.length == @word.length
+      puts "You guessed incorrectly! The word was #{@word}! YOU LOSE"
+      exit
+    end
+
     # check if the guess is a valid guess
     valid = 0
     until valid == 1
