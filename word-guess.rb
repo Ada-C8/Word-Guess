@@ -2,28 +2,6 @@ require 'faker'
 require 'artii'
 require 'colorize'
 
-def ascii
-  file = File.open("/Users/kimberley/Desktop/asciiartfile.txt", "r")
-  contents = file.read
-  puts contents
-end
-
-def decompose_image
-  line_limit = [20, 15, 10, 5]
-  index = (@turns - 1)
-  partial_image = IO.readlines("/Users/kimberley/Desktop/asciiartfile.txt")[1...line_limit[index]]
-  puts partial_image
-end
-  # line = 1
-  #
-  # until line == 20
-  #   File.open("/Users/kimberley/Desktop/asciiartfile.txt").readlines(line) do |each_line|
-  #     puts each_line
-  #     line += 1
-  #   end
-  # end
-# end
-
 class Word
 
   attr_reader :word, :letters, :blanks
@@ -41,7 +19,6 @@ class Word
 
   def replace_blanks(letter_guess)
     indices = find_indices(letter_guess)
-
     indices.each do |index|
       @blanks[index] = letter_guess
     end
@@ -60,19 +37,14 @@ class Word
     end
 
     return indices
-    # @letters.each do |letter|
-    #   if letter_guess == letter
-
   end
-
 
 end #end of class
 
 class Game
 
   attr_reader :game_word, :guesses, :turns
-
-  # just for testing
+  # # just for testing
   attr_writer :game_word
 
   def initialize
@@ -82,11 +54,30 @@ class Game
     @turns = 0
   end
 
+  def difficulty
+    user_level = ""
+    until user_level == "high" || user_level == "medium" || user_level == "easy"
+      puts "What level of challenge do you want? You may choose high, medium, or easy."
+      user_level = gets.chomp.downcase
+    end
 
+    difficulty = ""
+
+    until difficulty == user_level
+      @game_word = Word.new
+      word = @game_word
+
+      if word.word.length > 8
+        difficulty = "high"
+      elsif word.word.length <=8 && word.word.length > 5
+        difficulty = "medium"
+      else
+        difficulty = "easy"
+      end
+    end
+  end
 
   def guess(user_guess)
-    # if user_guess.length > 1 && user_guess == @word
-    #   Game.win
     while user_guess.match(/[^a-z]/)
       puts "\nPlease return a valid letters from A to Z.\n"
       user_guess = gets.chomp.downcase
@@ -114,15 +105,13 @@ class Game
 
   def print_guesses
     if @guesses.length > 0
-    guess_string = ""
-    @guesses.each do |guess|
-      guess_string += guess.upcase + " "
+      guess_string = ""
+      @guesses.each do |guess|
+        guess_string += guess.upcase + " "
+      end
+      puts "\nHere's what you have guessed so far: #{guess_string}"
     end
-    puts "\nHere are the letters you have guessed so far: #{guess_string}"
   end
-  end
-
-
 
   def reveal(user_guess)
     puts "\nYes! Here's your word so far:\n"
@@ -132,7 +121,9 @@ class Game
 
   def lose?
     if @turns == 5
-      puts "You LOST."
+      artii = Artii::Base.new :font => 'slant'
+      artii = artii.asciify("You LOST!")
+      puts artii.colorize(:red)
       puts "Your word was #{@game_word.word}"
       exit
     end
@@ -140,7 +131,7 @@ class Game
 
   def win?
     if !@game_word.blanks.include?("-")
-        you_won
+      you_won
     end
   end
 
@@ -148,25 +139,42 @@ class Game
     artii = Artii::Base.new :font => 'slant'
     artii = artii.asciify("You WIN!")
     puts artii.colorize(:blue).blink
-      exit
+    exit
   end
-
 end # end of class
 
-game = Game.new
-all_turns = 0
-game.game_word = Word.new(word: "pie")
+# Ascii Art Methods
+def ascii
+  file = File.open("/Users/kimberley/Desktop/asciiartfile.txt", "r")
+  contents = file.read
+  puts contents
+end
 
+def decompose_image
+  line_limit = [20, 15, 10, 5]
+  index = (@turns - 1)
+  partial_image = IO.readlines("/Users/kimberley/Desktop/asciiartfile.txt")[1...line_limit[index]]
+  puts partial_image
+end
+
+# Begin game play
+game = Game.new
+# game_word = Word.new
+
+# Explain rules to players
 puts "Welcome to FILL IN THE BLANKS, a word guess game!"
 puts "\nRULES: \nEach blank represents one letter of the word \nYour guess can be one letter or the whole word \nIf you're right, those letters will be revealed \nIf you're wrong, your cupcake will start to melt \nWhen your cupcake is a puddle of sugar, you lose. \nGood luck!\n\n"
 
+# Find out & assign difficult level of user's choice
+game.difficulty
+
+# Print ascii image and begin game play
 ascii
 puts "Your mystery word is (drumroll, please...)\n #{game.game_word.blanks}"
 
-
 until game.win? || game.lose?
-game.print_guesses
-puts "What's your guess?"
-guess = gets.chomp.downcase
-game.guess(guess)
+  game.print_guesses
+  puts "What's your guess?"
+  guess = gets.chomp.downcase
+  game.guess(guess)
 end
