@@ -101,7 +101,7 @@ end # end random_word class
 
 def check_input(input,letter_array)
   input.gsub!(/[^0-9A-Za-z]/, '')
-  until input.to_i == 0 && input != "0"
+  until input.to_i == 0 && input != "0" && input != ""
     print "Please enter a letter: "
     input = gets.chomp.upcase
     input.gsub!(/[^0-9A-Za-z]/, '')
@@ -110,7 +110,6 @@ def check_input(input,letter_array)
     puts "You have already guessed this letter"
     print "Please try again: "
     input = check_input(gets.chomp.upcase, letter_array)
-    # input.gsub!(/[^0-9A-Za-z]/, '')
   end
   return input
 end
@@ -160,8 +159,8 @@ random_word.secret_word
 puts "Want to play again? Eh? Eh?"
 user_answer = gets.chomp
 if user_answer == "yes"
-  play_again == true
+  play_again = true
 else
-  play_again == false
+  play_again = false
 end
 end
