@@ -31,7 +31,7 @@ class WordClass
 
   def add_guess(new_guess)
     @used_guesses << new_guess
-    puts "guess count #{update_guess_count}"
+    puts "guess count #{@guess_count}"
     puts "You have made these guesses #{show_guesses}"
   end
 
@@ -49,6 +49,7 @@ class WordClass
       @guess_ind.each do |i|
         @gameboard[i] = @used_guesses[-1]
       end
+      update_guess_count
     end
     output_gameboard
   end
@@ -96,6 +97,8 @@ puts d.output_gameboard
 # puts d.game_status
 
 puts d.turn("c")
+puts d.turn("g")
+puts d.turn("a")
 
 # puts d.add_guess("a")
 # puts d.update_gameboard
