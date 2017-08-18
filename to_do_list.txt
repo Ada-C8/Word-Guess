@@ -1,0 +1,8 @@
+- refactor if statements
+- tell the player when he already guessed one letter
+- better way to show the guessed Letters
+- several parties in a row => way to keep score
+- party => round
+- add colorize gem
+- add more faker categories and let the user choose
+- add game difficulty
