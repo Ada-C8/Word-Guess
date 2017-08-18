@@ -1,4 +1,3 @@
-
 #Maria and Julia's Word Guess Game!
 
 # NOUNS / CLASSES
@@ -78,7 +77,7 @@ ART
   def receive_user_input
     #prompt the user
     puts "Please enter a letter"
-    letter_guess = gets.chomp.downcase
+    letter_guess = gets.chomp
     check_for_letter(letter_guess)
   end
 
@@ -120,19 +119,11 @@ ART
     else
       "correct!"
     end
-      if @guesses_left == 0
-       elsif
-        @guesses_left-1 < 5
-        puts @ART[ @guesses_left-1]
-      else
-        puts "You have #{@guesses_left} guesses left!"
-      end
+    puts "You have #{@guesses_left} guesses left!"
+
+    puts @ART[ @guesses_left-1]
+
   end
-
-    # puts @ART[ @guesses_left-1]
-
-
-
 
   def run
     if @guesses_left > 0
