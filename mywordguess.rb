@@ -1,77 +1,67 @@
 class Word
-  attr_accessor :random_word, :word_display
+  attr_accessor :random_word, :word_display, :num_bad_guess
   def initialize (random_word)
     @random_word = random_word.split("")
-    @word_display = word_display
+    @word_display = Array.new(random_word.length, "_ ")
+    @num_bad_guess = 0
   end
 
-  def word_display
-    @word_display = []
-    random_word.length.times do
-      # i.gsub("i", "_")
-      @word_display.push " _ "
-    end
-    return @word_display
-  end
-
-  def reveal(letter)
+ def reveal(letter)
     counter = 0
+    @changed = nil
     @random_word.each do |alpha|
       if alpha == letter
         @word_display[counter] = letter
+        @changed = true
       end
       counter += 1
     end
     return @word_display
   end
+
+  def count_bad_guess
+    if @changed == nil
+      @num_bad_guess += 1
+      print "You have made #{@num_bad_guess} wrong guess(es)."
+    end
+    return @num_bad_guess
+  end
+
 end
 
 class Game
-  attr_accessor :random_word
+  attr_accessor :random_word, :word_display, :num_bad_guess
   def initialize
-    @win = false
-    @guesses_taken = 0
-    @guesses_allowed = 5  #random_word.length , does it need to be an argument in initialize?
 
-    #when guesses_taken > guesses_allowed  game over
+
+   #when guesses_taken > guesses_allowed  game over
     #or
     #when guesses_taken == guesses_allowed && word_display.includes? " _ " game over
     #when guesses_taken == guesses_allowed && random_word != word_display game over
   end
 
-  def play
+
+ def play
     word = Word.new("faker")
-    while @win == false
-      @guesses_allowed.times do
-        puts "Please guess the letter"
-        guess = gets.chomp.downcase
-        word.reveal(guess) #
-        @guesses_taken += 1
-        if @random_word == @word_display #is not comparing
-          @win = true
-          puts "Congrats!"
-        end
+    @bad_guess_allowed = word.random_word.length + 3
+    while true
+      print "\nLetter guess: "
+      guess = gets.chomp.downcase
+      print word.reveal(guess).join
+      @num_bad_guess = word.count_bad_guess
+      print @num_bad_guess
+      if word.random_word == word.word_display #check for the 'win condition'
+        puts "\nCongrats!"
+        break
+      end
+      if @num_bad_guess == @bad_guess_allowed #if this happens the 'win condition', you lost :disappointed:
+        puts "\nSorry, you're out of guesses!"
+        break
       end
     end
   end
 end
-# tanja = Word.new("Tanja")
-# print tanja.word_display
 
-# letters = ["G", "a", "l", "e"]
-
-# numbers = ["_ ", "_ ", "_ ", "_ "]
-
-# letter = "a"
-
-puts "welcome to the game"
+puts "Welcome to Word Guess!"
 
 word = Game.new.play
-
-
-# gale = Word.new("foobarfoo")
-# print gale.reveal()
-# print gale.reveal("f")
-
-#
-# print gale.word_display
