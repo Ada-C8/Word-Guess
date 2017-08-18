@@ -1,7 +1,10 @@
 require_relative 'word_class.rb'
+require_relative 'cactus.rb'
 
 new_game = WordClass.new
+new_image = Cactus.new
 new_game.start_game
+
 puts "THIS IS FOR DEBUGGING! THE WORD IS: #{new_game.word}"#just for debugging
 
 puts "\n**************************************************".colorize(:white)
@@ -17,7 +20,8 @@ while game == "on"
     puts "\n\n**************************************************".colorize(:white)
     puts "***************  #{6-new_game.guess_count} guesses left!  ****************".colorize(:white)
     puts "**************************************************".colorize(:white)
-    puts "Ascii goes here!\n\n"
+    puts new_image.show_ascii(new_game.guess_count)
+    puts "\n\n"
     new_game.output_gameboard
     new_game.turn
   end
