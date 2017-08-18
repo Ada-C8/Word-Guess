@@ -143,9 +143,9 @@ class Game
     return "Word: #{@blank_word.join}"
   end
 
-    def guessed_right?
+  def guessed_right?
     return @blank_word == @split_word
-    end
+  end
 
 end #end of class
 
