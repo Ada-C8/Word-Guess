@@ -5,7 +5,10 @@ class Game
 def initialize
   @wrong_guesses = []
   @answer = Faker::Dessert.variety.downcase
-  @hidden_answer = @answer.delete(" ").split("").join(" ").gsub(/[a-z]/, '_')
+  no_spaces = @answer.delete(" ")
+  no_split = no_spaces.split("")
+  @one_answer = no_split.join(" ")
+  @hidden_answer = @one_answer.gsub(/[a-z]/, '_')
   @art =[
 "                                              _
                               \/\\              )\\
@@ -216,10 +219,15 @@ guess_result = @answer.index(guess)
     end
   elsif guess_result >= 0 # positive result
     puts "\n\nNice guess!\n"
-    replacement_letter = guess_result * 2
-    @hidden_answer[replacement_letter] = guess
+      answer_array = @one_answer.split('')
+      puts answer_array
+      matching_indices = answer_array.each_index.select {|i| answer_array[i] == guess }
+      matching_indices.each do |i|
+        replacement_letter = i
+        @hidden_answer[replacement_letter] = guess
+    end
 
-    if @hidden_answer.split.join == @answer && @wrong_guesses.length <= 9
+    if @hidden_answer.match(/[\_]/) == nil && @wrong_guesses.length <= 9
       change_art
       puts @hidden_answer
       @win = true
