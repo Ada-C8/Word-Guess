@@ -70,6 +70,8 @@ class WordClass
     end
 
     @current_guess = gets.chomp.downcase
+
+    #maybe the method to check the input is acceptable should go around here? 
   end
 
   #add_guesses takes the user's guess as input, then adds it to an array
