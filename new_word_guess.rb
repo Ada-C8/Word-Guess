@@ -48,7 +48,10 @@ class Game
   def accept_user_guess
     puts "Please enter a letter"
     user_input = gets.chomp.downcase
-
+    unless /([a-z])/.match(user_input)
+      puts "Invalid guess! Letters only please! Please try again."
+      user_input = gets.chomp.downcase
+    end
     if @answer_as_array.include?(user_input)
       @correct_guesses << user_input
     else
