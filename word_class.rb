@@ -1,4 +1,5 @@
 require "random-word"
+require "colorize"
 
 class WordClass
   attr_reader :word, :gameboard, :used_guesses, :guess_count
@@ -24,7 +25,8 @@ class WordClass
 
   def initialize
     @word = ""
-    @gameboard = Array.new(@word.length, "_")
+    @gameboard = ""
+    #@gameboard = Array.new(@word.length, "_")
     @guess_count = 0
     @used_guesses = []
     @guess_ind = []
@@ -41,19 +43,40 @@ class WordClass
     return @word
   end
 
-  #gets a guess from the user
+  def generate_gameboard
+    @gameboard = Array.new(@word.length, "_")
+  end
+
+#start_game generates the word and the empty gameboard
+  def start_game
+    generate_word
+    generate_gameboard
+  end
+
+  #gets a guess from the user and prompts them in a way appropriate to the
+  #number of guesses they have already made
   def obtain_guess
-    puts "Guess a letter, any letter."
-    @current_guess = gets.chomp
-    return @current_guess
+
+    if @used_guesses.length == 0
+      puts "\nPlease enter a guess".colorize(:white)
+    else
+      puts "\nPlease enter another guess".colorize(:white)
+    end
+
+    if @used_guesses.length > 1
+      puts "You have made these guesses: #{@used_guesses.join(" ")}".colorize(:white)
+    elsif @used_guesses.length == 1
+      puts "You have already guessed: #{@used_guesses.join(" ")}".colorize(:white)
+    end
+
+    @current_guess = gets.chomp.downcase
   end
 
   #add_guesses takes the user's guess as input, then adds it to an array
   #containing all the letters that have been guessed.  It displays that array.
   def add_guess
     @used_guesses << @current_guess
-    puts "guess count #{@guess_count}"
-    puts "You have made these guesses #{@used_guesses.join}"
+    return @used_guesses
   end
 
   #update_gameboard: In the case of a correct guess, it add the guessed letter
@@ -62,10 +85,12 @@ class WordClass
   def update_gameboard
     include_letter?
     if @guess_ind.length != 0
+      puts "\nCORRECT!".colorize(:green)
       @guess_ind.each do |i|
         @gameboard[i] = @used_guesses[-1]
       end
     else
+      puts "\nINCORRECT".colorize(:red)
       update_guess_count
     end
     output_gameboard
@@ -73,7 +98,7 @@ class WordClass
 
   #output_gameboard flattens the gameboard array for better viewing
   def output_gameboard
-    puts @gameboard.join(" ")
+    puts @gameboard.join(" ").colorize(:white)
   end
 
   #include_letter? returns an array with the index of all instances of the
@@ -97,13 +122,11 @@ class WordClass
   #if the game has been won, or lost, the game exits, otherwise it keeps going.
   def game_status
     if  gameboard_complete
-      puts "You won!"
+      puts "YOU WON!".colorize(:white)
       exit
-    elsif @guess_count < 6 && !gameboard_complete
-      puts "Please enter another guess"
     elsif @guess_count >= 6
-      puts "You lost... the correct answer was"
-      puts @word.upcase
+      puts "You lost... the correct answer was".colorize(:white)
+      puts @word.upcase.colorize(:white)
       exit
     end
   end
@@ -111,26 +134,28 @@ class WordClass
   #turn combines many of the methods in this class to encaspulate a single round
   #of the game
   def turn
-    puts obtain_guess
-    puts add_guess
-    puts update_gameboard
-    puts game_status
+    obtain_guess
+    add_guess
+    update_gameboard
+    game_status
   end
 end
 
 
+# #
+# d= WordClass.new
 #
-# d= WordClass.new("cactus")
-#
-# puts d.generate_word
-# puts d.output_gameboard
-# # puts d.add_guess("c")
-# # puts d.update_gameboard
-# # puts d.game_status
+# d.start_game
+# puts d.word
+# d.output_gameboard
+# # # puts d.add_guess("c")
+# # # puts d.update_gameboard
+# # # puts d.game_status
 #
 # 10.times do
 #   puts d.turn
 # end
+# # end
 
 # puts d.add_guess("a")
 # puts d.update_gameboard
