@@ -136,8 +136,15 @@ class Game
         @interface.display_word.gsub!("_", "-")
         end_game
       else
-        @interface.update_counter
-        accept_guess
+        if @used_letters.include?(@user_guess)
+          puts "You already tried #{@user_guess}. Try again"
+          end_game
+        else
+          puts "Wrong!"
+          @used_letters << @user_guess
+          @interface.update_counter
+          accept_guess
+        end
       end
     end
   end
