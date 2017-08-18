@@ -22,8 +22,8 @@ class WordClass
   # is gameboard complete?
   # generate word
 
-  def initialize(word)
-    @word = word.downcase
+  def initialize
+    @word = ""
     @gameboard = Array.new(@word.length, "_")
     @guess_count = 0
     @used_guesses = []
@@ -119,18 +119,18 @@ class WordClass
 end
 
 
-
-d= WordClass.new("cactus")
-
-puts d.generate_word
-puts d.output_gameboard
-# puts d.add_guess("c")
-# puts d.update_gameboard
-# puts d.game_status
-
-10.times do
-  puts d.turn
-end
+#
+# d= WordClass.new("cactus")
+#
+# puts d.generate_word
+# puts d.output_gameboard
+# # puts d.add_guess("c")
+# # puts d.update_gameboard
+# # puts d.game_status
+#
+# 10.times do
+#   puts d.turn
+# end
 
 # puts d.add_guess("a")
 # puts d.update_gameboard
