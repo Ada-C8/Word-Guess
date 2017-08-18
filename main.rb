@@ -14,7 +14,7 @@ puts "=".blue * 22
 puts "GAME INSTRUCTIONS:".colorize(:green)
 puts "1.) Guess the word I'm thinking for a chance to have my Birthday Cake.".green
 puts "2.) For every incorrect letter you choose, I will blow out one candle.".green
-puts "3.) If you guess incorrectly 5 times, I will happliy keep my cake.".green
+puts "3.) If you guess incorrectly 5 times, you lose and I will happliy keep my cake.".green
 puts "READY...".red
 puts "SET...".red
 
