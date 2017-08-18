@@ -3,7 +3,7 @@ require './hangman'
 #one class, methods
 
 
-dictionary = ["pizza", "pasta", "tacos", "bologna", "salad"]
+dictionary = ["pizza", "pasta", "tacos", "bologna", "salad", "popcorn", "pipes", "bubblegum"]
 
 puts "Let's play a game!"
 
