@@ -9,8 +9,8 @@ def ascii
 end
 
 def decompose_image
-  line_limit = [20, 13, 6]
-  index = (Game.turns - 1)
+  line_limit = [20, 15, 10, 5]
+  index = (@turns - 1)
   partial_image = IO.readlines("/Users/kimberley/Desktop/asciiartfile.txt")[1...line_limit[index]]
   puts partial_image
 end
@@ -88,11 +88,11 @@ class Game
     # if user_guess.length > 1 && user_guess == @word
     #   Game.win
     while user_guess.match(/[^a-z]/)
-      puts "Please return a valid letters from A to Z."
+      puts "\nPlease return a valid letters from A to Z.\n"
       user_guess = gets.chomp.downcase
     end
     if @guesses.include?(user_guess)
-      puts "You guessed that letter already!"
+      puts "\nYou guessed that letter already!"
       return
     end
     if @game_word.word == user_guess
@@ -103,10 +103,10 @@ class Game
       reveal(user_guess)
       win?
     else
-      puts "Sorry, that letter is not in your word."
+      puts "\nSorry, that letter is not in your word.\nThere goes some delicious cupcake...\n\n"
       @turns += 1
       lose?
-      #Art.decompose
+      decompose_image
     end
 
     @guesses << user_guess
@@ -118,20 +118,21 @@ class Game
     @guesses.each do |guess|
       guess_string += guess.upcase + " "
     end
-    puts "Here are the letters you have guessed so far: #{guess_string}"
+    puts "\nHere are the letters you have guessed so far: #{guess_string}"
   end
   end
 
 
 
   def reveal(user_guess)
+    puts "\nYes! Here's your word so far:\n"
     @game_word.replace_blanks(user_guess)
     @game_word.blanks
   end
 
   def lose?
     if @turns == 5
-      puts "You lose :("
+      puts "You LOST."
       puts "Your word was #{@game_word.word}"
       exit
     end
@@ -156,16 +157,16 @@ game = Game.new
 all_turns = 0
 game.game_word = Word.new(word: "pie")
 
-puts "Welcome to Fill in the Blanks, a word guess game!"
-puts "We will show you a set of \'blanks'\ to indicate each letter in a word. When you are asked for a guess, you need to enter a letter. After each guess, you will find out if you were incorrect or if your letter appears in the mystery word.  If you're wrong, your cupcake will start to melt...when your cupcake is a puddle of sugar, you lose. Good luck!"
+puts "Welcome to FILL IN THE BLANKS, a word guess game!"
+puts "\nRULES: \nEach blank represents one letter of the word \nYour guess can be one letter or the whole word \nIf you're right, those letters will be revealed \nIf you're wrong, your cupcake will start to melt \nWhen your cupcake is a puddle of sugar, you lose. \nGood luck!\n\n"
 
-puts game.game_word.blanks
 ascii
-decompose_image
+puts "Your mystery word is (drumroll, please...)\n #{game.game_word.blanks}"
+
 
 until game.win? || game.lose?
+game.print_guesses
 puts "What's your guess?"
 guess = gets.chomp.downcase
-game.print_guesses
 game.guess(guess)
 end
