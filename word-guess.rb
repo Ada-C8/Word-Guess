@@ -34,8 +34,6 @@ class Display
     @counter_base = "=" * @selected_level
   end
 
-  #TODO ASCII / Tally
-
   def update_display
     char_positions =[]
     i = -1
@@ -100,11 +98,14 @@ class Game
     end
     # create a new Display for this game, pass the Game instance to it
     @interface = Display.new(self)
+    @used_letters = []
   end #End of Game initialization method
 
   #Validate User input
   def accept_guess
+    puts @interface.display_counter
     puts "Phrase: " + @interface.display_word
+    puts "Incorrect guesses: #{@used_letters.join(", ")}"
     puts "Please enter a letter to guess:"
     @user_guess = gets.chomp.strip.downcase
     until /[a-z]+[[:blank]]*\b/.match(@user_guess) #&& guess != nil
@@ -115,14 +116,19 @@ class Game
 
     #Accept Letter Guesses
     if @user_guess.length == 1
-      if @string_word.include? (@user_guess)
+      if @string_word.include?(@user_guess)
         @interface.update_display
         end_game
       else
-        puts "Nope!"
-        @interface.update_counter
-        #@interface.counter_update
-        end_game
+        if @used_letters.include?(@user_guess)
+          puts "You already tried #{@user_guess}. Try again"
+          end_game
+        else
+          puts "Nope!"
+          @used_letters << @user_guess
+          @interface.update_counter
+          end_game
+        end
       end
     #Accept Word Guesses
     else
@@ -130,6 +136,7 @@ class Game
         @interface.display_word.gsub!("_", "-")
         end_game
       else
+        @interface.update_counter
         accept_guess
       end
     end
@@ -149,7 +156,6 @@ class Game
         #display maybe some flashing...
       end
     else
-      @interface.display_counter
       accept_guess
     end
   end
