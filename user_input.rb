@@ -20,7 +20,7 @@ class UserInput
       return
     else
       @wrong_letters << @current_letter
-      puts "WRONG!, you loss a candle"
+      puts "WRONG!, you loss a candle. Try Again"
 
       cake.take_away_candle
       # print @wrong_letters
