@@ -3,7 +3,7 @@ require 'pp'
 require 'pry'
 class RandomWord
   attr_accessor :guess, :guessed_letters
-  attr_reader  :word_display
+  attr_reader  :word_display, :word
 
   def initialize(level)
     case level
@@ -30,9 +30,16 @@ class RandomWord
 
   def letter_index(user_letter)
     letter_indeces =[]
-    @letters.length.times do |i|
-      if @letters[i] == user_letter
-        letter_indeces << i
+    if user_letter.length > 1
+      if user_letter == @word.gsub(/[^0-9A-Za-z]/, '')
+        you_win
+
+      end
+    else
+      @letters.length.times do |i|
+        if @letters[i] == user_letter
+          letter_indeces << i
+        end
       end
     end
     return letter_indeces
@@ -91,14 +98,21 @@ class RandomWord
   def secret_word
     puts "Sorry you have failed at this game..."
     puts "Cat is very disappointed :("
-    puts @word
+    puts "The answer was \"#{@word}\""
   end
+
+  def you_win
+    puts "Congrats! You survived"
+    puts "The answer was \"#{@word}\""
+    exit
+  end
+
 
 end # end random_word class
 
 def check_input(input,letter_array)
   input.gsub!(/[^0-9A-Za-z]/, '')
-  until input.length == 1 && input.to_i == 0 && input != "0"
+  until input.to_i == 0 && input != "0"
       print "Please enter a letter: "
       input = gets.chomp.upcase
       input.gsub!(/[^0-9A-Za-z]/, '')
@@ -147,9 +161,8 @@ until random_word.guess == 5
   random_word.cat_position
   random_word.pretty_print
   if random_word.did_you_win?
-    puts "Congrats! You survived"
-    exit
+    random_word.you_win
   end
 end
 
-print random_word.secret_word
+random_word.secret_word
