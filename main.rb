@@ -15,6 +15,7 @@ cake = AsciiArt.new
 # user.get_next_letter
 # user.check_letter(penny, user)
 # user.get_next_letter
+
 # game greeting and instructions
 puts "Welcome to Word-Guess!".colorize(:light_blue)
 puts "=".colorize(:light_blue) * 22
@@ -25,10 +26,16 @@ puts "READY...".colorize(:red)
 puts "SET...".colorize(:red)
 puts "GUESS!!".colorize(:red)
 
+
+
 until penny.underscore == penny.word
   puts "Guess >> "
 
   user.check_letter(penny, user, cake)
+  # checks for loser
+  if user.wrong_letters.length == 5
+    puts "YOU LOSE, I WIN"
+  end
 
   # if penny.underscore == penny.word
   #   return
@@ -36,15 +43,23 @@ until penny.underscore == penny.word
   # user.get_next_letter
 end
 
+# puts "wrong letters : #{user.wrong_letters}"
+# puts "penny.word : #{penny.word}"
+# puts "wrong letters length: #{user.wrong_letters.length}"
+# puts "penny.word length: #{penny.word.length}"
+
+
+
+# checks for winner and outputs win message
 if penny.underscore == penny.word
   puts "YOU WIN!!!. You can eat my birthday cake!".colorize(:blue)
   cake.show_cake
 end
 
 
-if user.wrong_letters.length == penny.word
-  puts "YOU LOSE, I WIN"
-end
+
+
+
 
 
 
