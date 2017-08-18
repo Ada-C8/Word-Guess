@@ -55,15 +55,7 @@ class Game
       end
     end
   end
-
-    # def end_game
-    #   if @incorrect_guess==10
-    #
-    #
-    #     exit
-    #   end
-    # end
-
+  
   def add_incorrect_guess(input)
     unless list_guesses.include?(input) || input.to_i.to_s == input
       @incorrect_guess+=1
