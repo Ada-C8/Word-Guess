@@ -59,11 +59,11 @@ class WordClass
   def obtain_guess
 
     if @used_guesses.length > 1
-      puts "You have made these guesses: #{@used_guesses.join(" ")}".colorize(:white)
+      puts "\nYou have made these guesses: #{@used_guesses.join(" ")}".colorize(:white)
     elsif @used_guesses.length == 1
-      puts "You have already guessed: #{@used_guesses.join(" ")}".colorize(:white)
+      puts "\nYou have already guessed: #{@used_guesses.join(" ")}".colorize(:white)
     end
-    puts "Please guess a letter"
+    puts "\nPlease guess a letter".colorize(:white)
 
     loop do
       @current_guess = gets.chomp
@@ -100,12 +100,12 @@ class WordClass
   def update_gameboard
     include_letter?
     if @guess_ind.length != 0
-      puts "\n              CORRECT!".colorize(:green)
+      puts "\n" + " " * 16 + "CORRECT!".colorize(:green)
       @guess_ind.each do |i|
         @gameboard[i] = @used_guesses[-1]
       end
     else
-      puts "\n              INCORRECT".colorize(:red)
+      puts "\n" + " " * 16 + "INCORRECT".colorize(:red)
       update_guess_count
     end
     output_gameboard
@@ -113,7 +113,7 @@ class WordClass
 
   #output_gameboard flattens the gameboard array for better viewing
   def output_gameboard
-    puts "            " + @gameboard.join(" ").colorize(:white)
+    puts " " * 16 + @gameboard.join(" ").colorize(:white)
   end
 
   #include_letter? returns an array with the index of all instances of the
