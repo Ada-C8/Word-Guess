@@ -93,6 +93,8 @@ ART
         character = letter_guess
         @correct_letters << character
         input = true
+      # elsif @wrong_letters.include?(letter_guess)
+      #   input = true
       else
         character = "-"
         @wrong_letters << letter
@@ -120,13 +122,13 @@ ART
     else
       "correct!"
     end
-      if @guesses_left == 0
-       elsif
-        @guesses_left-1 < 5
-        puts @ART[ @guesses_left-1]
-      else
-        puts "You have #{@guesses_left} guesses left!"
-      end
+
+    if @guesses_left == 0
+    else
+      puts @ART[ @guesses_left-1]
+    end
+
+    puts "You have #{@guesses_left} guesses left!"
   end
 
     # puts @ART[ @guesses_left-1]
