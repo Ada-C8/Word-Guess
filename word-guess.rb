@@ -2,12 +2,27 @@ require 'faker'
 require 'artii'
 require 'colorize'
 
-# File.open("/Users/kimberley/Desktop/asciiartfile.rtf", "r") do |f|
-#   f.each_line do |line|
-#     puts line
-#   end
-# end
+def ascii
+  file = File.open("/Users/kimberley/Desktop/asciiartfile.txt", "r")
+  contents = file.read
+  puts contents
+end
 
+def decompose_image
+  line_limit = [20, 13, 6]
+  index = (Game.turns - 1)
+  partial_image = IO.readlines("/Users/kimberley/Desktop/asciiartfile.txt")[1...line_limit[index]]
+  puts partial_image
+end
+  # line = 1
+  #
+  # until line == 20
+  #   File.open("/Users/kimberley/Desktop/asciiartfile.txt").readlines(line) do |each_line|
+  #     puts each_line
+  #     line += 1
+  #   end
+  # end
+# end
 
 class Word
 
@@ -141,7 +156,12 @@ game = Game.new
 all_turns = 0
 game.game_word = Word.new(word: "pie")
 
+puts "Welcome to Fill in the Blanks, a word guess game!"
+puts "We will show you a set of \'blanks'\ to indicate each letter in a word. When you are asked for a guess, you need to enter a letter. After each guess, you will find out if you were incorrect or if your letter appears in the mystery word.  If you're wrong, your cupcake will start to melt...when your cupcake is a puddle of sugar, you lose. Good luck!"
+
 puts game.game_word.blanks
+ascii
+decompose_image
 
 until game.win? || game.lose?
 puts "What's your guess?"
