@@ -29,4 +29,9 @@ class AsciiArt
     puts @candle_light.colorize(:blue)
     puts @body
   end
+
+  def show_cake
+    puts @candle_light.colorize(:blue)
+    puts @body
+  end
 end
