@@ -5,11 +5,29 @@ class Game
 
   def initialize(answer_array)
     @answer = answer_array.sample.split(//)
+    puts "the answer is #{@answer}"
+
+    while running?
+      play_game
+    end
   end
 
-  def play_game(guess)
-    @guess = Guess.new
-    @guess.guess_check
+
+  def answer
+    return @answer
+  end
+
+  def play_game
+    guess = Guess.new
+    puts "Please enter the letter you'd like to guess."
+    input_letter = gets.chomp
+    is_correct_answer = guess.check(input_letter, @answer)
+    if is_correct_answer
+      guess.store_into_correct_letters(input_letter)
+      guess.display_progress
+    else
+      guess.add_wrong_guess
+    end
   end
 
   def print_answer(guess)
@@ -40,9 +58,12 @@ end
 # Guess class ========================================
 class Guess
 
-  attr_accessor :guess
+  attr_accessor :guess, :wrong_guesses, :correct_letters
 
-
+  def initialize
+    @wrong_guesses = []
+    @correct_letters = []
+  end
   # def guess
   #
   #     return print_answer(guess)
@@ -51,25 +72,29 @@ class Guess
   #   end
   # end
 
-  def guess_check(guess)
-    puts "Please enter the letter you'd like to guess."
-    guess = gets.chomp
-    @guess = guess
-    if @answer.include?(guess)
+  def check(guess, answer)
+    if answer.include?(guess)
       return true
+    else
+      return false
     end
   end
 
-  def wrong_guess
-    wrong_guesses = []
-    return wrong_guesses << guess
+  def add_wrong_guess
+    puts "wrong guess"
+    return @wrong_guesses << guess
   end
 
-  def word_storage
-    correct_letters = []
-    if guess_check == true
-      correct_letters << @guess
-    end
+  def store_into_correct_letters(guess)
+    puts "word storage"
+    @correct_letters << guess
+    # if guess_check == true
+    #   correct_letters << @guess
+    # end
+  end
+
+  def display_progress
+    puts @correct_letters
   end
 
   def counter
@@ -84,6 +109,8 @@ answer_array = ["cat", "bat", "dog"]
 word_try = Game.new(answer_array)
 
 puts "Welcome to our word guess game!"
-puts word_try.guess_check
+
+# word_try.play_game
+# puts word_try.guess_check
 
 # if word_try.guess
