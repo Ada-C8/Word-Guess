@@ -23,8 +23,8 @@ class User
   #
   def initialize(word)
     @word = word
-    @correct_guesses = Array.new(word.game_word.length, "").join
-    @dashes = Array.new(word.game_word.length, "-").join
+    @correct_guesses = Array.new(word.game_word.length)
+    @dashes = Array.new(word.game_word.length, "-")
     @guesses = []
   end
 
@@ -46,8 +46,8 @@ class User
       index_array = @word.game_word.each_index.select{|i| @word.game_word[i] == @letter}
       index_array.each do |i|
         @correct_guesses[i] = @letter
-        puts "#{@correct_guesses}"
       end
+      puts "#{@correct_guesses}"
 
     else
       puts wrong_guess
@@ -79,13 +79,15 @@ rebecca = User.new(new_game)
 
 
 puts "You have to guess a word that is #{new_game.game_word.length} spaces."
-puts rebecca.correct_guesses
-puts rebecca.dashes
+print "#{rebecca.correct_guesses.join}\n"
+print "#{rebecca.dashes.join}\n"
 
 puts "This is the game word: #{new_game.game_word}"
 
-
+while rebecca.correct_guesses.include?(nil)
+  rebecca.user_input
+end
 
 # rebecca = User.new(new_game)
-rebecca.user_input
-rebecca.user_input
+#
+# rebecca.user_input
