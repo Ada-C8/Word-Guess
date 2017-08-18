@@ -1,9 +1,10 @@
 require 'random-word'
+
 RandomWord.exclude_list.push(/_/, /\'/, /-/)
 
 #word class for unique words
 class Word
-  attr_reader :word, :letters, :num, :lives, :guesses
+  attr_reader :word, :letters, :num, :lives, :guesses, :guess
 
   def initialize
     if [1, 2, 3].sample == 3
@@ -11,7 +12,7 @@ class Word
     else
       @word = RandomWord.nouns.next
     end
-    @letters = word.split("")
+    @letters = @word.split("")
     @num = @letters.length
     @guesses = []
     @lives = 7
@@ -39,6 +40,7 @@ class Word
     art
     if @lives == 0
       puts "You have zero lives left! You lost!"
+      puts "The word was #{@word}."
       exit
     else
       puts "Please guess a letter! You have #{@lives} lives left!"
@@ -53,7 +55,7 @@ class Word
     end
   end
 
-  def guess
+  def guessing
     prompt
     @guess = gets.chomp.to_s.downcase
     # check if the guess is a valid guess
@@ -175,34 +177,12 @@ class Word
 
 end #end Word class
 
+def game
+  gameword = Word.new
+  until gameword.guess == "exit"
+    gameword.display
+    gameword.guessing
+  end
+end
 
-attempt = Word.new
-attempt.word
-attempt.display
- attempt.guess
-attempt.display
-attempt.guess
-attempt.display
-attempt.guess
-attempt.display
-attempt.guess
-attempt.display
-attempt.guess
-attempt.display
-attempt.guess
-attempt.display
-attempt.guess
-attempt.display
-attempt.guess
-attempt.display
-attempt.guess
-attempt.display
-attempt.guess
-attempt.display
-attempt.guess
-attempt.display
-attempt.guess
-attempt.display
-attempt.guess
-attempt.display
-attempt.guess
+game
