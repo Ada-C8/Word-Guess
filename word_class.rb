@@ -1,3 +1,5 @@
+require "random-word"
+
 class WordClass
   attr_reader :word, :gameboard, :used_guesses, :guess_count
 
@@ -28,6 +30,13 @@ class WordClass
     @guess_ind = []
   end
 
+  def generate_word
+    @word = RandomWord.nouns(not_shorter_than: 4, not_longer_than: 8).next
+    while @word.include?("_") || word.include?("-")
+      @word = RandomWord.nouns(not_shorter_than: 4, not_longer_than: 8).next
+    end
+    return @word
+  end
 
   def add_guess(new_guess)
     @used_guesses << new_guess
@@ -91,6 +100,7 @@ end
 
 d= WordClass.new("cactus")
 
+puts d.generate_word
 puts d.output_gameboard
 # puts d.add_guess("c")
 # puts d.update_gameboard
