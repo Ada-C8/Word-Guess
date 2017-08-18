@@ -36,7 +36,7 @@ class RandomWord
     if user_letter.length > 1
       if user_letter == @word.gsub(/[^0-9A-Za-z]/, '')
         you_win
-
+        letter_indeces = (0...@letters.length).to_a
       end
     else
       @letters.length.times do |i|
@@ -86,7 +86,7 @@ class RandomWord
 
   def secret_word
     puts "Sorry you have failed at this game..."
-    puts "Cat is very disappointed :("
+    puts "Cat thinks you are very delicious."
     puts "The answer was \"#{@word}\""
   end
 
@@ -117,51 +117,50 @@ def welcome_screen
   puts "Welcome to Word Guess!  Let me think of a word first..... ok got it"
   puts "You can guess wrong 5 times until the cat eats you"
 end
+
 play_again = true
-player_wins = false
+
 while play_again
-puts "Hey......do you know Overwatch heroes, locations or quotes best?"
-user_level = gets.chomp
-until ["heroes", "locations", "quotes"].include? user_level
-  puts "Valid inputs: heroes, locations, quotes"
+
+  puts "Hey......do you know Overwatch heroes, locations or quotes best?"
   user_level = gets.chomp
-end
-system "clear"
-welcome_screen
-random_word = RandomWord.new(user_level)
-
-random_word.pretty_print #write pretty print method
-
-until random_word.guess == 5 || player_wins == true
-  print "Guess one letter: "
-  user_input = check_input(gets.chomp.upcase,random_word.guessed_letters)
-  random_word.guessed_letters << user_input
-  indeces = random_word.letter_index(user_input)
-  #binding.pry
-  if indeces.length > 0
-    puts "nice"
-    random_word.update_display(indeces)
-  else
-    puts "yikes"
-    random_word.guess += 1
-    random_word.cat_position
+  until ["heroes", "locations", "quotes"].include? user_level
+    puts "Valid inputs: heroes, locations, quotes"
+    user_level = gets.chomp
   end
   system "clear"
   welcome_screen
-  random_word.cat_position
-  random_word.pretty_print
-  if random_word.did_you_win?
-    random_word.you_win
-    player_wins = true
-  end
-end
+  random_word = RandomWord.new(user_level)
 
-random_word.secret_word
-puts "Want to play again? Eh? Eh?"
-user_answer = gets.chomp
-if user_answer == "yes"
-  play_again = true
-else
-  play_again = false
+  random_word.pretty_print
+  player_win = false
+  while random_word.guess < 5 && !player_win
+    print "Guess one letter: "
+    user_input = check_input(gets.chomp.upcase,random_word.guessed_letters)
+    random_word.guessed_letters << user_input
+    indeces = random_word.letter_index(user_input)
+    if indeces.length > 0
+      random_word.update_display(indeces)
+    else
+      random_word.guess += 1
+    end
+    system "clear"
+    welcome_screen
+    random_word.cat_position
+    random_word.pretty_print
+    if random_word.did_you_win?
+      random_word.you_win
+      player_win = true
+    end
+  end
+if !random_word.did_you_win?
+  random_word.secret_word
 end
+  print "Would you like to play again? "
+  user = gets.chomp
+  if user == "yes"
+    play_again = true
+  else
+    play_again = false
+  end
 end
