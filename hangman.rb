@@ -1,3 +1,4 @@
+require 'artii'
 
 class Hangman
   attr_accessor :guesses, :word, :hidden_word, :wrongs
@@ -7,6 +8,7 @@ class Hangman
     @word = "" #pick word random from dictionary
     @hidden_word = []
     @wrongs = 0
+    @fails = 0
   end
 
   def make_hidden_word
@@ -30,15 +32,14 @@ class Hangman
 
 
   def letter_included(guess)
-    @word.chars.each do |letter|
-      if @word =~ /#{guess}/
-        puts "Good Guess"
-        # add letter to hidden_word
-        replace_hidden_with_letter(guess)
-        #################
-        puts @hidden_word
-      else # ascii minus something
-      end
+    if @word.include?(guess)
+      puts "Good Guess"
+      # add letter to hidden_word
+      replace_hidden_with_letter(guess)
+      #################
+      @hidden_word
+    else # ascii minus something
+      @fails += 1
     end
   end # End letter_included
 
@@ -51,9 +52,37 @@ class Hangman
       letter_guess = gets.chomp.capitalize
 
       case
-      when !!!(letter_guess =~ /A-Za-z/) && @guesses.include?(letter_guess) != true
+      when !!(letter_guess =~ /[A-Z]/) && !@guesses.include?(letter_guess)
         @guesses << letter_guess
         letter_included(letter_guess)
+        lose = "   _____                          __     __           _
+        / ____|                         \ \   / /          | |
+        | (___   ___  _ __ _ __ _   _     \ \_/ /__  _   _  | |     ___  ___  ___
+        \___ \ / _ \| '__| '__| | | |     \   / _ \| | | | | |    / _ \/ __|/ _ \
+        ____) | (_) | |  | |  | |_| |_     | | (_) | |_| | | |____ (_) \__ \  __/_
+        |_____/ \___/|_|  |_|   \__, ( )    |_|\___/ \__,_| |______\___/|___/\___(_)
+        __/ |/
+        |___/
+        "
+        case
+        when @word.split("") == @hidden_word
+          puts "You win!"
+        when @fails == 1
+          #ascii 1
+        when @fails == 2
+          #ascii 2
+        when @fails == 3
+          #ascii 3
+        when @fails == 4
+          # ascii 4
+        when @fails == 5
+          # ascii 5
+        when @fails == 6
+          puts lose
+          # ascii 6
+          exit
+        else #no fails yet
+        end
         puts "#{hidden_word}"
       else
         puts "No, pick another letter."
