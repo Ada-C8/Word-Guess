@@ -28,6 +28,7 @@ class WordClass
     @guess_count = 0
     @used_guesses = []
     @guess_ind = []
+    @current_guess =""
   end
 
   #generate_word uses RandomWord gem to create a random english word of between
@@ -40,10 +41,17 @@ class WordClass
     return @word
   end
 
+  #gets a guess from the user
+  def obtain_guess
+    puts "Guess a letter, any letter."
+    @current_guess = gets.chomp
+    return @current_guess
+  end
+
   #add_guesses takes the user's guess as input, then adds it to an array
   #containing all the letters that have been guessed.  It displays that array.
-  def add_guess(new_guess)
-    @used_guesses << new_guess
+  def add_guess
+    @used_guesses << @current_guess
     puts "guess count #{@guess_count}"
     puts "You have made these guesses #{@used_guesses.join}"
   end
@@ -102,13 +110,12 @@ class WordClass
 
   #turn combines many of the methods in this class to encaspulate a single round
   #of the game
-  def turn(input)
-    puts add_guess(input)
+  def turn
+    puts obtain_guess
+    puts add_guess
     puts update_gameboard
     puts game_status
   end
-  
-
 end
 
 
@@ -121,13 +128,10 @@ puts d.output_gameboard
 # puts d.update_gameboard
 # puts d.game_status
 
-puts d.turn("c")
-puts d.turn("g")
-puts d.turn("a")
-puts d.turn("e")
-puts d.turn("i")
-puts d.turn("t")
-puts d.turn("f")
+10.times do
+  puts d.turn
+end
+
 # puts d.add_guess("a")
 # puts d.update_gameboard
 # puts d.game_status
