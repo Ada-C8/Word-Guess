@@ -1,41 +1,14 @@
 require 'colorize'
-#one class, methods,
+#one class, methods
 
-dictionary = []
 
-guesses = []
+dictionary = ["pizza", "pasta", "tacos", "bologna", "salad"]
 
-word = []#pick word random from dictionary
+puts "Let's play a game!"
 
-hidden_word = []
 
-word.length.times do hidden word << "____ "
-end
-
-def letter_included
-  word.each do |letter|
-    if word.include? == true
-      puts "Good Guess"
-      # remove letter from list
-    else # ascii minus something
-    end
-  end
-end # End letter_included
-
-def pick_a_letter
-  begin
-
-    puts "pick a letter"
-    letter_guess = gets.chomp.capitalize
-
-    if letter_guess =~ /A-Za-z/
-    else
-    puts "No, pick a LETTER."
-      retry
-    end
-  end
-end # End pick_a_letter
-
-guesses << pick_a_letter
-
-letter_included
+my_hangman = Hangman.new
+my_hangman.choose_word(dictionary)
+my_hangman.make_hidden_word
+my_hangman.pick_a_letter
+my_hangman.letter_included
