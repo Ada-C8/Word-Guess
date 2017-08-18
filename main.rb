@@ -16,6 +16,7 @@ puts "GAME INSTRUCTIONS:".colorize(:green)
 puts "1.) Guess the word I'm thinking for a chance to have my Birthday Cake.".green
 puts "2.) For every incorrect letter you choose, I will blow out one candle.".green
 puts "3.) If you guess incorrectly 5 times, you lose and I will happliy keep my cake.".green
+cake.show_cake
 puts "READY...".red
 puts "SET...".red
 
@@ -30,6 +31,7 @@ until penny.underscore == penny.word || user.wrong_letters.length == 5
   if user.wrong_letters.length == 5
     puts
     puts "=".colorize(:light_blue) * 16
+    puts "The word was #{penny.word.join.upcase}"
     puts "YOU LOSE, I WIN!".blue
   end
 end
