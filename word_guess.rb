@@ -2,13 +2,10 @@ class Game
   attr_reader :random_word, :partial_answer
   def initialize
     generate_answer
-    # @guess = guess
     @incorrect_guess = 0
     @partial_answer = ["_", "_", "_", "_", "_"]
-    @game = true
     @game_live = true
     @list_guesses = []
-    # @input = input
   end
 
   def generate_answer
@@ -42,12 +39,7 @@ class Game
   def add_incorrect_guess(input)
     @incorrect_guess+=1
     @list_guesses << input
-    # puts "You have guessed incorrectly #{@incorrect_guess} times.\n"
-    # print @list_guesses
     end_game
-  end
-
-  def add_correct_guess
   end
 
   def display_partial_answer(input)
@@ -62,10 +54,9 @@ class Game
 
   def end_game
     if @incorrect_guess==10
-      puts "BUMMER YOU ARE OUT OF GUESSES!"
+      puts "
+      ( ^_^ ) \n YOU LOSE"
       exit
-      # game_live = false
-      # break
     end
   end
 
@@ -90,34 +81,76 @@ class Game
           "
       elsif @incorrect_guess == 2
           puts "
-                            .    .
-                             )  (
-          _ _ _ _ _ _ _ _   (.--.)
+                             .    .
+                              )  (
+          _ _ _ _ _ _ _ _    (.--.)
           { { { { { { { { { ( ^_^ )
             >>>>>>>>>>>>>>>>>>>>>-->
             8 guesses left.
             "
       elsif @incorrect_guess == 3
             puts "
-                            .    .
-                             )  (
-            _ _ _ _ _ _ _   (.--.)
+                             .    .
+                              )  (
+            _ _ _ _ _ _ _    (.--.)
             { { { { { { { { ( ^_^ )
               >>>>>>>>>>>>>>>>>>>-->
               7 guesses left.
               "
       elsif @incorrect_guess == 4
-              puts ""
+              puts "
+                               .    .
+                                )  (
+                  _ _ _ _ _    (.--.)
+                  { { { { { { ( ^_^ )
+                  >>>>>>>>>>>>>>>>>-->
+                6 guesses left.
+                "
       elsif @incorrect_guess == 5
-              puts ""
+              puts "
+                               .    .
+                                )  (
+                      _ _ _    (.--.)
+                      { { { { ( ^_^ )
+                    >>>>>>>>>>>>>>>-->
+                5 guesses left.
+                "
       elsif @incorrect_guess == 6
-              puts ""
+              puts "
+                               .    .
+                                )  (
+                        _ _    (.--.)
+                        { { { ( ^_^ )
+                        >>>>>>>>>>>-->
+                4 guesses left.
+                "
       elsif @incorrect_guess == 7
-              puts ""
+              puts "
+                               .    .
+                                )  (
+                           _    (.--.)
+                             { ( ^_^ )
+                            >>>>>>>>-->
+                3 guesses left.
+                "
       elsif @incorrect_guess == 8
-              puts ""
+              puts "
+
+
+                                 (.--.)
+                                ( ^_^ )
+                                >>>>-->
+                2 guesses left.
+                "
       elsif @incorrect_guess == 9
-              puts ""
+              puts "
+
+
+
+                                ( ^_^ )
+
+                 1 guess left!
+                "
       else  puts "UH OH!"
         end
       end
