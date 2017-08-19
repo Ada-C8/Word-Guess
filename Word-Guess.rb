@@ -1,26 +1,48 @@
 require 'faker'
 require 'colorize'
-class Party
+require 'pry'
+
+class Round
 
   attr_accessor :word, :word_array, :dash_word, :score, :wrong_guess, :max_wrong_guess, :guessed_letters
 
-  def initialize(difficulty = :easy)
+  def initialize(difficulty = :easy, category = :jobs)
     @difficulty = difficulty
+    @category = category
+    @word = ""
 
-    @word = Faker::Color.color_name
-
+    minLimit = 0
+    maxLimit = 0
     case @difficulty
     when :easy
-      generate_word(1, 3)
+      minLimit = 1
+      maxLimit = 3
     when :medium
-      generate_word(4, 5)
+      minLimit = 4
+      maxLimit = 5
     when :hard
-      generate_word(6, 8)
+      minLimit = 6
+      maxLimit = 8
     else
       raise ArgumentError.new("Difficulty must be :easy, :medium or :hard.")
     end
 
-    @word = Faker::Color.color_name
+    until [:color, :food, :hipster, :jobs].include? @category
+      binding.pry
+      puts "Invalid category, pleaese enter another one: "
+      @category = gets.chomp
+    end
+
+    case @category
+    when :color
+        @word = generate_word(minLimit, maxLimit, Faker::Color.color_name)
+    when :food
+        @word = generate_word(minLimit, maxLimit, Faker::Food.dish)
+    when :hipster
+        @word = generate_word(minLimit, maxLimit, Faker::Hipster.word)
+    when :jobs
+        @word = generate_word(minLimit, maxLimit, Faker::Job.title)
+    end
 
     @word_array = @word.split("")
     @dash_word = "_ " * @word.length
@@ -142,29 +164,35 @@ class Party
     end
   end
 
-  def generate_word minLimit, maxLimit
-    until @word.length >= minLimit && @word.length <= maxLimit
-      @word = Faker::Color.color_name
-    end
+  def generate_word(minLimit, maxLimit, make_word)
+    #until @word != nil
+    temp = make_word
+        until(@word.length >= minLimit && @word.length <= maxLimit)
+          # binding.pry
+           temp = make_word
+        end
+
+      return temp
+    # end
   end
 
 end
 
-party1 = Party.new
+round1 = Round.new()
 puts "\n\nWelcome to Word Guess!!!!!!\n\n"
-puts party1.dash_word
+puts round1.dash_word
 puts "\n\nGuess a letter: "
 guess = gets.chomp.downcase
-party1.check_letter(guess)
+round1.check_letter(guess)
 
 
-until party1.game_over? || party1.winner?
+until round1.game_over? || round1.winner?
   puts "\n\nLetters Guessed:\n"
-  print party1.guessed_letters
+  print round1.guessed_letters
   puts "\n"
-  puts party1.dash_word
+  puts round1.dash_word
   print "\n\nGuess a letter: "
   guess = gets.chomp.downcase
-  puts party1.check_letter(guess)
+  puts round1.check_letter(guess)
 
 end
