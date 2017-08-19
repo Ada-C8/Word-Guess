@@ -6,6 +6,7 @@ class Game
   def initialize(answer_array)
     puts "Welcome to the sushi word game! If you run out of sushi before you guess the word, you lose!!".colorize(:green)
     @answer = answer_array.sample
+    puts @answer
     @correct_guesses = []
     @incorrect_guesses = []
     @tries = 7
@@ -20,7 +21,6 @@ class Game
           puts "~WINNER~~WINNER~~WINNER~".colorize(:light_magenta)
           exit
         end
-
       elsif @tries == 1
         puts "You LOST! You LOST! You LOST!".colorize(:light_red)
         exit
@@ -55,12 +55,14 @@ class Game
     end
     if @answer_as_array.include?(user_input)
       @correct_guesses << user_input
+      puts clear_screen
     else
       if @incorrect_guesses.include?(user_input)
         puts "You already guessed that letter! No penalty, but try not to do it again!".colorize(:light_green)
       else
         @incorrect_guesses << user_input
         @tries -= 1
+        puts clear_screen
       end
     end
   end
@@ -78,7 +80,6 @@ class Game
   end
 
   def display
-    puts "\e[H\e[2J"
     puts "Number of sushi pieces == number of tries remaining"
     (@tries - 1).times do
       print sushi_display
@@ -88,6 +89,9 @@ class Game
   end
 end
 
+def clear_screen
+  return "\e[H\e[2J"
+end
 
 answer_array = []
 
