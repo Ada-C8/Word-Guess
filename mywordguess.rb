@@ -33,8 +33,8 @@ class Word
       if @changed == nil #checks to see if guess was wrong
         @num_bad_guess += 1 # if guess is wrong increments bad guess otherwise  gives "free" guess
         @bad_letters << @letter
-        puts "\nNumber of failed guesses: #{@num_bad_guess}"
-        puts "Letters you have guessed: #{@bad_letters.join(", ")}." #prints to user how many bad guesses they took
+        puts "\n\nFutile attempts: #{@num_bad_guess}"
+        puts "It's not these: #{@bad_letters.join(", ")}." #prints to user how many bad guesses they took
       end
       return @num_bad_guess #otherwise method returns nil
     end
@@ -197,34 +197,53 @@ class Game
 
   def play
     word = Word.new(Faker::Hipster.unique.word.downcase)
-    @bad_guess_allowed = word.random_word.length + 3
-print word.random_word.join("")
+    @bad_guess_allowed = 7
+#print word.random_word.join("")
     while true
-      print "\nLetter guess: "
+      print "Go!"
+      print ">>".blink
       guess = gets.chomp.downcase
       print word.reveal(guess).join
       @num_bad_guess = word.count_bad_guess
       @num_good_guess = word.count_good_guess
-      puts @num_good_guess
+      #puts @num_good_guess
       Art.new.display(@num_good_guess)
       if word.random_word == word.word_display  || guess == word.random_word.join("")
         #check for the 'win condition'
-        puts "\e[H\e[2J"
-        puts "\nCongrats! You guessed the word AND you look the part!"
         Art.new.display(7)
+          puts "\nThey are vintage."
         break
       end
       if @num_bad_guess == @bad_guess_allowed #if this happens the 'win condition', you lost :disappointed:
-        puts "\nSorry, you're out of guesses! The word was #{word.random_word.join("")}. Guess you didn't know the word before it was cool."
+        puts "\nSo underground! The word was #{word.random_word.join("")}. I used this word for months before it was even cool."
+        Art.new.display(7)
         break
       end
     end
   end
 end
 
-puts "Welcome to Artisanal Haaang Maaaaan. Words are single-origin blah ...... "
-
+let_me_help_you = [
+  "Not to be a conformist, but there is only one right way to prep chai.",
+  "Nope! Hint: You can get a gallon of it at Trader Joe's, but I doubt it's organic.",
+  "That's not niche enough."
+]
+puts "This hang-man game is elite and invite-only (requires a password).\nHow do you take your vegan chai?"
+puts ">".blue.blink
+password = gets.chomp.downcase
+until password == "dirty"
+  puts "#{let_me_help_you.sample.red}"
+  password = gets.chomp.downcase
+end
+if password == "dirty"
+puts "Righteous! Every word is small-batch and artisanal.
+If we had to classify it, it would be Avant-garde.
+You get 7 guesses, 7 just feels right.
+You can also type the entire word.
+This way you win the game, but the word immediately becomes too mainstream.
+Please begin:".green
 word = Game.new.play
+end
 
 #
 # print "        ....                                ....            
