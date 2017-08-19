@@ -6,7 +6,7 @@ class Word
 
   attr_reader :word, :letters, :blanks
 
-  def initialize(word: Faker::Dessert.variety.downcase)
+  def initialize(word: Faker::Dessert.variety.downcase.sub(" ", ""))
     @word = word
     @letters = word.split("")
     @letters << @word
@@ -89,7 +89,7 @@ class Game
     if @game_word.word == user_guess
       you_won
     end
-
+    # puts "\e[H\e[2J"
     if @game_word.contains?(user_guess)
       reveal(user_guess)
       win?
@@ -159,11 +159,10 @@ end
 
 # Begin game play
 game = Game.new
-# game_word = Word.new
 
 # Explain rules to players
-puts "Welcome to FILL IN THE BLANKS, a word guess game!"
-puts "\nRULES: \nEach blank represents one letter of the word \nYour guess can be one letter or the whole word \nIf you're right, those letters will be revealed \nIf you're wrong, your cupcake will start to melt \nWhen your cupcake is a puddle of sugar, you lose. \nGood luck!\n\n"
+puts "Welcome to FILL IN THE BLANKS, an extra sweet word guess game!"
+puts "\nRULES: \n--Each blank represents one letter of the word \n--Your guess can be one letter or the whole word \n--If you're right, those letters will be revealed \n--If you're wrong, your cupcake will start to melt \n--When your cupcake is a puddle of sugar, you lose. \nGood luck!\n\n"
 
 # Find out & assign difficult level of user's choice
 game.difficulty
