@@ -3,21 +3,21 @@ require 'random-word'
 
 class Game
 
-  def initialize(answer_array)
-    puts "Welcome to the sushi word game! If you run out of sushi before you guess the word, you lose!!".colorize(:green)
-    @answer = answer_array.sample
-    puts @answer
+  def initialize(answer)
+
+
+    puts answer
     @correct_guesses = []
     @incorrect_guesses = []
     @tries = 7
 
-    @answer_as_array = split_answer(@answer)
+    @answer_as_array = split_answer(answer)
 
     while @tries > 0
       if @tries > 1
         accept_user_guess
         display
-        if correct_display == @answer
+        if correct_display == answer
           puts "~WINNER~~WINNER~~WINNER~".colorize(:light_magenta)
           exit
         end
@@ -37,7 +37,6 @@ class Game
     '.________.'
     SUSHI
   end
-
 
 
   private
@@ -87,14 +86,37 @@ class Game
     puts "Correct guesses: #{correct_display}".colorize(:light_blue)
     puts "Incorrect guesses: #{@incorrect_guesses}".colorize(:red)
   end
-end
 
 def clear_screen
   return "\e[H\e[2J"
 end
 
-answer_array = []
+end
 
-answer_array = 10.times.map { RandomWord.adjs.next.gsub('_', ' ') }
+#freestanding welcome method
+def welcome
+  puts "Welcome to the sushi word game! If you run out of sushi before you guess the word, you lose!!".colorize(:green)
+  puts "Pick your level: easy or hard:"
+  level = gets.chomp.downcase
+    unless level == "easy" || level == "hard"
+      puts "Invalid answer. Please enter easy or hard."
+      level = gets.chomp.downcase
+    end
 
-new_game = Game.new(answer_array)
+  @answer = ""
+  easy_answer_array = ["pink", "cat", "dolphin", "picnic", "sashimi", "tuna", "nigiri", "wasabi"]
+  hard_answer_array = []
+  hard_answer_array = 10.times.map { RandomWord.adjs.next.gsub('_', ' ') }
+
+  if level == "easy"
+    @answer = easy_answer_array.sample
+  elsif level == "hard"
+    @answer = hard_answer_array.sample
+  end
+
+  return @answer
+end
+
+# running program 
+
+new_game = Game.new(welcome)
