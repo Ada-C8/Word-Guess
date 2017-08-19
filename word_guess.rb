@@ -28,13 +28,24 @@ class WordGame
     until level_choice == "easy" || level_choice == "medium" || level_choice == "hard"
       level_choice = self.get_level
     end
-    return level_choice
+    case level_choice
+    when "easy"
+      @guesses_remaining = 5
+    when "medium"
+      @guesses_remaining = 4
+    when "hard"
+      @guesses_remaining = 3
+    else
+      get_level
+    end
+
+
   end
 
   def build_blank_word_array
     array = []
     @word.length.times do
-      array << " _ "
+      array << "_"
     end
     return array
   end
@@ -65,11 +76,11 @@ class WordGame
         i = 0
         @word_array.each do |element|
           if @guess == element #letter
-            @word_showing[i] = "#{element} " #resetting "__" to element which is the guessed letter
+            @word_showing[i] = "#{element}" #resetting "__" to element which is the guessed letter
           end
           i += 1
-
         end#of word_array loop
+
       else #if guessed letter does not exist
         puts "Sorry, that letter does not exist!"
         @guesses_remaining -= 1
@@ -79,30 +90,22 @@ class WordGame
 
   def win
     #print AsciiArt of food
+    puts "\e[H\e[2J"
     puts "YAY! YOU SAVED YOUR FAMILY'S PICNIC BASKET!!"
     @stop_guessing = true
   end
 
   def lose
+    puts "\e[H\e[2J"
     puts "YOU LOSE! YOU LOSE! NO PICNIC FOR YOU!"
     @stop_guessing = true
   end
-end #of WordGame clas
-
-# class AsciiArt
-#
-#     def initialize
-#     end
-#
-#     def level_easy_initial
-#       puts ""
-#     end
-#
-# end #of class AsciiArt
+end #of WordGame class
 
 
 #START OF GAME____________
 
+while true
 introduction = <<YES
 
 Welcome to Word Guess! You will be shown a series of blanks.  Each blank represents a letter in the word that you will be guessing! You will be allowed to guess a single letter, or the whole word at once on each of your turns. Just type in your guess and go! Good luck!
@@ -111,14 +114,14 @@ YES
 
 puts introduction
 
-game1 = WordGame.new #get user input for level
+  game1 = WordGame.new #get user input for level
 
-case game1.level_choice
-when "easy" #user only has 5 guesses
-  puts "\e[H\e[2J"
+  game1.level_choice
+  # when "easy" #user only has 5 guesses
+
   puts "\n\n"
-  game1.guesses_remaining = 5
   until game1.stop_guessing == true
+    puts "\e[H\e[2J"
     puts game1.word
     puts game1.word_showing.join
     puts "guessed letters: #{game1.letters_guessed}"
@@ -128,35 +131,23 @@ when "easy" #user only has 5 guesses
     game1.check_guess_easy
     if game1.guesses_remaining <= 0
       game1.lose
+    elsif game1.word_showing.join == game1.word
+      game1.win
     end
   end
 
-
-  #TABLE Idea
-  # headers = ["Guessed Letters", "Guessed Words", "Total Guesses Left"]
-  # rows = [game1.letters_guessed, game1.words_guessed, guesses_remaining]
-  # table = Terminal::Table.new :title => "WORD-GUESS SUMMARY", :headings => headers, :rows => rows
-  # puts table
-
-when "medium"
-  guesses_remaining = 4
-when "hard"
-  guesses_remaining = 3
-else
-  puts "I'm sorry. I didn't understand. "
-  get_level
+  puts "Would you like to play again?"
+  replay_response = gets.chomp.upcase
+  if replay_response == "NO"
+    exit
+  end
 end
 
 
+
+
 # while true
-#   puts "\e[H\e[2J"
-#   puts game1.word #test: view word
-#   puts game1.word_showing.join
-#   game1.get_guess
-#   game1.check_guess
-#   puts game1.missed_countcd
-#   puts game1.word_showing.join
-#   puts "Would you like to make another guess?"
+
 #   response = gets.chomp.upcase
 #   if response == "NO"
 #     exit
@@ -166,3 +157,9 @@ end
 
 # level_choice = game1.get_level #card may need to know level type
 # This card1.word will read the card's word
+
+#TABLE Idea
+# headers = ["Guessed Letters", "Guessed Words", "Total Guesses Left"]
+# rows = [game1.letters_guessed, game1.words_guessed, guesses_remaining]
+# table = Terminal::Table.new :title => "WORD-GUESS SUMMARY", :headings => headers, :rows => rows
+# puts table
