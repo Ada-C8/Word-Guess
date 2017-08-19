@@ -1,4 +1,5 @@
 require 'colorize'
+require 'random-word'
 
 class Game
 
@@ -7,7 +8,7 @@ class Game
     @answer = answer_array.sample
     @correct_guesses = []
     @incorrect_guesses = []
-    @tries = 6
+    @tries = 7
 
     @answer_as_array = split_answer(@answer)
 
@@ -77,26 +78,19 @@ class Game
   end
 
   def display
+    puts "\e[H\e[2J"
     puts "Number of sushi pieces == number of tries remaining"
-    @tries.times do
+    (@tries - 1).times do
       print sushi_display
     end
     puts "Correct guesses: #{correct_display}".colorize(:light_blue)
     puts "Incorrect guesses: #{@incorrect_guesses}".colorize(:red)
   end
-
 end
 
 
-class Guess
+answer_array = []
 
-  def initialize
-
-  end
-
-
-end
-
-answer_array = ["bat"]
+answer_array = 10.times.map { RandomWord.adjs.next.gsub('_', ' ') }
 
 new_game = Game.new(answer_array)
