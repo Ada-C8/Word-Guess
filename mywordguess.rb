@@ -179,7 +179,7 @@ class Art
     when 6
       puts @part6
     when 7
-      puts @part7
+      puts @part7.blink
     end
   end
 end
