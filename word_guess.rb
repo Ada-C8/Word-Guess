@@ -6,6 +6,8 @@ class WordGame
 
   attr_reader :word, :word_showing, :letters_guessed, :words_guessed, :level_choice
 
+  attr_accessor :stop_guessing, :guesses_remaining
+
   def initialize
     @word_bank = %W[APPLE SANDWICH PICNIC BASKET ANTS BLANKET IDYLLIC MOUNTAINS LAKE SUMMMER FRIENDS FAMILY]
     @level_choice = get_level
@@ -15,6 +17,7 @@ class WordGame
     @word_array = @word.split("") #Check at end if this is used more than in the guess method... if not... delete!
     @letters_guessed = []
     @words_guessed = []
+    @stop_guessing = false
   end
 
   def get_level
@@ -43,12 +46,12 @@ class WordGame
 
   #guess types: actual word, a letter, or invalid(guessing too many letters, guessing a number)
   def check_guess_easy
-    @guesses_remaining = 5
 
     if @guess.length.to_i > 1
       @words_guessed << @guess
       if @guess.upcase == @word
         print "YAY! CONGRATS! #{@word.upcase} IS CORRECT!"
+        win
       else
         print "Sorry, that was incorrect!"
         @guesses_remaining -= 1
@@ -67,11 +70,24 @@ class WordGame
           i += 1
 
         end#of word_array loop
-      else #if guessed letter does not exist,
+      else #if guessed letter does not exist
+        puts "Sorry, that letter does not exist!"
+        @guesses_remaining -= 1
       end
     end
-  end #of class Card
-end
+  end
+
+  def win
+    #print AsciiArt of food
+    puts "YAY! YOU SAVED YOUR FAMILY'S PICNIC BASKET!!"
+    @stop_guessing = true
+  end
+
+  def lose
+    puts "YOU LOSE! YOU LOSE! NO PICNIC FOR YOU!"
+    @stop_guessing = true
+  end
+end #of WordGame clas
 
 # class AsciiArt
 #
@@ -97,22 +113,30 @@ puts introduction
 
 game1 = WordGame.new #get user input for level
 
-
 case game1.level_choice
-when "easy"
-  guesses_remaining = 5
+when "easy" #user only has 5 guesses
   puts "\e[H\e[2J"
   puts "\n\n"
-  puts game1.word
-  puts game1.word_showing.join
-  puts "guessed letters: #{game1.letters_guessed}"
-  puts "guessed words: #{game1.words_guessed}"
-  puts "remaining guesses: #{guesses_remaining}"
-  game1.get_guess
-  game1.check_guess_easy
-  puts "guessed letters: #{game1.letters_guessed}"
-  puts "guessed words: #{game1.words_guessed}"
-  puts "remaining guesses: #{guesses_remaining}"
+  game1.guesses_remaining = 5
+  until game1.stop_guessing == true
+    puts game1.word
+    puts game1.word_showing.join
+    puts "guessed letters: #{game1.letters_guessed}"
+    puts "guessed words: #{game1.words_guessed}"
+    puts "remaining guesses: #{game1.guesses_remaining}\n"
+    game1.get_guess
+    game1.check_guess_easy
+    if game1.guesses_remaining <= 0
+      game1.lose
+    end
+  end
+
+
+  #TABLE Idea
+  # headers = ["Guessed Letters", "Guessed Words", "Total Guesses Left"]
+  # rows = [game1.letters_guessed, game1.words_guessed, guesses_remaining]
+  # table = Terminal::Table.new :title => "WORD-GUESS SUMMARY", :headings => headers, :rows => rows
+  # puts table
 
 when "medium"
   guesses_remaining = 4
@@ -123,13 +147,14 @@ else
   get_level
 end
 
+
 # while true
 #   puts "\e[H\e[2J"
 #   puts game1.word #test: view word
 #   puts game1.word_showing.join
 #   game1.get_guess
 #   game1.check_guess
-#   puts game1.missed_count
+#   puts game1.missed_countcd
 #   puts game1.word_showing.join
 #   puts "Would you like to make another guess?"
 #   response = gets.chomp.upcase
