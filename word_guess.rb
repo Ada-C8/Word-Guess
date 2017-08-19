@@ -53,11 +53,14 @@ class WordGame
   def get_guess
     puts "What would you like to guess?"
     @guess = gets.chomp.upcase
+    while @guess[/^[a-zA-Z]+/] != @guess
+      puts "Please enter letters only!"
+      @guess = gets.chomp.upcase
+    end
   end
 
   #guess types: actual word, a letter, or invalid(guessing too many letters, guessing a number)
   def check_guess_easy
-
     if @guess.length.to_i > 1
       @words_guessed << @guess
       if @guess.upcase == @word
