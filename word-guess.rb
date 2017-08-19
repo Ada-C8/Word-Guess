@@ -44,7 +44,6 @@ end #end of class
 class Game
 
   attr_reader :game_word, :guesses, :turns
-  # # just for testing
   attr_writer :game_word
 
   def initialize
@@ -97,9 +96,8 @@ class Game
       puts "\nSorry, that letter is not in your word.\nThere goes some delicious cupcake...\n\n"
       @turns += 1
       lose?
-      decompose_image
     end
-
+    decompose_image
     @guesses << user_guess
   end
 
@@ -147,12 +145,12 @@ end # end of class
 def ascii
   file = File.open("/Users/kimberley/Desktop/asciiartfile.txt", "r")
   contents = file.read
-  puts contents
+  puts contents.colorize(:magenta)
 end
 
 def decompose_image
-  line_limit = [20, 15, 10, 5]
-  index = (@turns - 1)
+  line_limit = [25, 20, 15, 10, 5]
+  index = (@turns)
   partial_image = IO.readlines("/Users/kimberley/Desktop/asciiartfile.txt")[1...line_limit[index]]
   puts partial_image
 end
