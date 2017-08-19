@@ -244,32 +244,3 @@ This way you win the game, but the word immediately becomes too mainstream.
 Please begin:".green
 word = Game.new.play
 end
-
-#
-# print "        ....                                ....            
-#        ... . . .........    .. .    .. .  ......... .. . .         
-#        MMMMMMMMM8I~....:~7DMMMMMMMMMDDMMMMMMMMM$+~~~~~IOMMMMMMMMMM.
-#        MMMMM=.              ...MMMMMMMMMMN..           . .  MMMMMM.
-#       .MMMM                    DMMMMMMM7                    MMMM~ 
-#          MMN                   .~MM .:MM                   ..MMM   
-#          .MM                   .IM?...NM.                  ..MM .  
-#           :M                   .MM.  ..M8                  .,M.    
-#             MM..                .M,.  . 8M..                .MM.    
-#            .M$.               ,MZ..    .MM.              ..OM..    
-#              MM....    ......,M?.        MM....    .......MM       
-#               8MM+.........MMM. .          MM?...  .....MM8..      
-#                 ...ZMMMMN$.....            ...?MMMMMMM=....        
-#                                                                    
-#                     .   ..   ...  .  .                      
-#                             MMMMMMM  .MMMMMMM                           
-#               ....       MMMMMMMMMMMMMMMMMMMMM        ....        
-#              MM..?.  ..,MMMMMMMMMMMMMMMMMMMMMMMMM.     $..MM       
-#            .MM.    . .NMMMMMMMMMMMMMMMMMMMMMMMMMMMM..  ....MM .    
-#            MMM.   .?MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM~.....MM?         
-#           .MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM .    
-#             .MMMMMMMMMMMMMMMMMMMMMM8 NMMMMMMMMMMMMMMMMMMMMMM       
-#              . 7MMMMMMMMMMMMMMMMM.   . :MMMMMMMMMMMMMMMMM?         
-#                  ...=I77?=,   .              .:=I77+~              
-#                   .. . .  ....                  .  .               
-#                                                ....                
-#                                                                     "
