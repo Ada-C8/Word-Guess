@@ -34,7 +34,7 @@ class Word
         @num_bad_guess += 1 # if guess is wrong increments bad guess otherwise  gives "free" guess
         @bad_letters << @letter
         puts "\n\nFutile attempts: #{@num_bad_guess}"
-        puts "It's not these: #{@bad_letters.join(", ")}." #prints to user how many bad guesses they took
+        puts "You've already typed: #{@bad_letters.join(", ")}." #prints to user how many bad guesses they took
       end
       return @num_bad_guess #otherwise method returns nil
     end
@@ -185,7 +185,7 @@ class Art
 end
 
 class Game
-  attr_accessor :random_word, :word_display, :num_bad_guess, :bad_letters, :letter, :num_good_guess, :part1
+  attr_reader :random_word, :word_display, :num_bad_guess, :bad_letters, :letter, :num_good_guess, :part1
   def initialize
 
 
@@ -214,7 +214,7 @@ class Game
           puts "\nThey are vintage."
         break
       end
-      if @num_bad_guess == @bad_guess_allowed #if this happens the 'win condition', you lost :disappointed:
+      if @num_bad_guess == @bad_guess_allowed #if this happens you lose.
         puts "\nSo underground! The word was #{word.random_word.join("")}. I used this word for months before it was even cool."
         Art.new.display(7)
         break
@@ -236,7 +236,8 @@ until password == "dirty"
   password = gets.chomp.downcase
 end
 if password == "dirty"
-puts "Righteous! Every word is small-batch and artisanal.
+puts "Righteous!
+Welcome to the game! Every word is sourced locally and responsibly.
 If we had to classify it, it would be Avant-garde.
 You get 7 guesses, 7 just feels right.
 You can also type the entire word.
