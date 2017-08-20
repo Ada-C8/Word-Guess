@@ -19,6 +19,10 @@ class Game
     @guesses_left = 5 #number of flowers
     @wrong_letters = []
     @correct_letters = []
+    current_word = ""
+    # = target_word.length.times do |x|
+    #   puts "-"
+    # end
     @won = false
     @ART = []
     art = <<ART
@@ -79,30 +83,47 @@ ART
     #prompt the user
     puts "Please enter a letter"
     letter_guess = gets.chomp.downcase
-    check_for_letter(letter_guess)
+    check_for_correct_letter_and_build_word(letter_guess)
+    puts "wrong letters: #{@wrong_letters}"
+    puts "correct letters: #{@correct_letters} \n"
+    #puts ""
+  end #end of receive_user_input
+
+  # def check_if_used
+  #   if @wrong_letters.include?(letter_guess)
+  #     puts "You already guessed that letter. Try again"
+  #     receive_user_input
+  #   end
+  # end #end of check_if_used
+
+  def choose_path(letter_guess)
+    if wrong_letter?(letter_guess)
+      track_guess_count(input)
+    else
+      check_for_correct_letter_and_build_word(letter_guess)
+    end
   end
 
-  def check_for_letter(letter_guess)
+  def check_for_correct_letter_and_build_word(letter_guess)
     current_word = ""
     input = false
+    #wrong_letter = ""
+
     @target_word.each do |letter|
-      if @correct_letters.include?(letter)
+      if @correct_letters.include?(letter) #True if letter is already stored in correct_letters
         character = letter
-        #input = true
       elsif letter == letter_guess
         character = letter_guess
         @correct_letters << character
         input = true
-      # elsif @wrong_letters.include?(letter_guess)
-      #   input = true
       else
         character = "-"
-        @wrong_letters << letter
       end
       current_word += character
     end #end do
-    puts "Your current word: #{current_word}"
 
+    puts "Your current word: #{current_word}"
+######
     if current_word.split(//) == @target_word
       @won = true
       #play_again? method
@@ -110,6 +131,15 @@ ART
       track_guess_count(input)
     end
   end #end of method
+
+  def wrong_letter?(letter_guess)
+    @target_word.include?(letter_guess)
+      store_wrong_letter(letter_guess)
+  end
+
+  def store_wrong_letter(letter_guess)
+      @wrong_letters << letter_guess
+  end
 
   def won?
     return @won
