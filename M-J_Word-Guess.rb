@@ -75,13 +75,11 @@ ART
 
 @ART.push(art)
 
-
-
   end
 
   def receive_user_input
     #prompt the user
-    puts "Please enter a letter"
+    puts "\nPlease enter a letter"
     letter_guess = gets.chomp.downcase
     check_for_correct_letter_and_build_word(letter_guess)
     puts "wrong letters: #{@wrong_letters}"
@@ -99,6 +97,7 @@ ART
   def choose_path(letter_guess)
     if wrong_letter?(letter_guess)
       track_guess_count(input)
+      store_wrong_letter(letter_guess)
     else
       check_for_correct_letter_and_build_word(letter_guess)
     end
@@ -134,11 +133,12 @@ ART
 
   def wrong_letter?(letter_guess)
     @target_word.include?(letter_guess)
-      store_wrong_letter(letter_guess)
   end
 
   def store_wrong_letter(letter_guess)
-      @wrong_letters << letter_guess
+      if wrong_letter?
+        @wrong_letters << letter_guess
+      end
   end
 
   def won?
@@ -190,6 +190,9 @@ puts "Welcome to Maria and Julia's Word Game!"
 word_array = ["hat", "math", "phony" ]
 target_word = word_array.sample.split(//)
 our_word = Game.new(target_word)
+puts "Your word is:"
+target_word.length.times do |x| print "-"
+  end
 #puts our_word.ART
 
 while our_word.won? == false && our_word.guesses_left? == true
