@@ -10,7 +10,7 @@ class WordGuess
   end
 
   def word_bank
-    # tries = 10
+
     word_list = ["Accio", "Patronus", "Wand", "Hermione", "Snitch", "Dobby"]
     our_word = word_list.sample.upcase
     our_word_split = our_word.scan(/\w/).uniq.flatten.sort
@@ -55,9 +55,9 @@ class WordGuess
       puts "/MMMMMMMM           " + "                    " + "     DDDD  DDD  "
       puts "\n"
       puts "Guess this word:".blue
-      p empty_array
+      puts empty_array.join(" ")
       puts "You've already guessed these letters:".red
-      p wrong_guess
+      puts wrong_guess.join(", ")
       letter = gets.chomp.upcase
 
       if our_word.include? letter
@@ -67,7 +67,7 @@ class WordGuess
 
         word_split.each_index do |i|
           if letter == word_split[i]
-            empty_array[i] << letter
+            empty_array[i] = letter
           end
         end
 
@@ -75,13 +75,14 @@ class WordGuess
           puts our_word
           puts "\n"
           puts "
-          ██╗   ██╗ ██████╗ ██╗   ██╗     █████╗ ██████╗ ███████╗     █████╗     ██╗    ██╗██╗███████╗ █████╗ ██████╗ ██████╗
-          ╚██╗ ██╔╝██╔═══██╗██║   ██║    ██╔══██╗██╔══██╗██╔════╝    ██╔══██╗    ██║    ██║██║╚══███╔╝██╔══██╗██╔══██╗██╔══██╗
-          ╚████╔╝ ██║   ██║██║   ██║    ███████║██████╔╝█████╗      ███████║    ██║ █╗ ██║██║  ███╔╝ ███████║██████╔╝██║  ██║
-          ╚██╔╝  ██║   ██║██║   ██║    ██╔══██║██╔══██╗██╔══╝      ██╔══██║    ██║███╗██║██║ ███╔╝  ██╔══██║██╔══██╗██║  ██║
-          ██║   ╚██████╔╝╚██████╔╝    ██║  ██║██║  ██║███████╗    ██║  ██║    ╚███╔███╔╝██║███████╗██║  ██║██║  ██║██████╔╝
-          ╚═╝    ╚═════╝  ╚═════╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝    ╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝
-          ".red
+     )   )         (                            (       )        (   (
+  ( /(( /(       ( )\ )        (       (  (     )\\ ) ( /(  (     )\\ ))\\ )
+  )\\())\\())    ( )(()/((       )\\      )\\))(   (()/( )\\()) )\\   (()/(()/(
+ ((_)((_)\\     )((_/(_))\\   ((((_)(   ((_)()\\ ) /(_)((_)((((_)(  /(_)/(_))
+__ ((_)((_) _ ((_)(_))((_)   )\\ _ )\\  _(())\\_)((_))  _((_)\\ _ )\\(_))(_))_
+\\ \\ / / _ \\| | | || _ | __|  (_)_\\(_) \\ \\((_)/ |_ _||_  /(_)_\\(_| _ \\|   \\
+ \\ V | (_) | |_| ||   | _|    / _ \\    \\ \\/\\/ / | |  / /  / _ \\ |   /| |) |
+  |_| \\___/ \\___/ |_|_|___|  /_/ \\_\\    \\_/\\_/ |___|/___|/_/ \\_\\|_|_\\|___/".red
           puts "\n"
           puts "You WIN!"
           exit
@@ -89,8 +90,6 @@ class WordGuess
 
       else
         wrong_guess << letter
-        # puts "You've already guessed these letters:".red
-        # p wrong_guess
         puts "Try again!"
         @tries -= 1
       end
