@@ -215,7 +215,7 @@ class Game
         break
       end
       if @num_bad_guess == @bad_guess_allowed #if this happens you lose.
-        puts "\nSo underground! The word was #{word.random_word.join("")}. I used this word for months before it was even cool."
+        puts "\nSo underground! The word was '#{word.random_word.join("")}'. I used this word for months before it was even cool."
         Art.new.display(7)
         break
       end
