@@ -49,7 +49,7 @@ class Word
 end
 
 class Art
-  attr_accessor :num_good_guess, :part1, :part2, :part3, :part4, :part5, :part6, :part7
+  attr_reader :num_good_guess, :part1, :part2, :part3, :part4, :part5, :part6, :part7
   def initialize
     @part1 = "        ....                                ....            
            ... . . .........    .. .    .. .  ......... .. . .         
