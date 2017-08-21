@@ -12,6 +12,12 @@ class Round
 
     @max_wrong_guess = 0
 
+    until ["easy", "medium", "hard"].include? @category
+      puts "Invalid difficulty, pleaese enter another a vaild difficulty."
+      puts "Our available difficulties are: easy, medium, hard: "
+      @difficulty = gets.chomp.downcase
+    end
+
     case @difficulty
     when "easy"
       @max_wrong_guess = 8
@@ -19,13 +25,13 @@ class Round
       @max_wrong_guess = 5
     when "hard"
       @max_wrong_guess = 3
-    else
-      raise ArgumentError.new("Difficulty must be easy, medium or hard.")
+    # else
+    #   raise ArgumentError.new("Difficulty must be easy, medium or hard.")
     end
 
     until ["color", "food", "hipster", "jobs"].include? @category
-      puts "Invalid category, pleaese enter another one: "
-      @category = gets.chomp
+      puts "Invalid category, please enter another one."
+      @category = gets.chomp.downcase
     end
 
     case @category
@@ -163,8 +169,12 @@ class Round
 
 end
 
-round1 = Round.new()
 puts "\n\nWelcome to Word Guess!!!!!!\n\n"
+print "Choose a difficulty >> "
+difficulty = gets.chomp.downcase
+print "Now choose a category. Our available categories are: color, jobs, hipster, and food. >> "
+category = gets.chomp.downcase
+round1 = Round.new(difficulty, category)
 puts round1.dash_word
 puts "\n\nGuess a letter: "
 guess = gets.chomp.downcase
