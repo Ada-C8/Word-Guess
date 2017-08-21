@@ -117,6 +117,6 @@ def welcome
   return @answer
 end
 
-# running program 
+# running program
 
 new_game = Game.new(welcome)
