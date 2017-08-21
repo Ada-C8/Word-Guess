@@ -195,7 +195,7 @@ end #end of class
 
 
 puts "Welcome to Maria and Julia's Word Game!"
-word_array = ["hat", "math", "phony" ]
+word_array = ["hat", "math", "phony", "putty" ]
 target_word = word_array.sample.split(//)
 our_word = Game.new(target_word)
 puts "Your word is:"
