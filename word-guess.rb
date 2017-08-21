@@ -1,15 +1,5 @@
 
 ## CLASS DEFINITIONS
-
-# class Word
-#   attr_reader :word_characters
-#
-#   def initialize(given_word)
-#     @word_characters = []
-#     given_word.each_char {|c| @word_characters << c }
-#   end
-#
-# end # end of Word class definition
 # require colorize
 
 class Display
@@ -17,7 +7,7 @@ class Display
 
   def initialize(game_instance)
     @string_word = game_instance.string_word
-    @user_guess = game_instance.user_guess
+    @user_guess = nil
     @display_word = ""
     @selected_level = game_instance.selected_level
     # set initial word display
@@ -52,9 +42,11 @@ class Display
   end
 
   def display_counter #race progession
-    puts @counter_finish
-    puts @counter_orb
-    puts @counter_base
+    <<-COUNTER
+    #{@counter_finish}
+    #{@counter_orb}
+    #{@counter_base}
+    COUNTER
   end
 
   def update_counter
@@ -64,7 +56,7 @@ class Display
 end # End of Display definition
 
 class Game
-  attr_reader :level, :word_to_guess, :string_word, :selected_level
+  attr_reader :level, :string_word, :selected_level
 
   attr_accessor :user_guess, :interface
 
@@ -143,7 +135,7 @@ class Game
           puts "Wrong!"
           @used_letters << @user_guess
           @interface.update_counter
-          accept_guess
+          end_game
         end
       end
     end
