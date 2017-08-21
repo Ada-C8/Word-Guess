@@ -82,6 +82,7 @@ ART
     puts "\nPlease enter a letter"
     letter_guess = gets.chomp.downcase
     choose_path(letter_guess)
+    store_wrong_letter(letter_guess)
     #check_for_correct_letter_and_build_word(letter_guess)
     puts "wrong letters: #{@wrong_letters}"
     puts "correct letters: #{@correct_letters} \n"
@@ -99,10 +100,10 @@ ART
   def choose_path(letter_guess)
     if wrong_letter?(letter_guess)
       puts "it IS a wrong a letter!"
-      store_wrong_letter(letter_guess)
+      # store_wrong_letter(letter_guess)
       track_guess_count(false)
     else
-      puts "it is NOT a wrong letter!"
+      puts "it is not a wrong letter!"
       check_for_correct_letter_and_build_word(letter_guess)
     end
   end
@@ -136,14 +137,19 @@ ART
   end #end of method
 
   def wrong_letter?(letter_guess)
-    @target_word.include?(letter_guess)
-    return false
+    if @target_word.include?(letter_guess)
+      return false
+    else
+      return true
+    end #if the letter guess is in the target word, it returns false
   end
 
   def store_wrong_letter(letter_guess)
-      if wrong_letter?(letter_guess)
-        @wrong_letters << letter_guess
-      end
+    if wrong_letter?(letter_guess)
+      @wrong_letters << letter_guess
+    else
+      puts "We don't have anything to put in wrong_letters array"
+    end
   end
 
   def won?
