@@ -1,5 +1,6 @@
 require 'faker'
 require 'colorize'
+require 'artii'
 
 class Round
 
@@ -164,10 +165,14 @@ class Round
 
   def check_if_winner
     if winner?
-      return "#{@dash_word}\n\nYou win!!!!"
-
+      a = Artii::Base.new :font => 'slant'
+      system "clear"
+      puts a.asciify('You Win!').colorize(:green)
+      return "The word is: #{@word}"
     elsif game_over?
-      return "game over!!! the word was #{@word}"
+      a = Artii::Base.new :font => 'slant'
+      puts a.asciify('Game Over!').colorize(:red)
+      return "The word is: #{@word}"
     end
   end
 
