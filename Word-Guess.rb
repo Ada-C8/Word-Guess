@@ -1,54 +1,51 @@
 require 'faker'
 require 'colorize'
-require 'pry'
 
 class Round
 
   attr_accessor :word, :word_array, :dash_word, :score, :wrong_guess, :max_wrong_guess, :guessed_letters
 
-  def initialize(difficulty = :easy, category = :jobs)
+  def initialize(difficulty = "easy", category = "color")
     @difficulty = difficulty
     @category = category
     @word = ""
 
-    minLimit = 0
-    maxLimit = 0
+    @max_wrong_guess = 0
+
     case @difficulty
-    when :easy
-      minLimit = 1
-      maxLimit = 3
-    when :medium
-      minLimit = 4
-      maxLimit = 5
-    when :hard
-      minLimit = 6
-      maxLimit = 8
+    when "easy"
+      @max_wrong_guess = 8
+    when "medium"
+      @max_wrong_guess = 5
+    when "hard"
+      @max_wrong_guess = 3
     else
-      raise ArgumentError.new("Difficulty must be :easy, :medium or :hard.")
+      raise ArgumentError.new("Difficulty must be easy, medium or hard.")
     end
 
-    until [:color, :food, :hipster, :jobs].include? @category
-      binding.pry
+    until ["color", "food", "hipster", "jobs"].include? @category
       puts "Invalid category, pleaese enter another one: "
       @category = gets.chomp
     end
 
     case @category
-    when :color
-        @word = generate_word(minLimit, maxLimit, Faker::Color.color_name)
-    when :food
-        @word = generate_word(minLimit, maxLimit, Faker::Food.dish)
-    when :hipster
-        @word = generate_word(minLimit, maxLimit, Faker::Hipster.word)
-    when :jobs
-        @word = generate_word(minLimit, maxLimit, Faker::Job.title)
+    when "color"
+        @word = Faker::Color.color_name
+    when "food"
+        @word = Faker::Food.dish
+    when "hipster"
+        @word = Faker::Hipster.word
+    when "jobs"
+        @word = Faker::Job.title
     end
 
     @word_array = @word.split("")
-    @dash_word = "_ " * @word.length
+    @dash_word = ""
+    @word.length.times do |index|
+      @word[index] == " " ? (@dash_word += "  ") : (@dash_word += "_ ")
+    end
     @score = 0
     @wrong_guess = 0
-    @max_wrong_guess = 5 #easy = 5, medium, hard = 3
     @guessed_letters = []
   end
 
@@ -162,18 +159,6 @@ class Round
       puts "\nInvalid input. Enter only letters."
       return false
     end
-  end
-
-  def generate_word(minLimit, maxLimit, make_word)
-    #until @word != nil
-    temp = make_word
-        until(@word.length >= minLimit && @word.length <= maxLimit)
-          # binding.pry
-           temp = make_word
-        end
-
-      return temp
-    # end
   end
 
 end
