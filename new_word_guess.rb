@@ -4,9 +4,7 @@ require 'random-word'
 class Game
 
   def initialize(answer)
-
-
-    puts answer
+    # puts answer
     @correct_guesses = []
     @incorrect_guesses = []
     @tries = 7
@@ -87,9 +85,9 @@ class Game
     puts "Incorrect guesses: #{@incorrect_guesses}".colorize(:red)
   end
 
-def clear_screen
-  return "\e[H\e[2J"
-end
+  def clear_screen
+    return "\e[H\e[2J"
+  end
 
 end
 
@@ -98,10 +96,10 @@ def welcome
   puts "Welcome to the sushi word game! If you run out of sushi before you guess the word, you lose!!".colorize(:green)
   puts "Pick your level: easy or hard:"
   level = gets.chomp.downcase
-    unless level == "easy" || level == "hard"
-      puts "Invalid answer. Please enter easy or hard."
-      level = gets.chomp.downcase
-    end
+  unless level == "easy" || level == "hard"
+    puts "Invalid answer. Please enter easy or hard."
+    level = gets.chomp.downcase
+  end
 
   @answer = ""
   easy_answer_array = ["pink", "cat", "dolphin", "picnic", "sashimi", "tuna", "nigiri", "wasabi"]
