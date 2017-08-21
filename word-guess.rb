@@ -95,6 +95,7 @@ class Game
       puts "\nSorry, that letter is not in your word.\nThere goes some delicious cupcake...\n\n"
       @turns += 1
       lose?
+      puts "Here's your word so far: \n #{@game_word.blanks}"
     end
     decompose_image
     @guesses << user_guess
@@ -150,8 +151,8 @@ end
 def decompose_image
   line_limit = [25, 20, 15, 10, 5]
   index = (@turns)
-  partial_image = IO.readlines("/Users/kimberley/Desktop/asciiartfile.txt")[1...line_limit[index]]
-  puts partial_image
+  partial_image = IO.readlines("/Users/kimberley/Desktop/asciiartfile.txt")[1...line_limit[index]].join
+  puts partial_image.colorize(:magenta)
 end
 
 # Begin game play
