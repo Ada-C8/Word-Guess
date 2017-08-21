@@ -98,7 +98,9 @@ ART
   # end #end of check_if_used
 
   def choose_path(letter_guess)
-    if wrong_letter?(letter_guess)
+    if @wrong_letters.include?(letter_guess) || @correct_letters.include?(letter_guess)
+      puts "You already tried that letter."
+    elsif wrong_letter?(letter_guess)
       puts "it IS a wrong a letter!"
       # store_wrong_letter(letter_guess)
       track_guess_count(false)
