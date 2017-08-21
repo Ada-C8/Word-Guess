@@ -1,105 +1,150 @@
 class Game
-attr_reader :hang_art, :letter_array, :under_score, :guess_index, :guess, :guess_check
-  def initialize(letter_array)
-    @letter_array = letter_array
-    @under_score  = under_score
-    @guess_index = guess_index
-    @guess = guess
+  def initialize(game_word)
+    # array, contains the final secret answer in an array, one letter per index position
+    @letter_array = game_word.downcase.split("")
 
+    # array, contains the answer as guessed thus far, with "_" where guesses remain
+    @finished_guess = game_word.gsub(/./, "_").split("")
+
+    # array, contain every letter guessed thus far that isn't in the final secret answer
+    @guessed_letters = []
+
+    # counts how many guesses have been made and aren't correct
+    @failed_guesses = 0
   end
 
-# --------------------------------
-  def guess_check
-      @guess_index = []
-      @letter_array.each do |letter|
-        if @guess == letter_array.include?(@guess)
-          @guess_index << @letter_array.index(@guess)
+  def hangmanpics
+    hangmanpics = ['''
+    +---+
+    |   |
+        |
+        |
+        |
+        |
+    =========''', '''
+    +---+
+    |   |
+    O   |
+        |
+        |
+        |
+    =========''', '''
+    +---+
+    |   |
+    O   |
+    |   |
+        |
+        |
+    =========''', '''
+    +---+
+    |   |
+    O   |
+   /|   |
+        |
+        |
+    =========''', '''
+    +---+
+    |   |
+    O   |
+   /|\  |
+        |
+        |
+    =========''', '''
+    +---+
+    |   |
+    O   |
+   /|\  |
+   /    |
+        |
+    =========''', '''
+    +---+
+    |   |
+    O   |
+    /|\  |
+    / \  |
+        |
+    =========''']
+  end
 
+  # begins the game, call only once after instantiating Game object
+  def startGame
+    puts "WELCOME TO HANGMAN!"
+    promptUser
+  end
+
+
+  # prompts the user for a new letter, call this each time you need to start over and ask for a new letter
+  def promptUser
+    # moved the below unless statement to the top of the promtuser method because the promtuser and hangmanpics on lines 124-126 were preventing the user from being reach the portion of code that prints "you win"
+    unless (@finished_guess.include?("_"))
+      puts "\nYou win, the answer is: #{@letter_array.join("")}"
+      return
+    end
+
+    # Get guess from user
+    puts "What's your guess?"
+    guess = gets.chomp.downcase
+
+    # Tell user what they've guessed thus far
+    puts "You've guessed: #{@guessed_letters.join(', ')}"
+    # puts "So far: #{@finished_guess.join('-')}"
+
+    # validate the guess is a letter and only one letter
+    if (guess.length > 1)
+      puts "You can only guess one letter at a time"
+      return promptUser
+    end
+    unless (guess.match(/[a-zA-Z]/))
+      puts "Your guess must be a letter"
+      return promptUser
+    end
+
+    # check to see if this letter has already been guessed
+    if (@guessed_letters.include?(guess))
+      puts "You already guessed #{guess}"
+      return promptUser
+      hangmanpics
+    end
+
+    # now we know this is a new valid letter that has not been guessed, so add it to list of guessed letters
+    @guessed_letters.push(guess)
+
+    # check to see if the guess actually exists in the final secret answer
+    if (@letter_array.include?(guess)) # this means the guess is a correct guess
+      # loop through every character in the secret answer, and where it matches the guess, replace the "_" in the @finished_guess
+      0.upto(@letter_array.length-1) { |index|
+        if (@letter_array[index] == guess)
+          @finished_guess[index] = guess
         end
+      }
 
-    end
-   return @guess_index
-  end
+      #by puting the following three lines of code outside of the above loop inside of the if statment, we are allowing the loop to go through each index rather than stopping at the first matching letter and accounting for duplicate letters in a word.
+      puts "So far: #{@finished_guess.join('-')}"
+      promptUser
+      hangmanpics
 
-    def user_interface
-      puts "Welcome to Word-Guess!\nWe've selected a word, Please guess your first letter: "
-      @guess = gets.chomp
-    end
-
-
-  def replace_index
-    @under_score = ["_","_","_","_","_"]
-    @under_score = @under_score.map do |x|
-      if x == @guess_index
-        x = @guess
+      # if the finished_guess has no more "_", then we know they win!
+      # unless (@finished_guess.include?("_"))
+      #   puts "You win, the answer is: #{@letter_array.join("")}"
+      #   return
+      # end
+    else # else the guess was incorrect
+      # add to the count of failed guesses
+      puts "So far: #{@finished_guess.join('-')}"
+      @failed_guesses += 1
+      if (@failed_guesses == 7) # after 7 failed guesses you lose!
+        puts "You lose!"
+        return
       else
-        x
+        # print the new hangman drawing based on your failed guess, and then ask again
+        puts hangmanpics[@failed_guesses-1]
+        return promptUser
       end
     end
-    under_score = @under_score
-    return under_score
-  end
-# -------------------------
-
-  def hang_art
-      <<-HEREDOC
-      +---+
-       |   |
-       O   |
-      /|\\  |
-      / \\  |
-           |
-  =========
-      HEREDOC
   end
 end
 
+gamewords = ["Elephant","Rhinoceros","Puppy","Giraffe","Lion","Anteater"]
 
-
-class Word
-  attr_reader :word_bank, :game_word, :letter_array, :get_word
-  def initialize(word_bank)
-    @word_bank = word_bank
-    @game_word = game_word
-    @letter_array = letter_array
-
-  end
-
-  def get_word(word_bank)
-    @game_word = @word_bank.delete(@word_bank.sample)
-    @letter_array = @game_word.split(//)
-    letter_array = @letter_array
-    return letter_array
-  end
-
-end
-
-
-word_bank = Word.new(["acorn", "acute", "aitty", "aooky", "aoozy"])
-letter_array = word_bank.get_word(word_bank)
-
-# word_bank.get_word
-new_game = Game.new(letter_array)
-new_game.user_interface
-new_game.guess_check
-new_game.replace_index
-puts new_game.replace_index
-
-
-#puts word_bank.get_word
-# guess = "a"
-# guess_index = []
-# letter_array = ["a","b", "a"]
-# under_score = ["_","_","_"]
-# letter_array.each do |letter|
-#   if guess == letter_array.include?(guess)
-#     guess_index << letter_array.index(guess)
-#   end
-# end
-# puts guess_index
-# under_score = under_score.map do |x|
-#   if x == guess_index
-#     x = guess
-#   end
-# end
-# puts under_score
+myGame = Game.new(gamewords.sample)
+myGame.startGame
