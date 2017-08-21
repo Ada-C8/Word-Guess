@@ -102,11 +102,8 @@ ART
     if @wrong_letters.include?(letter_guess) || @correct_letters.include?(letter_guess)
       puts "You already tried that letter."
     elsif wrong_letter?(letter_guess)
-      puts "it IS a wrong a letter!"
-      # store_wrong_letter(letter_guess)
       track_guess_count(false)
     else
-      puts "it is not a wrong letter!"
       check_for_correct_letter_and_build_word(letter_guess)
     end
   end
@@ -114,7 +111,6 @@ ART
   def check_for_correct_letter_and_build_word(letter_guess)
     current_word = ""
     input = false
-    #wrong_letter = ""
 
     @target_word.each do |letter|
       if @correct_letters.include?(letter) #True if letter is already stored in correct_letters
@@ -150,8 +146,6 @@ ART
   def store_wrong_letter(letter_guess)
     if wrong_letter?(letter_guess) && !@wrong_letters.include?(letter_guess)
       @wrong_letters << letter_guess
-    else
-      puts "We don't have anything to put in wrong_letters array"
     end
   end
 
@@ -172,7 +166,7 @@ ART
       puts @ART[ @guesses_left-1]
     end
 
-    puts "You have #{@guesses_left} guesses left!"
+    puts "\nYou have #{@guesses_left} guesses left!"
   end
 
   def run
@@ -196,13 +190,9 @@ end #end of class
 
 
 puts "Welcome to Maria and Julia's Word Game!"
-word = Faker::Dessert.variety
-puts "Word: #{word}"
+word = Faker::Space.planet
 word = word.downcase
-#puts "Word downcased: #{word}"
-#word_array = [word]
 target_word = word.split(//)
-puts "Our target word: #{target_word}"
 our_word = Game.new(target_word)
 puts "Your word is:"
 target_word.length.times do |x| print "-"
