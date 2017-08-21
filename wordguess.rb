@@ -70,6 +70,16 @@ class RandomWord
       puts cat_4.colorize(:light_red)
     when 5
       puts cat_5.colorize(:red)
+    when 10
+      puts win_cat_0.colorize(:green)
+    when 11
+      puts win_cat_1.colorize(:light_green)
+    when 12
+      puts win_cat_2.colorize(:yellow)
+    when 13
+      puts win_cat_3.colorize(:magenta)
+    when 14
+      puts win_cat_4.colorize(:light_red)
     end
   end
 
@@ -149,6 +159,11 @@ while play_again
     random_word.cat_position
     random_word.pretty_print
     if random_word.did_you_win?
+      random_word.guess += 10
+      system "clear"
+      welcome_screen
+      random_word.cat_position
+      random_word.pretty_print
       random_word.you_win
       player_win = true
     end
