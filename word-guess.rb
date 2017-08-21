@@ -6,12 +6,12 @@ class Display
   attr_accessor :display_word, :user_guess, :counter_finish, :counter_orb, :counter_base
 
   def initialize(game_instance)
-    @string_word = game_instance.string_word
+    @winning_word = game_instance.winning_word
     @user_guess = nil
     @display_word = ""
     @selected_level = game_instance.selected_level
     # set initial word display
-    @string_word.each_char do |char|
+    @winning_word.each_char do |char|
       if char == " "
         @display_word += "  "
       else
@@ -28,7 +28,7 @@ class Display
     char_positions =[]
     i = -1
     # push guessed character index to an array
-    @string_word.each_char do |char|
+    @winning_word.each_char do |char|
       i += 1
       if char == @user_guess
         # times 2 to adjust for blanks in display_word
@@ -56,7 +56,7 @@ class Display
 end # End of Display definition
 
 class Game
-  attr_reader :level, :string_word, :selected_level
+  attr_reader :level, :winning_word, :selected_level
 
   attr_accessor :user_guess, :interface
 
@@ -79,13 +79,13 @@ class Game
     # choose a random sample from the selected level array
     case @level
     when "easy"
-      @string_word = easy_words.sample
+      @winning_word = easy_words.sample
       @selected_level = 12
     when "medium"
-      @string_word = med_words.sample
+      @winning_word = med_words.sample
       @selected_level = 10
     when "hard"
-      @string_word = hard_words.sample
+      @winning_word = hard_words.sample
       @selected_level = 10
     end
     # create a new Display for this game, pass the Game instance to it
@@ -109,7 +109,7 @@ class Game
 
     #Accept Letter Guesses
     if @user_guess.length == 1
-      if @string_word.include?(@user_guess)
+      if @winning_word.include?(@user_guess)
         @interface.update_display
         end_game
       else
@@ -125,7 +125,7 @@ class Game
       end
     #Accept Word Guesses
     else
-      if @user_guess == @string_word
+      if @user_guess == @winning_word
         @interface.display_word.gsub!("_", "-")
         end_game
       else
