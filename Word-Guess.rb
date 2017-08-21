@@ -10,6 +10,7 @@ class Round
     @difficulty = difficulty
     @category = category
     @word = ""
+    @win = false
 
     @max_wrong_guess = 0
 
@@ -136,7 +137,9 @@ class Round
   end
 
   def check_letter(guess_letter)
-    if valid_input?(guess_letter)
+    if guess_letter == @word
+      @win = true
+    elsif valid_input?(guess_letter)
       while @guessed_letters.include? guess_letter
         puts "\nYou already guessed #{guess_letter}!"
         print "Please enter another letter:"
@@ -182,13 +185,19 @@ class Round
 
   def winner?
     #if no more dashes, win!
-    return !(@dash_word.include? "_")
+    return !(@dash_word.include? "_") || @win == true
   end
 
   private
 
   def valid_input?(guess_letter)
-    if ('a'..'z').include? guess_letter
+    if guess_letter != @word && guess_letter.length > 1
+      @wrong_guess += 1
+      ascii_skull
+      puts "\nThat is not the right word :( Tryy another word or just one letter."
+
+      return false
+    elsif ('a'..'z').include? guess_letter
       return true
     else
       puts "\nInvalid input. Enter only letters."
@@ -213,8 +222,6 @@ round1.check_letter(guess)
 
 
 until round1.game_over? || round1.winner?
-  # puts "\n\nLetters Guessed:\n"
-  # print round1.guessed_letters
   puts "\n"
   puts round1.dash_word
   print "\n\nGuess a letter: "
@@ -222,45 +229,3 @@ until round1.game_over? || round1.winner?
   puts round1.check_letter(guess)
 
 end
-
-
-
-
-  skull5 = <<-HEREDOC
-     .... NO! ...                  ... MNO! ...
-   ..... MNO!! ...................... MNNOO! ...
-
-
-  ..... MMNO! ......................... MNNOO!! .
-  .... MNOONNOO!   MMMMMMMMMMPPPOII!   MNNO!!!! .
-  ... !O! NNO! MMMMMMMMMMMMMPPPOOOII!! NO! ....
-
-    ...... ! MMMMMMMMMMMMMPPPPOOOOIII! ! ...
-   ........ MMMMMMMMMMMMPPPPPOOOOOOII!! .....
-   ........ MMMMMOOOOOOPPPPPPPPOOOOMII! ...
-
-
-    ....... MMMMM..    OPPMMP    .,OMI! ....
-     ...... MMMM::   o.,OPMP,.o   ::I!! ...
-         .... NNM:::.,,OOPM!P,.::::!! ....
-
-
-          .. MMNNNNNOOOOPMO!!IIPPO!!O! .....
-         ... MMMMMNNNNOO:!!:!!IPPPPOO! ....
-           .. MMMMMNNOOMMNNIIIPPPOO!! ......
-
-
-          ...... MMMONNMMNNNIIIOO!..........
-       ....... MN MOMMMNNNIIIIIO! OO ..........
-    ......... MNO! IiiiiiiiiiiiI OOOO ...........
-
-
-  ...... NNN.MNO! . O!!!!!!!!!O . OONO NO! ........
-   .... MNNNNNO! ...OOOOOOOOOOO .  MMNNON!........
-   ...... MNNNNO! .. PPPPPPPPP .. MMNON!........
-
-
-      ...... OO! ................. ON! .......
-         ................................
-
-      HEREDOC
