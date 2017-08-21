@@ -1,55 +1,35 @@
 require 'faker'
 require 'colorize'
-require 'artii'
-
-
 
 class Word
-  attr_accessor :random_word, :word_display, :num_bad_guess, :bad_letters, :letter, :num_good_guess
-  def initialize (random_word)
+  attr_reader :random_word, :word_display, :changed
+
+  def initialize(random_word)
     @random_word = random_word.split("")
-    @word_display = Array.new(random_word.length, "_ ") #make array of underscores
-    @num_bad_guess = 0 #had to give it initial val so that we cound increment it with count bad guess method
-    @num_good_guess = 0
-    @bad_letters = []
+    @word_display = Array.new(random_word.length, "_ ")
   end
 
-  def reveal(letter)
-    @letter = letter
-    counter = 0 # keeps track of random word index number
+  def reveal(guess)
+    counter = 0 #keeps track of random_word array index number
     @changed = nil
-    @random_word.each do |alpha|
-      if alpha == @letter
-        @word_display[counter] = @letter
-        @changed = true # indicates that guess was right
+    @random_word.each do |char|
+      if char == guess
+        @word_display[counter] = guess
+        @changed = true
       end
       counter += 1
     end
     return @word_display
   end
 
-  def count_bad_guess
-    unless @letter == @random_word.join("")
-      if @changed == nil #checks to see if guess was wrong
-        @num_bad_guess += 1 # if guess is wrong increments bad guess otherwise  gives "free" guess
-        @bad_letters << @letter
-        puts "\n\nFutile attempts: #{@num_bad_guess}"
-        puts "You've already typed: #{@bad_letters.join(", ")}." #prints to user how many bad guesses they took
-      end
-      return @num_bad_guess #otherwise method returns nil
-    end
-  end
-
-  def count_good_guess
-    if @changed == true
-      @num_good_guess += 1
-    end
-    return @num_good_guess
+  def changed? #keeps track of whether word_display changed i.e. whether the guess was right
+    return @changed
   end
 end
 
 class Art
-  attr_reader :num_good_guess, :part1, :part2, :part3, :part4, :part5, :part6, :part7
+  attr_reader :part1, :part2, :part3, :part4, :part5, :part6, :part7
+
   def initialize
     @part1 = "        ....                                ....            
            ... . . .........    .. .    .. .  ......... .. . .         
@@ -167,56 +147,75 @@ class Art
   def display(num_good_guess)
     case num_good_guess
     when 1
-      puts @part1
+      return @part1
     when 2
-      puts @part2
+      return @part2
     when 3
-      puts @part3
+      return @part3
     when 4
-      puts @part4
+      return @part4
     when 5
-      puts @part5
+      return @part5
     when 6
-      puts @part6
+      return @part6
     when 7
-      puts @part7.blink
+      return @part7
     end
   end
+
 end
 
 class Game
-  attr_reader :random_word, :word_display, :num_bad_guess, :bad_letters, :letter, :num_good_guess, :part1
+
   def initialize
+    @word = Word.new(Faker::Hipster.unique.word.downcase)
+    @bad_guess_allowed = 7
+    @num_bad_guess = 0
+    @num_good_guess = 0
+    @bad_letters = []
+  end
 
+  def count_bad_guess(guess)
+    unless guess == @word.random_word.join("")
+      if @changed == nil
+        @num_bad_guess += 1
+        @bad_letters << guess
+        puts "\n\nFutile attempts: #{@num_bad_guess}"
+        puts "You’ve already tried: #{@bad_letters.join(", ")}"
+      end
+      return @num_bad_guess
+    end
+  end
 
-    #when guesses_taken > guesses_allowed  game over
-    #or
-    #when guesses_taken == guesses_allowed && word_display.includes? " _ " game over
-    #when guesses_taken == guesses_allowed && random_word != word_display game over
+  def count_good_guess
+    if @changed == true
+      @num_good_guess += 1 #stores how many good guesses has taken so Art.display can show that many parts of the image
+      puts "\n\nGood guess! You're on a roll!"
+      puts "You’ve already tried: #{@bad_letters.join(", ")}"
+    end
+    return @num_good_guess
   end
 
   def play
-    word = Word.new(Faker::Hipster.unique.word.downcase)
-    @bad_guess_allowed = 7
-#print word.random_word.join("")
+
     while true
-      print "Go!"
-      print ">>".blink
+      print "\nGo! "
+      print ">> ".blink
       guess = gets.chomp.downcase
-      print word.reveal(guess).join
-      @num_bad_guess = word.count_bad_guess
-      @num_good_guess = word.count_good_guess
-      #puts @num_good_guess
-      Art.new.display(@num_good_guess)
-      if word.random_word == word.word_display  || guess == word.random_word.join("")
-        #check for the 'win condition'
-        Art.new.display(7)
-          puts "\nThey are vintage."
+      print @word.reveal(guess).join
+      @changed = @word.changed?
+      @num_bad_guess = count_bad_guess(guess)
+      @num_good_guess = count_good_guess
+      puts Art.new.display(@num_good_guess)
+      if @word.random_word == @word.word_display  || guess == @word.random_word.join("")
+        #check for the ‘win condition’
+        puts Art.new.display(7).blue.blink
+          puts "\nLook at you: you guessed the word and looked good doing it! They're vintage."
         break
       end
-      if @num_bad_guess == @bad_guess_allowed #if this happens you lose.
-        puts "\nSo underground! The word was '#{word.random_word.join("")}'. I used this word for months before it was even cool."
-        Art.new.display(7)
+      if @num_bad_guess == @bad_guess_allowed #if this happens before the win condition is satisfied, you lose :(
+        puts "\nUh-oh! You're out of guesses. The word was ‘#{@word.random_word.join("").capitalize}‘. I used this word for months before it was even cool."
+        puts Art.new.display(7).red.blink
         break
       end
     end
@@ -225,8 +224,8 @@ end
 
 let_me_help_you = [
   "Not to be a conformist, but there is only one right way to prep chai.",
-  "Nope! Hint: You can get a gallon of it at Trader Joe's, but I doubt it's organic.",
-  "That's not niche enough."
+  "Nope! Hint: You can get a gallon of it at Trader Joe’s, but I doubt it’s organic.",
+  "That’s not niche enough."
 ]
 puts "This hang-man game is elite and invite-only (requires a password).\nHow do you take your vegan chai?"
 puts ">".blue.blink
@@ -236,12 +235,13 @@ until password == "dirty"
   password = gets.chomp.downcase
 end
 if password == "dirty"
-puts "Righteous!
-Welcome to the game! Every word is sourced locally and responsibly.
-If we had to classify it, it would be Avant-garde.
-You get 7 guesses, 7 just feels right.
-You can also type the entire word.
-This way you win the game, but the word immediately becomes too mainstream.
-Please begin:".green
-word = Game.new.play
+  puts "Righteous!
+  Welcome to the game! Every word is sourced locally and responsibly.
+  If we had to classify it, it would be Avant-garde.
+  You get 7 guesses, 7 just feels right.
+  You can also type the entire word.
+  This way you win the game, but the word immediately becomes too mainstream.
+  Please begin:".green
+
+  Game.new.play
 end
