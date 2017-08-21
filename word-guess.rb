@@ -100,6 +100,7 @@ class Game
     puts "Incorrect guesses: #{@used_letters.join(", ")}"
     puts "Please enter a letter to guess:"
     @user_guess = gets.chomp.strip.downcase
+    # can be replaced with guess.valid
     until /[a-z]+[[:blank]]*\b/.match(@user_guess) #&& guess != nil
       puts "Please enter alpha characters only:"
       @user_guess = gets.chomp.strip.downcase
