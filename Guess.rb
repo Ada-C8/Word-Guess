@@ -1,7 +1,4 @@
-#Game Dictionary
-easy_words = ["pipes", "carets", "apple", "orange", "book", "computer"]
-med_words = ["esoteric", "consciousness", "illuminate", "discrepancy", "galactic"]
-hard_words = ["the meaning of life", "vibrational entity", "we are made of star stuff"]
+require 'colorize'
 
 class Display
   attr_accessor :display_word, :user_guess, :counter_finish, :counter_orb, :counter_base
@@ -31,14 +28,14 @@ class Display
     # push guessed character index to an array
     @winning_word.each_char do |char|
       i += 1
-      if char == @user_guess
+      if char == @user_guess.guess
         # times 2 to adjust for blanks in display_word
         char_positions.push(i * 2)
       end
     end
     # replace _ at those indices with the guessed character
     char_positions.each do |pos|
-      @display_word[pos] = @user_guess
+      @display_word[pos] = @user_guess.guess
     end
   end
 
@@ -70,10 +67,6 @@ class Guess
   def correct?(word)
     @guess.length == 1 && word.include?(@guess) ? true : false
   end
-
-  def end_game?
-
-  end
 end # End of Guess class
 
 class Game
@@ -82,6 +75,11 @@ class Game
   attr_accessor :user_guess, :interface
 
   def initialize
+    #Game Dictionary
+    easy_words = ["pipes", "carets", "apple", "orange", "book", "computer"]
+    med_words = ["esoteric", "consciousness", "illuminate", "discrepancy", "galactic"]
+    hard_words = ["the meaning of life", "vibrational entity", "we are made of star stuff"]
+
     # gets difficulty level from the user
     puts "Welcome.."
     print "Choose a level (easy, medium, hard)"
@@ -107,55 +105,59 @@ class Game
     # create a new Display for this game, pass the Game instance to it
     @interface = Display.new(self)
     @used_letters = []
+
+    play
+  end
+  def play
+    # clears the terminal each turn
+    puts "\e[H\e[2J"
+    puts @interface.display_counter
+    puts "Phrase: " + @interface.display_word
+    puts "Incorrect guesses: #{@used_letters.join(", ")}"
+    puts "Please enter a letter to guess:"
+    @user_guess = Guess.new(gets.chomp.strip.downcase)
+
+    until @user_guess.valid?
+      puts "Please enter alpha characters only:"
+      @user_guess = Guess.new(gets.chomp.strip.downcase)
+    end
+
+    @interface.user_guess = @user_guess
+
+    if @user_guess.guess == @winning_word
+      @interface.display_word.gsub!("_", "-")
+      win_lose?
+    elsif @used_letters.include?(@user_guess.guess)
+      puts "You already tried #{@user_guess.guess}. Try again"
+      win_lose?
+    elsif @user_guess.correct?(@winning_word)
+      @interface.update_display
+      win_lose?
+    else
+      puts "Nope!"
+      @used_letters << @user_guess.guess
+      @interface.update_counter
+      win_lose?
+    end
   end #End of Game initialization method
 
-  #Validate User input
-  puts @interface.display_counter
-  puts "Phrase: " + @interface.display_word
-  # puts "Incorrect guesses: #{@used_letters.join(", ")}"
-  puts "Please enter a letter to guess:"
-  @user_guess = Guess.new(gets.chomp.strip.downcase)
-
-  until @user_guess.valid?
-     puts "Please enter alpha characters only:"
-     @user_guess = Guess.new(gets.chomp.strip.downcase)
-  end
-
-  @interface.user_guess = @user_guess
-
-  if @user_guess == @winning_word
-    @interface.display_word.gsub!("_", "-")
-    end_game
-  elsif @used_letters.include?(@user_guess)
-    puts "You already tried #{@user_guess}. Try again"
-    end_game
-  elsif @user_guess.correct?(@winning_word)
-    @interface.update_display
-  else
-    puts "Nope!"
-    @used_letters << @user_guess
-    @interface.update_counter
-    end_game
-  end
-
-
-  def end_game
+  def win_lose?
     # declares a win when all blanks have been replaced in display_word
     if !(@interface.display_word.include?("_"))
       puts "You got it!"
-    elsif
-      if @interface.counter_orb.length >= @interface.counter_finish.length
-        puts "You are trapped on this plane of entanglement."
-        #display something dramatic
-        exit #TODO TBD
-      elsif @interface.counter_orb.length == @interface.counter_finish.length
-        puts "EEKS! Last guess!"
-        #display maybe some flashing...
-      end
+      puts "Some celebration art!".colorize(:cyan).blink
+      puts "!~~~~!~~~~!~~~~!~~~~!" + " ©ASCII Finger Painters".colorize(:light_black)
+    elsif @interface.counter_orb.length >= @interface.counter_finish.length
+      puts "You are trapped on this plane of entanglement."
+      puts "Dramatic Death Art!".colorize(:red).blink
+      puts "XXXXXXXXXXXXXXXXXXX" + " ©ASCII Finger Painters".colorize(:light_black)
+      exit
+      # or add another instance of Game to play again
     else
-      accept_guess
+      play
     end
   end
 
-  #Decide win or Lose
 end # End of Game class definition
+
+game = Game.new
