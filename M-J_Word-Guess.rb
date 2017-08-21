@@ -1,5 +1,6 @@
 
 #Maria and Julia's Word Guess Game!
+require 'faker'
 
 # NOUNS / CLASSES
 # The Game
@@ -147,7 +148,7 @@ ART
   end
 
   def store_wrong_letter(letter_guess)
-    if wrong_letter?(letter_guess)
+    if wrong_letter?(letter_guess) && !@wrong_letters.include?(letter_guess)
       @wrong_letters << letter_guess
     else
       puts "We don't have anything to put in wrong_letters array"
@@ -195,8 +196,13 @@ end #end of class
 
 
 puts "Welcome to Maria and Julia's Word Game!"
-word_array = ["hat", "math", "phony", "putty" ]
-target_word = word_array.sample.split(//)
+word = Faker::Dessert.variety
+puts "Word: #{word}"
+word = word.downcase
+#puts "Word downcased: #{word}"
+#word_array = [word]
+target_word = word.split(//)
+puts "Our target word: #{target_word}"
 our_word = Game.new(target_word)
 puts "Your word is:"
 target_word.length.times do |x| print "-"
