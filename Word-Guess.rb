@@ -27,8 +27,6 @@ class Round
       @max_wrong_guess = 5
     when "hard"
       @max_wrong_guess = 3
-    # else
-    #   raise ArgumentError.new("Difficulty must be easy, medium or hard.")
     end
 
     until ["color", "food", "hipster", "jobs"].include? @category
@@ -38,13 +36,13 @@ class Round
 
     case @category
     when "color"
-        @word = Faker::Color.color_name
+      @word = Faker::Color.color_name
     when "food"
-        @word = Faker::Food.dish
+      @word = Faker::Food.dish
     when "hipster"
-        @word = Faker::Hipster.word
+      @word = Faker::Hipster.word
     when "jobs"
-        @word = Faker::Job.title
+      @word = Faker::Job.title
     end
 
     @word_array = @word.split("")
@@ -136,27 +134,23 @@ class Round
     puts "\n\n" + colored_skull.flatten.join("\n").colorize(:red)
   end
 
-  def check_letter(guess_letter)
-    if guess_letter == @word
+  def check_guess(guess)
+    if guess == @word
       @win = true
-    elsif valid_input?(guess_letter)
-      while @guessed_letters.include? guess_letter
-        puts "\nYou already guessed #{guess_letter}!"
+    elsif valid_input?(guess)
+      while @guessed_letters.include? guess
+        puts "\nYou already guessed #{guess}!"
         print "Please enter another letter:"
-        guess_letter = gets.chomp
-        valid_input?(guess_letter)
+        guess = gets.chomp
+        valid_input?(guess)
       end
-        system "clear"
-      @guessed_letters << guess_letter
+      system "clear"
+      @guessed_letters << guess
       @guessed_letters.uniq!
-                  puts "\n\nLetters Guessed:\n"
-                  print @guessed_letters
-      if @word_array.include? guess_letter
-        @word_array.length.times do |index|
-          if word_array[index] == guess_letter
-            @dash_word[index * 2] = guess_letter
-          end
-        end
+      puts "\n\nLetters Guessed:\n"
+      print @guessed_letters
+      if @word_array.include? guess
+        update_dash_word(guess)
         @score += 1
       else
         @wrong_guess += 1
@@ -170,11 +164,11 @@ class Round
     if winner?
       a = Artii::Base.new :font => 'slant'
       system "clear"
-      puts a.asciify('You Win!').colorize(:green)
+      puts a.asciify('You Win!').colorize(:green).blink
       return "The word is: #{@word}"
     elsif game_over?
       a = Artii::Base.new :font => 'slant'
-      puts a.asciify('Game Over!').colorize(:red)
+      puts a.asciify('Game Over!').colorize(:red).blink
       return "The word is: #{@word}"
     end
   end
@@ -190,14 +184,14 @@ class Round
 
   private
 
-  def valid_input?(guess_letter)
-    if guess_letter != @word && guess_letter.length > 1
+  def valid_input?(guess)
+    if guess != @word && guess.length > 1
       @wrong_guess += 1
       ascii_skull
-      puts "\nThat is not the right word :( Tryy another word or just one letter."
+      puts "\nThat is not the right word :( Try another word or just one letter."
 
       return false
-    elsif ('a'..'z').include? guess_letter
+    elsif ('a'..'z').include? guess
       return true
     else
       puts "\nInvalid input. Enter only letters."
@@ -205,6 +199,13 @@ class Round
     end
   end
 
+  def update_dash_word(letter)
+    @word_array.length.times do |index|
+      if word_array[index] == letter
+        @dash_word[index * 2] = letter
+      end
+    end
+  end
 end
 
 
@@ -218,7 +219,7 @@ round1 = Round.new(difficulty, category)
 puts round1.dash_word
 puts "\n\nGuess a letter: "
 guess = gets.chomp.downcase
-round1.check_letter(guess)
+round1.check_guess(guess)
 
 
 until round1.game_over? || round1.winner?
@@ -226,6 +227,6 @@ until round1.game_over? || round1.winner?
   puts round1.dash_word
   print "\n\nGuess a letter: "
   guess = gets.chomp.downcase
-  puts round1.check_letter(guess)
+  puts round1.check_guess(guess)
 
 end
