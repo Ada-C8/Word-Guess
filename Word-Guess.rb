@@ -12,9 +12,9 @@ class Round
 
     @max_wrong_guess = 0
 
-    until ["easy", "medium", "hard"].include? @category
-      puts "Invalid difficulty, pleaese enter another a vaild difficulty."
-      puts "Our available difficulties are: easy, medium, hard: "
+    until ["easy", "medium", "hard"].include? @difficulty
+      puts "\nInvalid difficulty, pleaese enter another a vaild difficulty."
+      puts "\nOur available difficulties are: easy, medium, hard: "
       @difficulty = gets.chomp.downcase
     end
 
@@ -30,7 +30,7 @@ class Round
     end
 
     until ["color", "food", "hipster", "jobs"].include? @category
-      puts "Invalid category, please enter another one."
+      puts "\nInvalid category, please enter another one."
       @category = gets.chomp.downcase
     end
 
@@ -56,61 +56,89 @@ class Round
   end
 
   def ascii_skull
-    skull1 = <<-HEREDOC
-    .... NO! ...                  ... MNO! ...
-    ..... MNO!! ...................... MNNOO! ...
+    skull = <<-HEREDOC
+       .... NO! ...                  ... MNO! ...
+     ..... MNO!! ...................... MNNOO! ...
     ..... MMNO! ......................... MNNOO!! .
     .... MNOONNOO!   MMMMMMMMMMPPPOII!   MNNO!!!! .
-    HEREDOC
-
-    skull2 = <<-HEREDOC
     ... !O! NNO! MMMMMMMMMMMMMPPPOOOII!! NO! ....
-    ...... ! MMMMMMMMMMMMMPPPPOOOOIII! ! ...
-    ........ MMMMMMMMMMMMPPPPPOOOOOOII!! .....
-    ........ MMMMMOOOOOOPPPPPPPPOOOOMII! ...
-    ....... MMMM..     OPPMMP      .,OMI! ....
-    HEREDOC
-
-    skull3 = <<-HEREDOC
-    ...... MMMM::    o.,OPMP,.o    ::I!! ...
-        .... NNM:::.,,OOPM!P,.::::!! ....
-         .. MMNNNNNOOOOPMO!!IIPPO!!O! .....
-        ... MMMMMNNNNOO:!!:!!IPPPPOO! ....
-          .. MMMMMNNOOMMNNIIIIIPPPOO!! ......
-    HEREDOC
-
-    skull4 = <<-HEREDOC
-         ...... MMMONNMMNNNIIIOOO!..........
-      ....... MN MOMMMNNNIIIIIO! OO ..........
-    ......... MNO! IiiiiiiiiiiiI OOOO ...........
+      ...... ! MMMMMMMMMMMMMPPPPOOOOIII! ! ...
+     ........ MMMMMMMMMMMMPPPPPOOOOOOII!! .....
+     ........ MMMMMOOOOOOPPPPPPPPOOOOMII! ...
+      ....... MMMMM..    OPPMMP    .,OMI! ....
+       ...... MMMM::   o.,OPMP,.o   ::I!! ...
+           .... NNM:::.,,OOPM!P,.::::!! ....
+            .. MMNNNNNOOOOPMO!!IIPPO!!O! .....
+           ... MMMMMNNNNOO:!!:!!IPPPPOO! ....
+             .. MMMMMNNOOMMNNIIIPPPOO!! ......
+            ...... MMMONNMMNNNIIIOO!..........
+         ....... MN MOMMMNNNIIIIIO! OO ..........
+      ......... MNO! IiiiiiiiiiiiI OOOO ...........
     ...... NNN.MNO! . O!!!!!!!!!O . OONO NO! ........
+     .... MNNNNNO! ...OOOOOOOOOOO .  MMNNON!........
+     ...... MNNNNO! .. PPPPPPPPP .. MMNON!........
+        ...... OO! ................. ON! .......
+           ................................
     HEREDOC
 
-    skull5 = <<-HEREDOC
-    .... MNNNNNO! ...OOOOOOOOOOO .  MMNNON!........
-    ...... MNNNNO! .. PPPPPPPPP .. MMNON!........
-     ...... OO! ................. ON! .......
-        ................................
-    HEREDOC
-
+    skull_lines = skull.split("\n")
     colored_skull = ""
 
-    case @wrong_guess
+    case @difficulty
 
+    when "easy"
+      case @wrong_guess
       when 1
-        colored_skull = skull1
+        puts skull_lines[0]
+        puts skull_lines[0].class
+        puts skull_lines[0..2]
+        puts skull_lines[0..2].class
+        colored_skull << skull_lines[0..2]
+        puts colored_skull
+
       when 2
-        colored_skull = skull1 + skull2
+        colored_skull << skull_lines[0].flatten!
       when 3
-        colored_skull = skull1 + skull2 + skull3
+        colored_skull << skull_lines[0].flatten!
       when 4
-        colored_skull = skull1 + skull2 + skull3 + skull4
+        colored_skull << skull_lines[0].flatten!
       when 5
-        colored_skull = skull1 + skull2 + skull3 + skull4 + skull5
+        colored_skull << skull_lines[0].flatten!
+      when 6
+        colored_skull << skull_lines[0].flatten!
+      when 7
+        colored_skull << skull_lines[0].flatten!
+      when 8
+        colored_skull << skull_lines[0].flatten!
+      end
+
+    when "medium"
+      case @wrong_guess
+      when 1
+        colored_skull << skull_lines[0..4]
+      when 2
+        colored_skull << skull_lines[5..9]
+      when 3
+        colored_skull << skull_lines[10..14]
+      when 4
+        colored_skull << skull_lines[15..19]
+      when 5
+        colored_skull << skull_lines[20..22]
+      end
+
+    when "hard"
+      case @wrong_guess
+      when 1
+        colored_skull << skull_lines[0..7]
+      when 2
+        colored_skull << skull_lines[8..14]
+      when 3
+        colored_skull << skull_lines[15..22]
+      end
+
+      puts "\n\n" + colored_skull.colorize(:red)
+
     end
-
-    puts "\n\n" + colored_skull.colorize(:red)
-
   end
 
   def check_letter(guess_letter)
@@ -141,7 +169,8 @@ class Round
 
   def check_if_winner
     if winner?
-      return "You win!!!!"
+      return "#{@dash_word}\n\nYou win!!!!"
+
     elsif game_over?
       return "game over!!! the word was #{@word}"
     end
@@ -169,6 +198,8 @@ class Round
 
 end
 
+
+
 puts "\n\nWelcome to Word Guess!!!!!!\n\n"
 print "Choose a difficulty >> "
 difficulty = gets.chomp.downcase
@@ -191,3 +222,45 @@ until round1.game_over? || round1.winner?
   puts round1.check_letter(guess)
 
 end
+
+
+
+
+  skull5 = <<-HEREDOC
+     .... NO! ...                  ... MNO! ...
+   ..... MNO!! ...................... MNNOO! ...
+
+
+  ..... MMNO! ......................... MNNOO!! .
+  .... MNOONNOO!   MMMMMMMMMMPPPOII!   MNNO!!!! .
+  ... !O! NNO! MMMMMMMMMMMMMPPPOOOII!! NO! ....
+
+    ...... ! MMMMMMMMMMMMMPPPPOOOOIII! ! ...
+   ........ MMMMMMMMMMMMPPPPPOOOOOOII!! .....
+   ........ MMMMMOOOOOOPPPPPPPPOOOOMII! ...
+
+
+    ....... MMMMM..    OPPMMP    .,OMI! ....
+     ...... MMMM::   o.,OPMP,.o   ::I!! ...
+         .... NNM:::.,,OOPM!P,.::::!! ....
+
+
+          .. MMNNNNNOOOOPMO!!IIPPO!!O! .....
+         ... MMMMMNNNNOO:!!:!!IPPPPOO! ....
+           .. MMMMMNNOOMMNNIIIPPPOO!! ......
+
+
+          ...... MMMONNMMNNNIIIOO!..........
+       ....... MN MOMMMNNNIIIIIO! OO ..........
+    ......... MNO! IiiiiiiiiiiiI OOOO ...........
+
+
+  ...... NNN.MNO! . O!!!!!!!!!O . OONO NO! ........
+   .... MNNNNNO! ...OOOOOOOOOOO .  MMNNON!........
+   ...... MNNNNO! .. PPPPPPPPP .. MMNON!........
+
+
+      ...... OO! ................. ON! .......
+         ................................
+
+      HEREDOC
