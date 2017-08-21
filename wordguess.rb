@@ -158,7 +158,7 @@ if !random_word.did_you_win?
 end
   print "Would you like to play again? "
   user = gets.chomp
-  if user == "yes"
+  if user.downcase == "yes"
     play_again = true
   else
     play_again = false
