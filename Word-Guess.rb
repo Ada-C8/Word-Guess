@@ -82,67 +82,59 @@ class Round
     HEREDOC
 
     skull_lines = skull.split("\n")
-    colored_skull = ""
+    colored_skull = []
 
     case @difficulty
 
     when "easy"
       case @wrong_guess
       when 1
-        puts skull_lines[0]
-        puts skull_lines[0].class
-        puts skull_lines[0..2]
-        puts skull_lines[0..2].class
-        colored_skull << skull_lines[0..2]
-        puts colored_skull
-
+        colored_skull = skull_lines[0..2]
       when 2
-        colored_skull << skull_lines[0].flatten!
+        colored_skull = skull_lines[0..5]
       when 3
-        colored_skull << skull_lines[0].flatten!
+        colored_skull = skull_lines[0..8]
       when 4
-        colored_skull << skull_lines[0].flatten!
+        colored_skull = skull_lines[0..11]
       when 5
-        colored_skull << skull_lines[0].flatten!
+        colored_skull = skull_lines[0..14]
       when 6
-        colored_skull << skull_lines[0].flatten!
+        colored_skull = skull_lines[0..17]
       when 7
-        colored_skull << skull_lines[0].flatten!
+        colored_skull = skull_lines[0..20]
       when 8
-        colored_skull << skull_lines[0].flatten!
+        colored_skull = skull_lines[0..22]
       end
 
     when "medium"
       case @wrong_guess
       when 1
-        colored_skull << skull_lines[0..4]
+        colored_skull = skull_lines[0..4]
       when 2
-        colored_skull << skull_lines[5..9]
+        colored_skull = skull_lines[0..9]
       when 3
-        colored_skull << skull_lines[10..14]
+        colored_skull = skull_lines[0..14]
       when 4
-        colored_skull << skull_lines[15..19]
+        colored_skull = skull_lines[0..19]
       when 5
-        colored_skull << skull_lines[20..22]
+        colored_skull = skull_lines[0..22]
       end
 
     when "hard"
       case @wrong_guess
       when 1
-        colored_skull << skull_lines[0..7]
+        colored_skull = skull_lines[0..7]
       when 2
-        colored_skull << skull_lines[8..14]
+        colored_skull = skull_lines[0..14]
       when 3
-        colored_skull << skull_lines[15..22]
+        colored_skull = skull_lines[0..22]
       end
-
-      puts "\n\n" + colored_skull.colorize(:red)
-
     end
+
+    puts "\n\n" + colored_skull.flatten.join("\n").colorize(:red)
   end
 
   def check_letter(guess_letter)
-
     if valid_input?(guess_letter)
       while @guessed_letters.include? guess_letter
         puts "\nYou already guessed #{guess_letter}!"
@@ -150,8 +142,11 @@ class Round
         guess_letter = gets.chomp
         valid_input?(guess_letter)
       end
+        system "clear"
       @guessed_letters << guess_letter
       @guessed_letters.uniq!
+                  puts "\n\nLetters Guessed:\n"
+                  print @guessed_letters
       if @word_array.include? guess_letter
         @word_array.length.times do |index|
           if word_array[index] == guess_letter
@@ -161,8 +156,8 @@ class Round
         @score += 1
       else
         @wrong_guess += 1
-        ascii_skull
       end
+      ascii_skull
     end
     check_if_winner
   end
@@ -213,8 +208,8 @@ round1.check_letter(guess)
 
 
 until round1.game_over? || round1.winner?
-  puts "\n\nLetters Guessed:\n"
-  print round1.guessed_letters
+  # puts "\n\nLetters Guessed:\n"
+  # print round1.guessed_letters
   puts "\n"
   puts round1.dash_word
   print "\n\nGuess a letter: "
