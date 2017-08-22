@@ -4,7 +4,7 @@ require 'artii'
 
 class Round
 
-  attr_accessor :word, :word_array, :dash_word, :score, :wrong_guess, :max_wrong_guess, :guessed_letters
+  attr_reader :word_array, :dash_word, :wrong_guess, :max_wrong_guess, :guessed_letters
 
   def initialize(difficulty = "easy", category = "color")
     @difficulty = difficulty
@@ -50,7 +50,6 @@ class Round
     @word.length.times do |index|
       @word[index] == " " ? (@dash_word += "  ") : (@dash_word += "_ ")
     end
-    @score = 0
     @wrong_guess = 0
     @guessed_letters = []
   end
