@@ -4,14 +4,13 @@ require 'artii'
 
 class Round
 
-  attr_accessor :word, :word_array, :dash_word, :score, :wrong_guess, :max_wrong_guess, :guessed_letters
+  attr_reader :word_array, :dash_word, :score, :wrong_guess, :max_wrong_guess, :guessed_letters
 
   def initialize(difficulty = "easy", category = "color")
     @difficulty = difficulty
     @category = category
     @word = ""
     @win = false
-
     @max_wrong_guess = 0
 
     until ["easy", "medium", "hard"].include? @difficulty
